@@ -1,8 +1,6 @@
 package org.example;
 
-import org.example.model.KDTree;
-
-import java.io.PrintStream;
+import org.example.model.KDTree.KDTree;
 
 public class TreeTest {
     public static void main(String[] args) {
