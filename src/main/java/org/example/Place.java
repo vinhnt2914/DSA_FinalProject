@@ -1,18 +1,25 @@
 package org.example;
+
+import java.util.HashSet;
 import java.util.Set;
 
 public class Place {
-    private int x; // The X coordinate
-    private int y; // The Y coordinate
-    private Set<String> services; // The services offered at this place
+    private int id;
+    private int x;
+    private int y;
+    private Set<String> services;
 
-    public Place(int x, int y, Set<String> services) {
+    public Place(int id, int x, int y, Set<String> services) {
+        this.id = id;
         this.x = x;
         this.y = y;
-        this.services = services;
+        this.services = new HashSet<>(services);
     }
 
-    // Getters
+    public int getId() {
+        return id;
+    }
+
     public int getX() {
         return x;
     }
@@ -22,18 +29,33 @@ public class Place {
     }
 
     public Set<String> getServices() {
-        return services;
+        return new HashSet<>(services);
     }
 
-    // Optional: toString() for easy printing of Place details
+    public void setServices(Set<String> services) {
+        this.services = new HashSet<>(services);
+    }
+
     @Override
     public String toString() {
         return "Place{" +
-                "x=" + x +
+                "id=" + id +
+                ", x=" + x +
                 ", y=" + y +
                 ", services=" + services +
                 '}';
     }
 
-    // Additional methods like setters or other business logic could be added here
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(id, x, y, services);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Place place = (Place) o;
+        return id == place.id && x == place.x && y == place.y && services.equals(place.services);
+    }
 }
