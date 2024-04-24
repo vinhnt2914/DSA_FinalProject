@@ -10,22 +10,16 @@ public class Map2D {
         hashTable = new MapNodeList[N];
     }
 
-    public Map2D(int tableSize) {
-        N = tableSize;
-        hashTable = new MapNodeList[N];
-    }
-
     private int hash(int id) {
         return id % N;
     }
-
-    public boolean put(MapNode node) {
+    public void put(MapNode node) {
         int hash = hash(node.id);
         // no list at this location?
         if (hashTable[hash] == null) {
             hashTable[hash] = new MapNodeList();
         }
-        return hashTable[hash].insert(node);
+        hashTable[hash].insert(node);
     }
 
     public MapNode get(int id) {
@@ -47,18 +41,6 @@ public class Map2D {
     public boolean contains(int id) {
         return get(id) != null;
     }
-
-    public void display() {
-        for (int i = 0; i < hashTable.length; i++) {
-            if (hashTable[i] == null) continue;
-            MapNode temp = hashTable[i].head;
-            while (temp != null) {
-                System.out.print(temp + " -> ");
-                temp = temp.next;
-            }
-            System.out.println("END");
-        }
-    }
 }
 
 // Note: the LinkedList class developed in week 3
@@ -74,25 +56,24 @@ class MapNodeList {
 
     // insert a student MapNode at the end
     // because we have to check for duplicated student Id
-    public boolean insert(MapNode node) {
+    public void insert(MapNode node) {
         if (size == 0) {
             head = node;
             size = 1;
-            return true;
+            return;
         }
         MapNode parent = null;
         MapNode current = head;
         while (current != null) {
             if (current.id == node.id) {
                 // duplicated id
-                return false;
+                return;
             }
             parent = current;
             current = current.next;
         }
         parent.next = node;
         size++;
-        return true;
     }
 
     // return a student with the provided id
