@@ -9,4 +9,13 @@ public class NodeWithDistance {
         this.node = node;
         this.distance = distance;
     }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(%s, %s) = %.2f", node.getX(), node.getY(), distance);
+    }
 }

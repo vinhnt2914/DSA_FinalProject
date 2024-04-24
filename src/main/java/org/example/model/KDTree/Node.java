@@ -1,12 +1,21 @@
 package org.example.model.KDTree;
 
+import org.example.model.Map2D.MapNode;
+
 import java.util.Arrays;
 
 public class Node {
+    int id;
     int[] coordinates;
     Node left;
     Node right;
     int axis; // Keep track of the split axis
+
+    public Node(int id, int[] coordinates) {
+        this.id = id;
+        this.coordinates = coordinates;
+    }
+
     public Node(int[] coordinates, int axis) {
         this.coordinates = coordinates;
         this.axis = axis;
@@ -14,6 +23,14 @@ public class Node {
 
     public Node(int[] coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public MapNode mapToMapNode() {
+        return new MapNode(this.id, this.coordinates);
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int[] getCoordinates() {
@@ -37,11 +54,18 @@ public class Node {
         return axis;
     }
 
+    public double distance(Node target) {
+        double dx = this.coordinates[0] - target.coordinates[0];
+        double dy = this.coordinates[1] - target.coordinates[1];
+
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
     @Override
     public String toString() {
         return "Node{" +
-                "coordinates=" + Arrays.toString(coordinates) +
+                "id=" + id +
+                ", coordinates=" + Arrays.toString(coordinates) +
                 '}';
     }
-
 }

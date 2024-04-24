@@ -1,5 +1,8 @@
 package org.example.model.KDTree;
 
+import org.example.model.Map2D.Map2D;
+import org.example.model.NodeHeap.NodeHeap;
+
 import java.util.*;
 
 public class KDTree {
@@ -7,43 +10,45 @@ public class KDTree {
     private final int DIMENSION = 2;
     private int size;
     private final int MAX_NEIGHBORS = 50;
-
+    private NodeHeap nodeHeap;
+    private Map2D nodeMap;
     public KDTree() {
         size = 0;
+        nodeMap = new Map2D();
     }
 
-    public Node insert(int[] coordinates) {
+    public Node insert(Node node) {
         if (root == null) {
-            root = new Node(coordinates,0);
+            root = node;
             size++;
             return root;
         }
 
-        Node node = root;
+        Node temp = root;
         int depth = 0;
-        while (node != null) {
+        while (temp != null) {
             // Get the dividing axis (divide by x or divide by y => either 0 or 1)
             int axis = depth % DIMENSION;
             // Compare the value at the appropriate axis
             // If inserted value < current node value, it's on left insertion
-            if (coordinates[axis] < node.coordinates[axis]) {
+            if (node.getCoordinates()[axis] < temp.coordinates[axis]) {
                 // If reached a leaf node
                 // Insert new node there
-                if (node.left == null) {
-                    node.left = new Node(coordinates, axis);
+                if (temp.left == null) {
+                    temp.left = node;
                     size++;
-                    return node.left;
+                    return temp.left;
                 }
-                node = node.left;
+                temp = temp.left;
             // Else it's on right insertion
             } else {
                 // If reach a leaf node
-                if (node.right == null) {
-                    node.right = new Node(coordinates, axis);
+                if (temp.right == null) {
+                    temp.right = node;
                     size++;
-                    return node.right;
+                    return temp.right;
                 }
-                node = node.right;
+                temp = temp.right;
             }
             depth++;
         }
@@ -52,7 +57,7 @@ public class KDTree {
     }
 
     public void populate(List<Node> nodes) {
-        nodes.forEach(node -> insert(node.coordinates));
+        nodes.forEach(this::insert);
     }
 
     public Node nearestNeighbor(Node target) {
@@ -69,6 +74,8 @@ public class KDTree {
 
     private Node nearestNeighbor(Node root, Node target, int depth) {
         if (root == null) return null;
+
+//        System.out.println("Current node: " + root);
 
         // Get the split axis
         int axis = depth % DIMENSION;
@@ -142,8 +149,79 @@ public class KDTree {
         return best;
     }
 
-    private Node nearestNeighbors(Node root, Node target, int depth) {
+    public void kNearestNeighbors(Node target) {
+        long startTime = System.currentTimeMillis();
 
+        nodeHeap = new NodeHeap(target);
+        kNearestNeighbors(root, target, 0);
+
+        long endTime = System.currentTimeMillis();
+        System.out.println("KD TREE K-NN SEARCH - START AT: " + startTime);
+        System.out.println("KD TREE K-NN SEARCH - END AT: " + endTime);
+        System.out.println("KD TREE K-NN SEARCH USING ITERATION RUN FOR: " + (endTime - startTime) + "ms");
+
+//        System.out.println(nodeHeap.size());
+
+        nodeHeap.displayClosetToFurthest();
+        System.out.println(nodeHeap.getN());
+    }
+
+    private Node kNearestNeighbors(Node root, Node target, int depth) {
+        if (root == null) return null;
+
+//        System.out.println("Current node: " + root);
+
+        // Get the split axis
+        int axis = depth % DIMENSION;
+
+        Node nextBranch, otherBranch;
+
+        if (target.coordinates[axis] < root.coordinates[axis]) {
+            nextBranch = root.left;
+            otherBranch = root.right;
+        } else {
+            nextBranch = root.right;
+            otherBranch = root.left;
+        }
+
+        // Get the best node using recursion
+        // It keeps going until reach a leaf node then compare it to find the best node
+        // Then traverse backward and compare with parent node to see if the parent is better
+        Node best = closerDistance(root, kNearestNeighbors(nextBranch, target, depth+1), target);
+        // Check if the bad side could potentially have a solution
+        if (distanceSquared(target, best) > Math.pow(target.coordinates[axis] - root.coordinates[axis], 2)) {
+            best = closerDistance(best, kNearestNeighbors(otherBranch, target, depth+1), target);
+        }
+
+        NodeWithDistance nodeWithDistance = new NodeWithDistance(root, Math.sqrt(distanceSquared(root, target)));
+
+        nodeHeap.insert(nodeWithDistance);
+
+        return best;
+    }
+
+    public void kNearestNeighborsWithMap(Node target) {
+        long startTime = System.currentTimeMillis();
+
+        for (int i = 1; i <= 50; i++) {
+            if (i > this.size) break;
+            Node ans = kNearestNeighborsWithMap(root, target, 0);
+//            System.out.println(ans);
+            System.out.printf("%s: (%s, %s); distance = %.2f\n",
+                    i, ans.getX(), ans.getY(), ans.distance(target));
+            nodeMap.put(ans.mapToMapNode());
+        }
+
+        long endTime = System.currentTimeMillis();
+        System.out.println("KD TREE K-NN SEARCH WITH MAP - START AT: " + startTime);
+        System.out.println("KD TREE K-NN SEARCH WITH MAP - END AT: " + endTime);
+        System.out.println("KD TREE K-NN SEARCH WITH MAP RUN FOR: " + (endTime - startTime) + "ms");
+    }
+
+    private Node kNearestNeighborsWithMap(Node root, Node target, int depth) {
+        // When reach a leaf node, the recursion stop
+        // In case of the best node, not being the leaf node
+        // The recursion will be terminated early, which is incorrect
         if (root == null) return null;
 
         // Get the split axis
@@ -162,10 +240,10 @@ public class KDTree {
         // Get the best node using recursion
         // It keeps going until reach a leaf node then compare it to find the best node
         // Then traverse backward and compare with parent node to see if the parent is better
-        Node best = closerDistance(root, nearestNeighbor(nextBranch, target, depth+1), target);
+        Node best = closerDistance(root, kNearestNeighborsWithMap(nextBranch, target, depth+1), target);
         // Check if the bad side could potentially have a solution
         if (distanceSquared(target, best) > Math.pow(target.coordinates[axis] - root.coordinates[axis], 2)) {
-            best = closerDistance(best, nearestNeighbor(otherBranch, target, depth+1), target);
+            best = closerDistance(best, kNearestNeighborsWithMap(otherBranch, target, depth+1), target);
         }
 
         return best;
@@ -183,70 +261,16 @@ public class KDTree {
     }
 
     private double distanceSquared(Node n1, Node n2) {
+
+        // Return INF if the nearest node is already found
+        if (nodeMap.contains(n1.id)) return Double.MAX_VALUE;
+
         double dx = n1.coordinates[0] - n2.coordinates[0];
         double dy = n1.coordinates[1] - n2.coordinates[1];
 
         return dx * dx + dy * dy;
     }
 
-    public String traversePreOrder(Node root) {
-
-        if (root == null) {
-            return "";
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(Arrays.toString(root.coordinates));
-
-        String pointerRight = "└──";
-        String pointerLeft = (root.right != null) ? "├──" : "└──";
-
-        traverseNodes(sb, "", pointerLeft, root.left, root.right != null);
-        traverseNodes(sb, "", pointerRight, root.right, false);
-
-        return sb.toString();
-    }
-
-    public void traverseNodes(StringBuilder sb, String padding, String pointer, Node node,
-                              boolean hasRightSibling) {
-        if (node != null) {
-            sb.append("\n");
-            sb.append(padding);
-            sb.append(pointer);
-            sb.append(Arrays.toString(node.coordinates));
-
-            StringBuilder paddingBuilder = new StringBuilder(padding);
-            if (hasRightSibling) {
-                paddingBuilder.append("│  ");
-            } else {
-                paddingBuilder.append("   ");
-            }
-
-            String paddingForBoth = paddingBuilder.toString();
-            String pointerRight = "└──";
-            String pointerLeft = (node.right != null) ? "├──" : "└──";
-
-            if (node.left == null) {
-                sb.append("\n");
-                sb.append(paddingForBoth);
-                sb.append(pointerLeft); // Print the branch indicating left node is null
-                sb.append("NULL"); // Print a placeholder for the left node
-            } else {
-                traverseNodes(sb, paddingForBoth, pointerLeft, node.left, node.right != null);
-            }
-
-            traverseNodes(sb, paddingForBoth, pointerRight, node.right, false);
-        }
-    }
-
-
-    public void print() {
-        if (root == null) {
-            System.out.println("The tree is empty.");
-            return;
-        }
-        System.out.println(traversePreOrder(root));
-    }
 
 
 }

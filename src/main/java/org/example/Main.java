@@ -4,10 +4,7 @@ import org.example.model.KDTree.KDTree;
 import org.example.model.KDTree.Node;
 import org.example.model.NNLinearSearch.NNLinearSearch;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,11 +16,12 @@ public class Main {
     public static void processPlace(String line, AtomicLong counter, KDTree kdTree, List<Node> nodes) {
 
         String[] parts = line.split(",");
-        int x = Integer.parseInt(parts[0]);
-        int y = Integer.parseInt(parts[1]);
+        int id = Integer.parseInt(parts[0]);
+        int x = Integer.parseInt(parts[1]);
+        int y = Integer.parseInt(parts[2]);
 
-        Node node = new Node(new int[]{x,y});
-        kdTree.insert(node.getCoordinates());
+        Node node = new Node(id, new int[]{x,y});
+        kdTree.insert(node);
         nodes.add(node);
         counter.incrementAndGet();
     }
@@ -43,26 +41,30 @@ public class Main {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         KDTree kdTree = new KDTree();
         List<Node> nodes = new ArrayList<>();
         try {
-            long duration = readPlacesFromFile("src/places.txt", 1000000, kdTree, nodes);
+            long duration = readPlacesFromFile("src/places_with_id.txt", 5000000, kdTree, nodes);
             System.out.println("Completed processing of places in " + duration + " ms.");
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
             e.printStackTrace();
         }
 
-        Node target = new Node(new int[]{1234122,4214142});
+//        List<Node> nodes100 = read100Places();
+//        kdTree.populate(nodes100);
+
+        Node target = new Node(new int[]{512351,1234123});
 
 //        System.out.println(kdTree.nearestNeighbor(target));
 //        System.out.println(kdTree.nearestNeighborIteration(target));
 //        System.out.println(NNLinearSearch.nearestNeighbor(nodes, target));
 
-//        kdTree.nearestNeighbors(target);
+//        kdTree.kNearestNeighbors(target);
+        kdTree.kNearestNeighborsWithMap(target);
+//        addIdToFile();
     }
-
     public static List<Node> read100Places() {
         List<Node> nodes = new ArrayList<>();
         File file = new File("D:\\DSA_FinalProject\\src\\places_100.txt");
@@ -84,5 +86,26 @@ public class Main {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void addIdToFile() throws IOException {
+        String inputFile = "D:\\DSA_FinalProject\\src\\places.txt";
+        String outputFile = "D:\\DSA_FinalProject\\src\\places_with_id.txt"; // You can change the output filename
+        int startingId = 1; // Adjust this if you want a different starting ID
+
+        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
+
+        String line;
+        int currentId = startingId;
+        while ((line = reader.readLine()) != null) {
+            writer.write(currentId + "," + line + "\n");
+            currentId++;
+        }
+
+        reader.close();
+        writer.close();
+
+        System.out.println("Successfully added IDs to the file. Check " + outputFile);
     }
 }
