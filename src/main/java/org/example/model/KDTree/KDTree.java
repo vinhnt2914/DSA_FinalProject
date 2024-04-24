@@ -1,14 +1,21 @@
 package org.example.model.KDTree;
 import org.example.model.Map2D.Map2D;
 
+import java.util.List;
+
 public class KDTree {
     private Node root;
+    // 2-d tree
     private final int DIMENSION = 2;
     private int size;
     private Map2D nodeMap;
     public KDTree() {
         size = 0;
         nodeMap = new Map2D();
+    }
+
+    public void populate(List<Node> nodes) {
+        nodes.forEach(this::insert);
     }
 
     public void insert(Node node) {
@@ -49,13 +56,15 @@ public class KDTree {
         // This never run
     }
 
+    // K-NN search using hash map
     public void kNearestNeighborsWithMap(Node target) {
         long startTime = System.currentTimeMillis();
 
+        // Run K-NN search 50 times
         for (int i = 1; i <= 50; i++) {
+            // Break in case bounding rectangle has less than 50 points
             if (i > this.size) break;
             Node ans = kNearestNeighborsWithMap(root, target, 0);
-//            System.out.println(ans);
             System.out.printf("%s: (%s, %s); distance = %.2f\n",
                     i, ans.getX(), ans.getY(), ans.distance(target));
             nodeMap.put(ans.mapToMapNode());
@@ -78,6 +87,7 @@ public class KDTree {
 
         Node nextBranch, otherBranch;
 
+        // Decide good side and bad side
         if (target.coordinates[axis] < root.coordinates[axis]) {
             nextBranch = root.left;
             otherBranch = root.right;
@@ -98,6 +108,8 @@ public class KDTree {
         return best;
     }
 
+    // Compare the distance between n1 to target and n2 to target
+    // Return the closer one.
     private Node closerDistance(Node n1, Node n2, Node target) {
         if (n1 == null) return n2;
         if (n2 == null) return n1;
@@ -109,6 +121,7 @@ public class KDTree {
         else return n2;
     }
 
+    // Return Euclidean distance, but it's not sqrt
     private double distanceSquared(Node n1, Node n2) {
 
         // Return INF if the nearest node is already found

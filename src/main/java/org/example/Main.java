@@ -2,16 +2,19 @@ package org.example;
 
 import org.example.model.KDTree.KDTree;
 import org.example.model.KDTree.Node;
+import org.example.model.Utility.DataManager;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
+
+
 public class Main {
+
     public static void processPlace(String line, AtomicLong counter, KDTree kdTree) {
 
         String[] parts = line.split(",");
@@ -40,14 +43,17 @@ public class Main {
 
 
     public static void main(String[] args) {
-        KDTree kdTree = new KDTree();
-        try {
-            long duration = readPlacesFromFile("src/places_with_id.txt", 1, kdTree);
-            System.out.println("Completed processing of places in " + duration + " ms.");
-        } catch (IOException e) {
-            System.err.println("Error reading the file: " + e.getMessage());
-            e.printStackTrace();
-        }
+//        KDTree kdTree = new KDTree();
+//        try {
+//            long duration = readPlacesFromFile("src/places_with_id.txt", 1, kdTree);
+//            System.out.println("Completed processing of places in " + duration + " ms.");
+//        } catch (IOException e) {
+//            System.err.println("Error reading the file: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+
+        DataManager dataManager = new DataManager();
+        KDTree kdTree = dataManager.createKDTree();
 
         Node target = new Node(new int[]{512351,1234123});
 
