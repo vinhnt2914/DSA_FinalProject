@@ -12,7 +12,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 
-
 public class Main {
 
     public static void processPlace(String line, AtomicLong counter, KDTree kdTree) {
@@ -80,4 +79,5 @@ public class Main {
 
         System.out.println("Successfully added IDs to the file. Check " + outputFile);
     }
+
 }

@@ -37,3 +37,5 @@ build/
 ### Mac OS ###
 .DS_Store
 src/places.txt
+*.txt
+src/places_with_id.txt
