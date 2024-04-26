@@ -1,5 +1,5 @@
 package org.example.model.KDTree;
-import org.example.model.Map2D.Map2D;
+import org.example.model.NodeHashMap.NodeHashMap;
 
 import java.util.List;
 
@@ -8,10 +8,10 @@ public class KDTree {
     // 2-d tree
     private final int DIMENSION = 2;
     private int size;
-    private Map2D nodeMap;
+    private NodeHashMap nodeMap;
     public KDTree() {
         size = 0;
-        nodeMap = new Map2D();
+        nodeMap = new NodeHashMap();
     }
 
     public void populate(List<Node> nodes) {

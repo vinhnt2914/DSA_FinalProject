@@ -1,6 +1,4 @@
-package org.example.model.Map2D;
-
-import java.util.Arrays;
+package org.example.model.NodeHashMap;
 
 public class MapNode {
     int id;

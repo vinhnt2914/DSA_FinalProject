@@ -1,11 +1,11 @@
-package org.example.model.Map2D;
+package org.example.model.NodeHashMap;
 
-public class Map2D {
+public class NodeHashMap {
     int N;  // size of the array for the hash table
     private final int DEFAULT_SIZE = 1000000;
     MapNodeList[] hashTable;
 
-    public Map2D() {
+    public NodeHashMap() {
         N = DEFAULT_SIZE;
         hashTable = new MapNodeList[N];
     }

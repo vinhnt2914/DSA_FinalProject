@@ -1,6 +1,6 @@
 package org.example.model.KDTree;
 
-import org.example.model.Map2D.MapNode;
+import org.example.model.NodeHashMap.MapNode;
 
 import java.util.Arrays;
 
