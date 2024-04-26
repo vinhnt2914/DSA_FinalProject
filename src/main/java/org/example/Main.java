@@ -22,9 +22,8 @@ public class Main {
         }
         Place place = new Place(x, y, services);
 
-
-        //System.out.println("Processed place at (" + place.getX() + ", " + place.getY() + ") with services: " + place.getServices());
-
+        // System.out.println("Processed place at (" + place.getX() + ", " +
+        // place.getY() + ") with services: " + place.getServices());
 
         counter.incrementAndGet();
     }
@@ -45,7 +44,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            long duration = readPlacesFromFile("src/places.txt");
+            long duration = readPlacesFromFile("./src/places.txt");
             System.out.println("Completed processing of places in " + duration + " ms.");
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
