@@ -60,8 +60,8 @@ public class Main {
     }
 
     public static void addIdToFile() throws IOException {
-        String inputFile = "D:\\DSA_FinalProject\\src\\places.txt";
-        String outputFile = "D:\\DSA_FinalProject\\src\\places_with_id.txt"; // You can change the output filename
+        String inputFile = "src/data/places_with_id.txt";
+        String outputFile = "src/data/places_with_id.txt"; // You can change the output filename
         int startingId = 1; // Adjust this if you want a different starting ID
 
         BufferedReader reader = new BufferedReader(new FileReader(inputFile));

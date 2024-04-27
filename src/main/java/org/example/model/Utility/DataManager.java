@@ -17,7 +17,7 @@ public class DataManager {
         KDTree kdTree = new KDTree();
         List<Node> nodes = new ArrayList<>();
         try {
-            long duration = readPlacesFromFile("src/places_with_id.txt", 30000000, nodes);
+            long duration = readPlacesFromFile("src/data/places_with_id.txt", 30000000, nodes);
             System.out.println("Completed processing of places in " + duration + " ms.");
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
