@@ -2,6 +2,7 @@
 // including react and react-leaflet
 import React, { Component } from "react";
 // Individual components
+import DebugMode from "./DebugMode";
 import {
 	MapContainer,
 	Marker,
@@ -20,13 +21,10 @@ import MapCustom2 from "./MapCustom2";
  * The Map component.
  * @extends Component
  * @param {Object} props - The props of the component.
- * @param {Object} props.state - The state of the component.
- * @param {Number} props.state.lat - The latitude of the map.
- * @param {Number} props.state.lng - The longitude of the map.
- * @param {Number} props.state.zoom - The zoom level of the map.
+ * @param {Object} props.state - The state of the component. Consists of 
+ * latitude, longitude, and zoom level.
  * @param {Array} props.state.markers - The markers to be displayed on the map.
  * @returns {JSX.Element} The rendered Map component.
- * 
  **/
 class Map extends Component {
 	constructor(props) {
@@ -39,6 +37,20 @@ class Map extends Component {
 		// this.moveTo = this.moveTo.bind(this);
 		this.setCenter = this.setCenterProps.bind(this);
 		this.listOfMarkers = [];
+		this.debugData = this.initDataForDebug();
+	}
+
+	initDataForDebug() {
+		console.log("Init debug data");
+		return {
+			lat: this.state.lat,
+			lng: this.state.lng,
+			zoom: this.state.zoom,
+		};
+	};
+
+	componentDidMount() {
+		this.initDataForDebug();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -48,6 +60,8 @@ class Map extends Component {
 			// put them on the map
 			if (this.props.markers) {
 				this.fetchMarkers(this.props.state.markers);
+				// calculate the number of markers
+				this.debugData.activeNum = this.props.state.markers.length;
 			}
 		}
 
@@ -71,6 +85,8 @@ class Map extends Component {
 	 */
 	fetchMarkers(JSONData) {
 		JSONData.forEach((marker) => {
+			// Add a marker to the map for each JSON entry
+			// using React-Leaflet's Marker component
 			this.listOfMarkers.push(
 				<Marker position={[marker.lat, marker.lng]}>
 					<Popup>{marker.name}</Popup>
@@ -93,32 +109,41 @@ class Map extends Component {
 			this.state.zoom
 		);
 		return (
-			<MapContainer
-				center={[this.state.lat, this.state.lng]}
-				zoom={this.state.zoom}
-				className="h-dvh z-10"
-				bounds={bounds}
-				zoomControl={false}
-				minZoom={-1000}
-				maxZoom={0.45}
-				crs={CRS.Simple}
-				zoomSnap={0.1}
-				zoomDelta={0.1}
-			>
-				{/* Rectangle bound */}
-				<MapCustom2 />
-				{/* Map that moves based on the position */}
-				<MapCustom lat={this.state.lat} lng={this.state.lng} zoom={this.state.zoom} />
-				<ImageOverlay
-					url="https://preview.redd.it/ih6no69aj90y.png?auto=webp&s=8e4f9101f58e0812f3625a51ec65c9b7c050da75"
+			<>
+				{/* Locate the debug button at the bottom right */}
+				<div className="absolute bottom-0 right-0 m-8 z-30">
+					<DebugMode props={this.debugData}/>
+					{/* <InfoDiag /> */}
+				</div>
+				{/* The main map */}
+				<MapContainer
+					center={[this.state.lat, this.state.lng]}
+					zoom={this.state.zoom}
+					className="h-dvh z-10"
 					bounds={bounds}
-					className="border box-border border-black"
-				/>
-				<ZoomControl position="bottomleft" />
-				<Marker position={[this.state.lat, this.state.lng]}>
-					<Popup>This is the center</Popup>
-				</Marker>
-			</MapContainer>
+					zoomControl={false}
+					minZoom={-1000}
+					maxZoom={0.45}
+					crs={CRS.Simple}
+					zoomSnap={0.1}
+					zoomDelta={0.1}
+				>
+					{/* Rectangle bound */}
+					<MapCustom2 />
+					{/* Map that moves based on the position */}
+					<MapCustom lat={this.state.lat} lng={this.state.lng} zoom={this.state.zoom} />
+					<ImageOverlay
+						url="https://preview.redd.it/ih6no69aj90y.png?auto=webp&s=8e4f9101f58e0812f3625a51ec65c9b7c050da75"
+						bounds={bounds}
+						className="border box-border border-black"
+					/>
+					<ZoomControl position="bottomleft" />
+					<Marker position={[this.state.lat, this.state.lng]}>
+						<Popup>This is the center <br /> Position: {this.state.lat}, {this.state.lng}</Popup>
+					</Marker>
+					{this.listOfMarkers.map((marker) => marker)}
+				</MapContainer>
+			</>
 		);
 	}
 }

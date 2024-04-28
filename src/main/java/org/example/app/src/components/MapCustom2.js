@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Rectangle, useMap } from 'react-leaflet';
+import { Rectangle, Polygon, useMap } from 'react-leaflet';
 
 const innerBounds = [
   [1200, 1200],
@@ -9,6 +9,13 @@ const outerBounds = [
   [50.505, -29.09],
   [52.505, 29.09],
 ]
+
+const polygon = [
+  [51.515, 120.09],
+  [151.52, 12.1],
+  [51.52, 0.12],
+]
+const purpleOptions = { color: 'purple' }
 
 const redColor = { color: 'red' }
 const whiteColor = { color: 'white' }
@@ -34,6 +41,7 @@ export default function MapCustom2() {
         eventHandlers={innerHandlers}
         pathOptions={redColor}
       />
+      {/* <Polygon pathOptions={purpleOptions} positions={polygon} /> */}
     </>
   )
 }

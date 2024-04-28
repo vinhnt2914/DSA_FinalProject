@@ -4,6 +4,15 @@ import Map from "./components/Map";
 import ServiceList from "./components/ServiceList";
 import Setting from "./components/Setting";
 import DebugMode from "./components/DebugMode";
+import InfoDiag from "./components/InfoDiag";
+
+// marker data structure example
+// 	{ 
+//      lat: 51.505, 
+//      lng: -0.09, 
+//      service: "Service 1",
+//      distanceToMiddle: 0.1 
+//  }
 
 export default function App() {
     // Map parameters
@@ -24,6 +33,8 @@ export default function App() {
 
     function getMarkersList(markers) {
         setData(markers);
+        // for now just console log the data
+        console.log("Markers: ", markers);
     }
 
 
@@ -36,10 +47,7 @@ export default function App() {
                 <Setting onFormSubmit={moveToPosition} />
                 <ServiceList data={getMarkersList} />
             </div>
-            {/* Locate the debug button at the bottom right */}
-            <div className="absolute bottom-0 right-0 m-8 z-30">
-                <DebugMode />
-            </div>
+            
 
             <Map state={center} />
         </div>
