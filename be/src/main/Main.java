@@ -1,4 +1,4 @@
-package org.example;
+package src.main;
 
 import org.example.model.KDTree.KDTree;
 import org.example.model.KDTree.Node;
@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
-
 
 public class Main {
 
@@ -79,5 +78,4 @@ public class Main {
 
         System.out.println("Successfully added IDs to the file. Check " + outputFile);
     }
-
 }

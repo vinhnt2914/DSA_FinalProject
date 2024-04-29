@@ -1,4 +1,4 @@
-package org.example;
+package src.main.Utility;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -9,9 +9,6 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class PlaceDataGenerator {
 
