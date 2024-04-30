@@ -1,7 +1,10 @@
 package org.example.model.Array;
 
-import java.util.Arrays;
-
+/**
+ * <p>
+ *     Custom array class that return the actually nums of occupied index cell
+ * </p>
+ * */
 public class MyArray<T> {
     private static final int DEFAULT_SIZE = 10;
     private T[] items;

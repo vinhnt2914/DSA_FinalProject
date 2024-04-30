@@ -115,7 +115,7 @@ public class POIArrayList {
         }
         // Since we shift left,
         // One item will be removed
-        // As a shift left cannot start from 0 index;
+        // As a shift left cannot start from index 0;
         ptr--;
     }
 

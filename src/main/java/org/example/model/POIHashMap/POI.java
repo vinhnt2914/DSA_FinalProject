@@ -13,7 +13,7 @@ public class POI {
 
     public POI( int x, int y, String... services) {
         this.coordinates = new int[]{x,y};
-        this.services = new MyArray(10);
+        this.services = new MyArray<>(10);
         for (String s : services) {
             this.services.insert(s);
         }
@@ -62,8 +62,7 @@ public class POI {
         for (int i = 0; i < services.size(); i++) {
             // If found
             if (services.get(i).equalsIgnoreCase(service)) {
-                String removed = services.remove(i);
-                return removed;
+                return services.remove(i);
             }
         }
         // Return null if input service does not exist
