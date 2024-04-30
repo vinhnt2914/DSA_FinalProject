@@ -22,6 +22,7 @@ public class POI {
 
     public POI(int x, int y) {
         this.coordinates = new int[]{x,y};
+        services = new MyArray<>(10);
     }
 
     public boolean containsService(String service) {
@@ -65,11 +66,11 @@ public class POI {
                 return removed;
             }
         }
+        // Return null if input service does not exist
         return null;
     }
 
     public boolean addService(String service) {
-        // If service list is empty
         return services.insert(service);
     }
 }

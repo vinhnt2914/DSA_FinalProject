@@ -37,3 +37,4 @@ build/
 ### Mac OS ###
 .DS_Store
 src/places.txt
+src/main/java/org/example/data/places_with_id.txt

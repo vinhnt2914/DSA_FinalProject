@@ -1,5 +1,7 @@
 package org.example.Utility;
 
+import org.example.Main;
+import org.example.model.Map2D.Map2DUsingX;
 import org.example.model.POIHashMap.POI;
 import org.example.model.POIHashMap.POIHashMap;
 import org.example.model.KDTree.KDTree;
@@ -17,6 +19,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 public class DataManager {
+
+    private final String PLACES_WITH_ID_PATH = "src/main/java/org/example/data/places_with_id.txt";
     public KDTree createKDTree() {
         KDTree kdTree = new KDTree();
         List<Node> nodes = new ArrayList<>();
@@ -43,18 +47,17 @@ public class DataManager {
         System.out.println("Completed create and populate kd-tree in " + duration + " ms.");
     }
 
-    public POIHashMap createPOIHashMap() {
-        POIHashMap hashMap = new POIHashMap();
-//        List<POI> pois = new ArrayList<>();
+    public Map2DUsingX createPOIHashMap(int limit) {
+        Map2DUsingX hashMap = new Map2DUsingX();
         try {
-            long duration = readPOIsFromFile("src/places_with_id.txt", 100000, hashMap);
+            long duration = readPOIsFromFile(PLACES_WITH_ID_PATH, limit, hashMap);
             System.out.println("Completed processing of POIs in " + duration + " ms.");
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
             e.printStackTrace();
         }
 
-//        populatePOIIntoMap(hashMap, pois);
+//        populatePOIIntoMap(hashMap);
 
         return hashMap;
     }
@@ -63,7 +66,7 @@ public class DataManager {
     public void populatePOIHashMap(POIHashMap hashMap, int limit) {
         long startTime = System.currentTimeMillis();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("D:\\DSA_FinalProject\\src\\places_with_id.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(PLACES_WITH_ID_PATH))) {
             String line;
             int count = 0;
             while ((line = br.readLine()) != null && count <= limit) {
@@ -85,13 +88,12 @@ public class DataManager {
 
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
-        System.out.println("Completed reading " + limit + " POIs from file in " + duration + " ms.");
+        System.out.println("Completed reading and construct hashmap from" + limit + " POIs from file in " + duration + " ms.");
     }
 
-//    private void populatePOIIntoMap(POIHashMap hashMap, List<POI> pois) {
+//    private void populatePOIIntoMap(Map2DUsingX hashMap) {
 //        long startTime = System.currentTimeMillis();
 //
-////        hashMap.populate(pois);
 //        long endTime = System.currentTimeMillis();
 //        long duration = endTime - startTime;
 //        System.out.println("Completed create and populate POI HashMap in " + duration + " ms.");
@@ -108,7 +110,7 @@ public class DataManager {
         counter.incrementAndGet();
     }
 
-    public static void processPOIs(String line, AtomicLong counter, POIHashMap hashMap) {
+    public static void processPOIs(String line, AtomicLong counter, Map2DUsingX hashMap) {
         String[] parts = line.split(",");
         int x = Integer.parseInt(parts[1]);
         int y = Integer.parseInt(parts[2]);
@@ -133,7 +135,7 @@ public class DataManager {
         return endTime - startTime;
     }
 
-    public static long readPOIsFromFile(String filename, int limit, POIHashMap hashMap) throws IOException {
+    public static long readPOIsFromFile(String filename, int limit, Map2DUsingX hashMap) throws IOException {
         AtomicLong counter = new AtomicLong(0);
         Path path = Path.of(filename);
 

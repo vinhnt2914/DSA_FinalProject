@@ -3,8 +3,12 @@ package org.example.model.Map2D;
 import org.example.model.POIHashMap.POI;
 import org.example.model.POIHashMap.POIArrayList;
 
-import java.util.List;
-
+/**
+ * <p>
+ *     A Hashmap to store POI, using the X coordinates as Key.
+ *     Sorted by X coordinates, not Y
+ * </p>
+ * */
 public class Map2DUsingX {
     int N;  // size of the array for the hash table
     private final int DEFAULT_SIZE = 100000000;
@@ -20,10 +24,6 @@ public class Map2DUsingX {
         return x % N;
     }
 
-    public void populate(List<POI> POIs) {
-        POIs.forEach(this::put);
-    }
-
     public void put(POI poi) {
         // Hashing the poi X coordinate will return
         // the appropriate index
@@ -37,6 +37,7 @@ public class Map2DUsingX {
         hashTable[hash].insert(poi);
     }
 
+    // Bulk putting
     public void put(POI... pois) {
         for (POI p : pois) {
             put(p);
@@ -109,6 +110,8 @@ public class Map2DUsingX {
         }
     }
 
+    // Only purpose is for testing
+    // Ignore this, not an API
     public void display(int range) {
         for (int i = 0; i < range; i++) {
             if (hashTable[i] != null) {
