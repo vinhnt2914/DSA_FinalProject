@@ -1,7 +1,13 @@
 target/
+
+src/data/*
+
+*.txt
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -37,3 +43,5 @@ build/
 ### Mac OS ###
 .DS_Store
 src/places.txt
+*.txt
+src/places_with_id.txt

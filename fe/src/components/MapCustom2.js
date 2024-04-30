@@ -47,7 +47,7 @@ export default function MapCustom2({ boundForPolygon }) {
     }),
     [map],
   )
-
+  tho
   return (
     <>
       {/* <Rectangle
