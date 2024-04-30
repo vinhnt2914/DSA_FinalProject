@@ -41,6 +41,7 @@ class Map extends Component {
 		this.debugData = this.initDataForDebug();
 	}
 
+	// TODO: Implement the debug mode
 	initDataForDebug() {
 		console.log("Init debug data");
 		return {
@@ -60,7 +61,7 @@ class Map extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.state !== prevProps.state) {
-			this.setCenterProps(this.props.state.lat, this.props.state.lng, this.props.state.zoom);
+			this.setCenterProps(this.props.state.lng, this.props.state.lat, this.props.state.zoom);
 			this.PointsOfBound = this.props.PointsOfBound;
 			console.log("New bound: ", this.PointsOfBound);
 			// if the data also include markers
@@ -76,7 +77,6 @@ class Map extends Component {
 	}
 
 	// TODO: Get a list of nearby places 
-	// TODO: Get a rectangle bound
 
 	setCenterProps(longitude, latitude, zoom) {
 		this.setState({

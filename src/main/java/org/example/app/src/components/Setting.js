@@ -46,12 +46,12 @@ export default function Setting({ onFormSubmit, onBoundSubmit }) {
     let widthHeight = widthAndHeight.split(',');
 
     // calculate the center
-    let lat = (parseFloat(upperLeft[0]) + (parseFloat(upperLeft[0]) + parseFloat(widthHeight[0]))) / 2;
-    let lng = (parseFloat(upperLeft[1]) + (parseFloat(upperLeft[1]) - parseFloat(widthHeight[1]))) / 2;
-    console.log("Center: ", lat, lng);
+    let lng = (parseFloat(upperLeft[0]) + (parseFloat(upperLeft[0]) + parseFloat(widthHeight[0]))) / 2;
+    let lat = (parseFloat(upperLeft[1]) + (parseFloat(upperLeft[1]) - parseFloat(widthHeight[1]))) / 2;
+    console.log("Center: ", lng, lat);
 
     // Call the parent function
-    onFormSubmit(lat, lng)
+    onFormSubmit(lng, lat)
     onBoundSubmit(topLeft, widthHeight[0], widthHeight[1])
     // Close the modal
     onOpenChange()

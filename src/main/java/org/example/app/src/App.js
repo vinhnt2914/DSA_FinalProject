@@ -22,10 +22,10 @@ export default function App() {
     const [PointsOfBound, setPointsOfBound] = useState([]);
     // Other params
 
-    // Main app function
-    function moveToPosition(lat, lng) {
-        setCenter({ lat: lat, lng: lng, zoom: DEFAULT_ZOOM });
-        console.log("Move to: ", lat, lng);
+    // move the map to the given position (center)
+    function moveToPosition(lng, lat) {
+        setCenter({ lng: lng, lat: lat, zoom: DEFAULT_ZOOM });
+        console.log("Move to: ", lng, lat);
     }
     // Initialize services list
     function fetchServices() {
