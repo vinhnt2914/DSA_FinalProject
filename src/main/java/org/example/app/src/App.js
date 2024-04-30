@@ -19,6 +19,7 @@ export default function App() {
     const DEFAULT_ZOOM = 0.4;
     const [center, setCenter] = useState([0, 0]);
     const [data, setData] = useState([]);
+    const [PointsOfBound, setPointsOfBound] = useState([]);
     // Other params
 
     // Main app function
@@ -37,6 +38,20 @@ export default function App() {
         console.log("Markers: ", markers);
     }
 
+    // TODO: fix this mathematical in this function
+    function calculatePointsOfBound(topLeftArr, width, height) {
+        let topLeft = topLeftArr.split(',');
+        let widthHeightArr = [parseFloat(width), parseFloat(height)];
+        // define the latitudes and longtitudes of the bound
+        let lat = parseFloat(topLeft[1]);
+        let lng = parseFloat(topLeft[0]);
+        let topRight = [lng, lat + widthHeightArr[1]]
+        let bottomLeft = [lng - widthHeightArr[0], lat]
+        let bottomRight = [lng - widthHeightArr[0], lat + widthHeightArr[1]]
+        // return [topLeftArr, topRight, bottomLeft, bottomRight]
+        setPointsOfBound([topLeft, bottomLeft, bottomRight, topRight])
+    }
+
 
 
     return (
@@ -44,12 +59,10 @@ export default function App() {
             {/* Selection */}
             <div className="flex w-86 z-[14] fixed m-8 gap-4 items-center">
                 {/* <Input placeholder="Type something..." /> */}
-                <Setting onFormSubmit={moveToPosition} />
+                <Setting onFormSubmit={moveToPosition} onBoundSubmit={calculatePointsOfBound} />
                 <ServiceList data={getMarkersList} />
             </div>
-            
-
-            <Map state={center} />
+            <Map state={center} PointsOfBound={PointsOfBound} />
         </div>
     );
 }

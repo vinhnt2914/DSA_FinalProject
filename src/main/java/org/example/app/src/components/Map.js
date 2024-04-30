@@ -30,13 +30,14 @@ class Map extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			lat: 51.505,
+			lat: 51.05,
 			lng: +0.09,
 			zoom: 0.45,
 		};
 		// this.moveTo = this.moveTo.bind(this);
 		this.setCenter = this.setCenterProps.bind(this);
 		this.listOfMarkers = [];
+		this.PointsOfBound = [];
 		this.debugData = this.initDataForDebug();
 	}
 
@@ -49,6 +50,10 @@ class Map extends Component {
 		};
 	};
 
+
+
+	onBoundDefined(topLeft, topRight, bottomLeft, bottomRight) { }
+
 	componentDidMount() {
 		this.initDataForDebug();
 	}
@@ -56,10 +61,13 @@ class Map extends Component {
 	componentDidUpdate(prevProps) {
 		if (this.props.state !== prevProps.state) {
 			this.setCenterProps(this.props.state.lat, this.props.state.lng, this.props.state.zoom);
+			this.PointsOfBound = this.props.PointsOfBound;
+			console.log("New bound: ", this.PointsOfBound);
 			// if the data also include markers
 			// put them on the map
 			if (this.props.markers) {
 				this.fetchMarkers(this.props.state.markers);
+
 				// calculate the number of markers
 				this.debugData.activeNum = this.props.state.markers.length;
 			}
@@ -78,6 +86,9 @@ class Map extends Component {
 		});
 		console.log("Set center to: ", longitude, latitude, zoom);
 	}
+
+	// Set bounds for the map
+	setBounds(longtitude, latitude, width, height) { }
 
 	/**
 	 * Fetches markers from JSON data and adds them to the map.
@@ -112,7 +123,7 @@ class Map extends Component {
 			<>
 				{/* Locate the debug button at the bottom right */}
 				<div className="absolute bottom-0 right-0 m-8 z-30">
-					<DebugMode props={this.debugData}/>
+					<DebugMode props={this.debugData} />
 					{/* <InfoDiag /> */}
 				</div>
 				{/* The main map */}
@@ -129,7 +140,7 @@ class Map extends Component {
 					zoomDelta={0.1}
 				>
 					{/* Rectangle bound */}
-					<MapCustom2 />
+					<MapCustom2 boundForPolygon={this.PointsOfBound} />
 					{/* Map that moves based on the position */}
 					<MapCustom lat={this.state.lat} lng={this.state.lng} zoom={this.state.zoom} />
 					<ImageOverlay
@@ -142,6 +153,8 @@ class Map extends Component {
 						<Popup>This is the center <br /> Position: {this.state.lat}, {this.state.lng}</Popup>
 					</Marker>
 					{this.listOfMarkers.map((marker) => marker)}
+
+					{/* <Marker position={[11043, this.state.lng]}/> */}
 				</MapContainer>
 			</>
 		);
