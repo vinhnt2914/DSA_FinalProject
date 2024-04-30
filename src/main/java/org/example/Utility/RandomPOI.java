@@ -1,6 +1,6 @@
 package org.example.Utility;
 
-import org.example.model.HashMap.POI;
+import org.example.model.POIHashMap.POI;
 
 import java.util.Random;
 

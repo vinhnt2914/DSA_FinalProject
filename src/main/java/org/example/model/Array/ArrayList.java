@@ -1,6 +1,4 @@
-package org.example.model.List;
-
-import org.example.model.HashMap.POI;
+package org.example.model.Array;
 
 public class ArrayList<T> {
     private static final int DEFAULT_SIZE = 10;

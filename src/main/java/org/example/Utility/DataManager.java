@@ -1,7 +1,7 @@
 package org.example.Utility;
 
-import org.example.model.HashMap.POI;
-import org.example.model.HashMap.POIHashMap;
+import org.example.model.POIHashMap.POI;
+import org.example.model.POIHashMap.POIHashMap;
 import org.example.model.KDTree.KDTree;
 import org.example.model.KDTree.Node;
 

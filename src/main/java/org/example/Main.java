@@ -1,9 +1,8 @@
 package org.example;
 
-import org.example.model.HashMap.POI;
-import org.example.model.HashMap.POIHashMap;
-import org.example.model.KDTree.KDTree;
-import org.example.model.KDTree.Node;
+import org.example.model.Map2D.Map2DUsingX;
+import org.example.model.POIHashMap.POI;
+import org.example.model.POIHashMap.POIHashMap;
 import org.example.Utility.DataManager;
 import org.example.Utility.RandomPOI;
 
@@ -54,16 +53,16 @@ public class Main {
 //            e.printStackTrace();
 //        }
 
-        DataManager dataManager = new DataManager();
-//        KDTree kdTree = dataManager.createKDTree();
-//        POIHashMap poiHashMap = dataManager.createPOIHashMap();
-        POIHashMap poiHashMap = new POIHashMap();
-        dataManager.populatePOIHashMap(poiHashMap, 10000000);
-//        KDTree kdTree = dataManager.createKDTree();
-        RandomPOI randomPOI = new RandomPOI();
-        POI target = randomPOI.random();
-        System.out.println("PERFORMING KNN SEARCH FOR TARGET: " + target);
-        poiHashMap.KNNSearchWithQuickSort(target, "ParK", 100000);
+//        DataManager dataManager = new DataManager();
+////        KDTree kdTree = dataManager.createKDTree();
+////        POIHashMap poiHashMap = dataManager.createPOIHashMap();
+//        POIHashMap poiHashMap = new POIHashMap();
+//        dataManager.populatePOIHashMap(poiHashMap, 10000000);
+////        KDTree kdTree = dataManager.createKDTree();
+//        RandomPOI randomPOI = new RandomPOI();
+//        POI target = randomPOI.random();
+//        System.out.println("PERFORMING KNN SEARCH FOR TARGET: " + target);
+//        poiHashMap.KNNSearchWithQuickSort(target, "ParK", 100000);
 //        kdTree.kNearestNeighborsWithMap(target.mapToNode());
 //        for (int i = 0; i < 50; i++) {
 //            POI target = randomPOI.random();
@@ -72,6 +71,37 @@ public class Main {
 //        poiHashMap.display();
 
 //        kdTree.kNearestNeighborsWithMap(target);
+
+        Map2DUsingX map2DUsingX = new Map2DUsingX();
+        POI p1 = new POI(1,2,"Coffee");
+        POI p2 = new POI(1,3,"Coffee");
+        POI p3 = new POI(1,4,"School","Mall","Mall","Mall","Mall","Mall","Mall","Mall","Mall");
+        POI p4 = new POI(2,2,"Restaurant");
+        POI p5 = new POI(4,2,"Restaurant", "Coffee");
+        POI p6 = new POI(6,2,"School");
+        POI p7 = new POI(9,2,"Hospital");
+        map2DUsingX.put(p1, p2, p3, p4, p5,p6, p7);
+
+        map2DUsingX.display(10);
+//
+//        map2DUsingX.removeServiceFromPOI(1,4,"Mall");
+//
+//        System.out.println("----------------AFTER REMOVED----------------");
+//        map2DUsingX.display(10);
+
+        System.out.println("----------------AFTER ADDED SERVICE----------------");
+        System.out.println(map2DUsingX.addServiceToPOI(1,4,"Coffee"));
+        map2DUsingX.display(10);
+
+        System.out.println(map2DUsingX.addServiceToPOI(1,4,"Bank"));
+
+
+//        System.out.println(map2DUsingX.find(1,2));
+//        System.out.println(map2DUsingX.find(1,4));
+//        System.out.println(map2DUsingX.find(6,2));
+//        System.out.println("Removed: " + map2DUsingX.remove(6,2));
+//        System.out.println(map2DUsingX.find(6,2));
+//        System.out.println(map2DUsingX.find(9,2));
     }
 
     public static void addIdToFile() throws IOException {

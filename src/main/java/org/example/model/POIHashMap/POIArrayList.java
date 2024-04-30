@@ -1,9 +1,9 @@
-package org.example.model.HashMap;
+package org.example.model.POIHashMap;
 
 public class POIArrayList {
     private static final int DEFAULT_SIZE = 10;
     public POI[] items;
-    private int ptr;
+    private int ptr; // Hold the value for insertion index
     private int size;
 
     public POIArrayList() {
@@ -46,7 +46,6 @@ public class POIArrayList {
             // Insert the POI at the correct position (i + 1)
             items[i + 1] = poi;
         }
-
         ptr++;
     }
 
@@ -68,20 +67,65 @@ public class POIArrayList {
         return ptr == 0;
     }
 
+    // Get a poi at the input index
     public POI get(int index) {
         return items[index];
     }
-//
-//    // Utilize binary search as the array is already sorted at insertion
-//    private POI search()
+
+    // Get a poi with the input Y coordinate
+    public POI find(int y) {
+        if (ptr == 0) return null;
+
+        POI foundPOI = null;
+
+        // Loop over the array and find the poi if exists
+        for (int i = 0; i < items.length; i++) {
+            // If found the target
+            if (items[i].getY() == y) {
+                foundPOI = items[i];
+                break;
+            }
+        }
+
+        return foundPOI;
+    }
+
+    public POI remove(int y) {
+        // The chain is empty
+        if (ptr == 0) return null;
+
+        int removedIndex = -1;
+        POI removedPOI = null;
+        // Loop over the list of items
+        for (int i = 0; i < items.length; i++) {
+            // If found the target
+            if (items[i].getY() == y) {
+                removedIndex = i;
+                removedPOI = items[i];
+                break;
+            }
+        }
+        shiftLeft(removedIndex + 1);
+        return removedPOI;
+    }
+
+    private void shiftLeft(int start) {
+        for (int i = start; i < ptr; i++) {
+            items[i-1] = items[i];
+        }
+        // Since we shift left,
+        // One item will be removed
+        // As a shift left cannot start from 0 index;
+        ptr--;
+    }
 
     public int display() {
         int count = 0;
         for (int i = 0; i < ptr; i++) {
-//            System.out.print(items[i] + ", ");
+            System.out.print(items[i] + ", ");
             count++;
         }
-//        System.out.print("END");
+        System.out.print("END");
         return count;
     }
 

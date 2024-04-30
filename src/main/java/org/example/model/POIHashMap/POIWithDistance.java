@@ -1,6 +1,4 @@
-package org.example.model.HashMap;
-
-import java.util.Arrays;
+package org.example.model.POIHashMap;
 
 public record POIWithDistance(int id, int[] coordinates, double distance) {
     @Override

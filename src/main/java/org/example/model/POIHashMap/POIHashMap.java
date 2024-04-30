@@ -1,7 +1,6 @@
-package org.example.model.HashMap;
+package org.example.model.POIHashMap;
 
-import org.example.model.List.ArrayList;
-
+import org.example.model.Array.ArrayList;
 import java.util.List;
 
 public class POIHashMap {
@@ -10,7 +9,6 @@ public class POIHashMap {
     // An array of arraylist of poi;
     // We use an array since we already know the size
     POIArrayList[] hashTable;
-
     public POIHashMap() {
         hashTable = new POIArrayList[DEFAULT_SIZE];
         N = DEFAULT_SIZE;
@@ -36,16 +34,16 @@ public class POIHashMap {
         hashTable[hash].insert(poi);
     }
 
-//    public POI get(int key) {
-//        // Get the X coordinate
-//        int hash = hash(key);
-//        // If there is nothing at the index, return null
-//        if (hashTable[hash] == null) {
-//            return null;
-//        }
-//        // Else invoke get() on the chain
-//        return hashTable[hash].get(hash);
-//    }
+    public POI get(int key) {
+        // Get the X coordinate
+        int hash = hash(key);
+        // If there is nothing at the index, return null
+        if (hashTable[hash] == null) {
+            return null;
+        }
+        // Else invoke get() on the chain
+        return hashTable[hash].get(hash);
+    }
 
     public void KNNSearchWithQuickSort(POI target, String service, int boundingSize) {
         long startTime = System.currentTimeMillis();
