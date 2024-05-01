@@ -1,68 +1,68 @@
-import React, { useState } from "react";
-import "./App.css";
-import Map from "./components/Map";
-import ServiceList from "./components/ServiceList";
-import Setting from "./components/Setting";
-import DebugMode from "./components/DebugMode";
-import InfoDiag from "./components/InfoDiag";
+import React, { useState } from 'react'
+import './App.css'
+import Map from './components/Map'
+import ServiceList from './components/ServiceList'
+import Setting from './components/Setting'
 
 // marker data structure example
-// 	{ 
-//      lat: 51.505, 
-//      lng: -0.09, 
+// 	{
+//      lat: 51.505,
+//      lng: -0.09,
 //      service: "Service 1",
-//      distanceToMiddle: 0.1 
+//      distanceToMiddle: 0.1
 //  }
 
 export default function App() {
-    // Map parameters
-    const DEFAULT_ZOOM = 0.4;
-    const [center, setCenter] = useState([0, 0]);
-    const [data, setData] = useState([]);
-    const [PointsOfBound, setPointsOfBound] = useState([]);
-    // Other params
+  // Map parameters
+  const DEFAULT_ZOOM = 0.4
+  const [center, setCenter] = useState([0, 0])
+  const [data, setData] = useState([])
+  const [PointsOfBound, setPointsOfBound] = useState([])
+  // Other params
 
-    // move the map to the given position (center)
-    function moveToPosition(lng, lat) {
-        setCenter({ lng: lng, lat: lat, zoom: DEFAULT_ZOOM });
-        console.log("Move to: ", lng, lat);
-    }
-    // Initialize services list
-    function fetchServices() {
-        throw new Error("Not implemented");
-    }
+  // move the map to the given position (center)
+  function moveToPosition(lng, lat) {
+    setCenter({ lng: lng, lat: lat, zoom: DEFAULT_ZOOM })
+    console.log('Move to: ', lng, lat)
+  }
+  // Initialize services list
+  function fetchServices() {
+    throw new Error('Not implemented')
+  }
 
-    function getMarkersList(markers) {
-        setData(markers);
-        // for now just console log the data
-        console.log("Markers: ", markers);
-    }
+  function getMarkersList(markers) {
+    setData(markers)
+    // for now just console log the data
+    console.log('Markers: ', markers)
+  }
 
-    // TODO: fix this mathematical in this function
-    function calculatePointsOfBound(topLeftArr, width, height) {
-        let topLeft = topLeftArr.split(',');
-        let widthHeightArr = [parseFloat(width), parseFloat(height)];
-        // define the latitudes and longtitudes of the bound
-        let lat = parseFloat(topLeft[1]);
-        let lng = parseFloat(topLeft[0]);
-        let topRight = [lng, lat + widthHeightArr[1]]
-        let bottomLeft = [lng - widthHeightArr[0], lat]
-        let bottomRight = [lng - widthHeightArr[0], lat + widthHeightArr[1]]
-        // return [topLeftArr, topRight, bottomLeft, bottomRight]
-        setPointsOfBound([topLeft, bottomLeft, bottomRight, topRight])
-    }
+  function calculatePointsOfBound(topLeftArr, width, height) {
+    let topLeft = topLeftArr.split(',').map((item) => parseFloat(item))
 
+    let widthHeightArr = [parseFloat(width), parseFloat(height)]
+    // define the latitudes and longtitudes of the bound
+    console.log('This changed')
+    let lat = parseFloat(topLeft[1])
+    let lng = parseFloat(topLeft[0])
+    let topRight = [lng, lat + widthHeightArr[1]]
+    let bottomLeft = [lng - widthHeightArr[0], lat]
+    let bottomRight = [lng - widthHeightArr[0], lat + widthHeightArr[1]]
+    // return [topLeftArr, topRight, bottomLeft, bottomRight]
+    setPointsOfBound([topLeft, bottomLeft, bottomRight, topRight])
+  }
 
-
-    return (
-        <div className="h-dvh">
-            {/* Selection */}
-            <div className="flex w-86 z-[14] fixed m-8 gap-4 items-center">
-                {/* <Input placeholder="Type something..." /> */}
-                <Setting onFormSubmit={moveToPosition} onBoundSubmit={calculatePointsOfBound} />
-                <ServiceList data={getMarkersList} />
-            </div>
-            <Map state={center} PointsOfBound={PointsOfBound} />
-        </div>
-    );
+  return (
+    <div className="h-dvh">
+      {/* Selection */}
+      <div className="flex w-86 z-[14] fixed m-8 gap-4 items-center">
+        {/* <Input placeholder="Type something..." /> */}
+        <Setting
+          onFormSubmit={moveToPosition}
+          onBoundSubmit={calculatePointsOfBound}
+        />
+        <ServiceList data={getMarkersList} />
+      </div>
+      <Map state={center} PointsOfBound={PointsOfBound} />
+    </div>
+  )
 }
