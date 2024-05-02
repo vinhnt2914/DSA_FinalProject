@@ -1,6 +1,7 @@
 target/
 
 src/data/*
+be-fe-connect-test/node_modules/*
 
 *.txt
 
