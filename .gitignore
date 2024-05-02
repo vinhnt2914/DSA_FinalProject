@@ -1,6 +1,7 @@
 target/
 
 fe/node_modules/*
+be-fe-connect-test/node_modules/*
 
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

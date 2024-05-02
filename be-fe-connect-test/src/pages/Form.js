@@ -7,8 +7,8 @@ export default function Form() {
 
     let navigate = useNavigate();
 
-    const[x,setX] = useState('');
-    const[y,setY] = useState('');
+    const[x,setX] = useState("");
+    const[y,setY] = useState("");
     const[service,setService] = useState([]);
 
     // const dummyData = {
