@@ -39,7 +39,7 @@ public class POIController {
         int x = Integer.parseInt(body.get("x"));
         int y = Integer.parseInt(body.get("y"));
         String service = body.get("service");
-        APIDataManager apiDataManager = APIDataManager.getInstance();
+
         // Get the POIWithDistance from kdTree KNN search
         List<POIWithDistance> poiList = APIDataManager.getInstance().kdTree.kNearestNeighborsWithMap(x,y,service).toArrayList();
         // Convert to JSON format and return them
@@ -47,21 +47,16 @@ public class POIController {
     }
 
     @PutMapping("/update/{x}/{y}")
-    public ResponseEntity<POIJson> updatePOI(@PathVariable int x,
-                                             @PathVariable int y,
-                                             @RequestBody Map<String, String> body) {
+    public ResponseEntity<POIJson>  updatePOI(@PathVariable int x,
+                             @PathVariable int y,
+                             @RequestBody Map<String, String[]> body) {
         POI poi = APIDataManager.getInstance().poiHashMap.find(x,y);
 
-        System.out.println("THIS IS SERVICE: " + body.get("service"));
+        if (poi == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        String[] services = body.get("service").split(",");
-        System.out.println("Services: " + Arrays.toString(services));
-        MyArray<String> newServices = new MyArray<>(services);
+        MyArray<String> newServices = new MyArray<>(body.get("services"));
         poi.setServices(newServices);
         return new ResponseEntity<>(poi.mapToPOIJson(), HttpStatus.CREATED);
     }
-
-
-
 
 }
