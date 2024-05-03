@@ -74,4 +74,8 @@ public class POI {
     public boolean addService(String service) {
         return services.insert(service);
     }
+
+    public void setServices(MyArray<String> services) {
+        this.services = services;
+    }
 }

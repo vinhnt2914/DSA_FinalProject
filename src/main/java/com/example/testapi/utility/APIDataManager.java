@@ -13,8 +13,8 @@ public class APIDataManager {
     private static APIDataManager single_APIDataManager = null;
     public List<POI> poiList;
     public List<POIWithDistance> poiWithDistanceList;
-    public static KDTree kdTree;
-    public static Map2D poiHashMap;
+    public KDTree kdTree;
+    public Map2D poiHashMap;
 
     private APIDataManager() {
         this.poiList = new ArrayList<>();
