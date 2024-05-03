@@ -39,7 +39,7 @@ public class POIController {
         int x = Integer.parseInt(body.get("x"));
         int y = Integer.parseInt(body.get("y"));
         String service = body.get("service");
-
+        APIDataManager apiDataManager = APIDataManager.getInstance();
         // Get the POIWithDistance from kdTree KNN search
         List<POIWithDistance> poiList = APIDataManager.getInstance().kdTree.kNearestNeighborsWithMap(x,y,service).toArrayList();
         // Convert to JSON format and return them
@@ -47,16 +47,42 @@ public class POIController {
     }
 
     @PutMapping("/update/{x}/{y}")
-    public ResponseEntity<POIJson>  updatePOI(@PathVariable int x,
-                             @PathVariable int y,
-                             @RequestBody Map<String, String[]> body) {
+    public ResponseEntity<POIJson> updatePOI(@PathVariable int x,
+                                             @PathVariable int y,
+                                             @RequestBody Map<String, String> body) {
         POI poi = APIDataManager.getInstance().poiHashMap.find(x,y);
 
-        if (poi == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        System.out.println("THIS IS SERVICE: " + body.get("service"));
 
-        MyArray<String> newServices = new MyArray<>(body.get("services"));
+        String[] services = body.get("service").split(",");
+        System.out.println("Services: " + Arrays.toString(services));
+        MyArray<String> newServices = new MyArray<>(services);
         poi.setServices(newServices);
         return new ResponseEntity<>(poi.mapToPOIJson(), HttpStatus.CREATED);
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<POIJson> addPOI(@RequestBody Map<String, String> body) {
+        int x = Integer.parseInt(body.get("x"));
+        int y = Integer.parseInt(body.get("y"));
+        String[] services = body.get("service").split(",");
+        MyArray<String> newServices = new MyArray<>(services);
+        POI poi = new POI(x, y, newServices);
+        APIDataManager.getInstance().poiHashMap.put(poi); 
+
+        System.out.println("New POI added: " + poi);
+        return new ResponseEntity<>(poi.mapToPOIJson(), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/remove/{x}/{y}")
+    public ResponseEntity<POIJson> removePOI(@PathVariable int x,
+                                         @PathVariable int y) {
+        APIDataManager apiDataManager = APIDataManager.getInstance();
+        POI poi = apiDataManager.poiHashMap.find(x, y);
+        if (poi == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        apiDataManager.poiHashMap.remove(poi);
+        return new ResponseEntity<>(poi.mapToPOIJson(), HttpStatus.OK);
+    }
 }
