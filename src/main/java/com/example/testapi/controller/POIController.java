@@ -2,6 +2,7 @@ package com.example.testapi.controller;
 
 import com.example.testapi.model.POI;
 
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,8 @@ import java.util.Map;
 @RequestMapping("/api/poi")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class POIController {
-    private static List<POI> poiList = createTestPOI();
+
+    private List<POI> poiList;
 
     @GetMapping()
     public List<POI> getManyPOIs(){
@@ -22,7 +24,7 @@ public class POIController {
     }
 
     @PostMapping()
-    public ResponseEntity<POI> addPOIBody(@RequestBody Map<String, String> body) {
+    public List<POI> addPOIBody(@RequestBody Map<String, String> body) {
         int x = Integer.parseInt(body.get("x"));
         int y = Integer.parseInt(body.get("y"));
         String service = body.get("service");
@@ -30,7 +32,7 @@ public class POIController {
         POI poi = new POI(x, y, service);
         poiList.add(poi);
         System.out.println("ADDED POI: " + poi);
-        return new ResponseEntity<>(poi, HttpStatus.CREATED);
+        return poiList;
     }
 
     private static List<POI> createTestPOI() {
@@ -40,7 +42,5 @@ public class POIController {
         poiList.add(new POI(2,5,"Bank"));
         return poiList;
     }
-
-
 
 }
