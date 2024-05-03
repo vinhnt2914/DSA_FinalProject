@@ -17,6 +17,5 @@ public class APIApplication {
         KDTree kdTree = dataManager.createKDTree(1000000);
         MyArray<POIWithDistance> nodeArray = kdTree.kNearestNeighborsWithMap(10000,10000,"School");
         apiDataManager.populatePOIWithDistance(nodeArray);
-//        nodeArray.display();
     }
 }
