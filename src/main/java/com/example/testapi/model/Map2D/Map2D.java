@@ -8,18 +8,18 @@ import com.example.testapi.model.POI;
  *     Sorted by X coordinates, not Y
  * </p>
  * */
-public class Map2DUsingX {
+public class Map2D {
     int N;  // size of the array for the hash table
     private final int DEFAULT_SIZE = 100000000;
     // An array of arraylist of poi;
     // We use an array since we already know the size
     POIArrayList[] hashTable;
 
-    public Map2DUsingX(int size) {
+    public Map2D(int size) {
         hashTable = new POIArrayList[size];
         N = size;
     }
-    public Map2DUsingX() {
+    public Map2D() {
         hashTable = new POIArrayList[DEFAULT_SIZE];
         N = DEFAULT_SIZE;
     }
