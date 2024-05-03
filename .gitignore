@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-/src/main/java/com/example/testapi/data
+/src/main/java/com/example/testapi/data/places_with_id.txt
