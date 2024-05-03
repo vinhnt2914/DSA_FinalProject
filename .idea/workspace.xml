@@ -4,23 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f5e3b04-3b1e-469e-9b1f-ac0c28015350" name="Changes" comment="">
+    <list default="true" id="9f5e3b04-3b1e-469e-9b1f-ac0c28015350" name="Changes" comment="feat: adding support for creating place">
+      <change afterPath="$PROJECT_DIR$/fe/src/components/AddPlace.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fe/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fe/src/components/DebugMode.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/components/DebugMode.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fe/src/components/Map.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/components/Map.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fe/src/components/ServiceList.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/components/ServiceList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fe/src/components/Setting.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/components/Setting.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="vinh_fe" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -58,6 +65,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -93,13 +101,16 @@
       <list>
         <item itemvalue="Spring Boot.TestApiApplication" />
         <item itemvalue="Application.TestApiApplication" />
+        <item itemvalue="Spring Boot.TestApiApplication" />
+        <item itemvalue="Application.TestApiApplication" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-25a4bffe" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
       </set>
     </attachedChunks>
   </component>
@@ -117,10 +128,26 @@
       <workItem from="1714665030144" duration="1142000" />
       <workItem from="1714666770711" duration="4000" />
       <workItem from="1714701275404" duration="4000" />
+      <workItem from="1714745517733" duration="945000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: adding support for creating place" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: adding support for creating place" />
   </component>
 </project>

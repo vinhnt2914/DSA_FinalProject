@@ -15,6 +15,7 @@ import DebugMode from './DebugMode'
 import MapCustom from './MapCustom'
 import MapCustom2 from './MapCustom2'
 import PlaceManagement from './PlaceManagement'
+import AddPlace from "./AddPlace";
 
 /**
  * The Map component.
@@ -137,17 +138,18 @@ class Map extends Component {
       [0, 0],
       [10000000, 10000000],
     ]
-    console.log(
-      'Current state: ',
-      this.state.mapData.lat,
-      this.state.mapData.lng,
-      this.state.mapData.zoom
-    )
+    // console.log(
+    //   'Current state: ',
+    //   this.state.mapData.lat,
+    //   this.state.mapData.lng,
+    //   this.state.mapData.zoom
+    // )
     console.info('[render] debugData: ', this.debugData)
     return (
       <>
         {/* Locate the debug button at the bottom right */}
         <div className="absolute bottom-0 right-0 m-8     z-30">
+          <AddPlace ClassProperties={"mr-4"}/>
           <PlaceManagement ClassProperties={"mr-4"}/>
           <DebugMode setOfData={this.state.debugData} />
           {/* <InfoDiag /> */}

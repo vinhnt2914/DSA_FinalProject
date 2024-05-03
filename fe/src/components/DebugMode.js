@@ -14,11 +14,6 @@ import { MdOutlineBugReport } from 'react-icons/md'
  * @returns {JSX.Element} The DebugMode component.
  */
 export default function DebugMode({ setOfData }) {
-  // Content of the popover
-  useEffect(() => {
-    console.log('prop changed: ', setOfData)
-  }, [setOfData])
-
   const content = (
     <PopoverContent>
       <div className="px-1 py-2">

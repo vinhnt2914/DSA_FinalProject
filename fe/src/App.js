@@ -40,7 +40,7 @@ export default function App() {
     // let topLeft = topLeftArr.split(',').map((item) => parseFloat(item))
 
     // let widthHeightArr = [parseFloat(width), parseFloat(height)]
-    // define the latitudes and longtitudes of the bound
+    // define the latitudes and longtitude of the bound
     console.log('This changed')
     let lng = parseFloat(long)
     let lat = parseFloat(lati)
