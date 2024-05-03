@@ -14,6 +14,7 @@ import '../App.css'
 import DebugMode from './DebugMode'
 import MapCustom from './MapCustom'
 import MapCustom2 from './MapCustom2'
+import PlaceManagement from './PlaceManagement'
 
 /**
  * The Map component.
@@ -66,7 +67,7 @@ class Map extends Component {
     console.table('Debug data updated: ', this.debugData)
   }
 
-  onBoundDefined(topLeft, topRight, bottomLeft, bottomRight) {}
+  onBoundDefined(topLeft, topRight, bottomLeft, bottomRight) { }
 
   componentDidMount() {
     // this.initDataForDebug()
@@ -109,7 +110,7 @@ class Map extends Component {
       }
     )
   }
-  setBounds(longtitude, latitude, width, height) {}
+  setBounds(longtitude, latitude, width, height) { }
 
   /**
    * Fetches markers from JSON data and adds them to the map.
@@ -147,6 +148,7 @@ class Map extends Component {
       <>
         {/* Locate the debug button at the bottom right */}
         <div className="absolute bottom-0 right-0 m-8     z-30">
+          <PlaceManagement ClassProperties={"mr-4"}/>
           <DebugMode setOfData={this.state.debugData} />
           {/* <InfoDiag /> */}
         </div>

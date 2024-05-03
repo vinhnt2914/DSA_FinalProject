@@ -17,42 +17,48 @@ import '../App.css'
 export default function Setting({ onFormSubmit, onBoundSubmit }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [location, setLocation] = useState('') // Default location
-  const [topLeft, setTopLeft] = useState('') // Default top-left
-  const [widthAndHeight, setWidthAndHeight] = useState('') // Default width and height
+  const [center, setCenter] = useState('') // Default center
+  const [boundLength, setBoundLength] = useState('') // Default width and height
 
 
   // Fn to change the top-left position
-  function topLeftChange(value) {
+  function centerChange(value) {
     if (value.includes(',')) {
-      console.log("Top-left: ", value)
-      setTopLeft(value)
+      console.info("[trackingInput] Center: ", value)
+      setCenter(value)
     }
   }
 
   // Function to set the width and height
-  function widthAndHeightChange(value) {
-    if (value.includes(',')) {
-      console.log("Width and height: ", value)
-      setWidthAndHeight(value)
+  function boundLengthChange(value) {
+      setBoundLength(value)
     }
-  }
 
 
 
   // Function to save the setting
   function onSaveSetting() {
     // Get the value
-    let upperLeft = topLeft.split(',');
-    let widthHeight = widthAndHeight.split(',');
+    // let upperLeft = topLeft.split(',');
+    // let widthHeight = widthAndHeight.split(',');
 
+    // Old code - refer to the logic below this chunk
     // calculate the center
-    let lng = (parseFloat(upperLeft[0]) + (parseFloat(upperLeft[0]) + parseFloat(widthHeight[0]))) / 2;
-    let lat = (parseFloat(upperLeft[1]) + (parseFloat(upperLeft[1]) - parseFloat(widthHeight[1]))) / 2;
-    console.log("Center: ", lng, lat);
+    // let lng = (parseFloat(upperLeft[0]) + (parseFloat(upperLeft[0]) + parseFloat(widthHeight[0]))) / 2;
+    // let lat = (parseFloat(upperLeft[1]) + (parseFloat(upperLeft[1]) - parseFloat(widthHeight[1]))) / 2;
+    // console.log("Center: ", lng, lat);
+
+    // New code
+    let centered = center.split(',');
+
+    let lng = parseFloat(centered[0]);
+    let lat = parseFloat(centered[1]);
+    console.log("[onsavesetting] Center: ", lng, lat);
 
     // Call the parent function
     onFormSubmit(lng, lat)
-    onBoundSubmit(topLeft, widthHeight[0], widthHeight[1])
+    onBoundSubmit(boundLength, lng, lat)
+    // onBoundSubmit(topLeft, widthHeight[0], widthHeight[1])
     // Close the modal
     onOpenChange()
   }
@@ -67,22 +73,24 @@ export default function Setting({ onFormSubmit, onBoundSubmit }) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-row gap-1 items-center">
-                <CiSettings /> Settings
+                <CiSettings />
+                Settings
               </ModalHeader>
               <ModalBody>
-                <h3 className=''>Note: All the data must include the colon for separating longtitude from latitude. Please type in x and y.</h3>
-                <h2>Enter the top-left coordinate of the bound</h2>
+                {/* <h3 className=''>Note: All the data must include the colon for separating longtitude from latitude. Please type in x and y.</h3> */}
+                {/* <h2>Enter the top-left coordinate of the bound (x and y respectively, separated by colon).</h2> */}
+                <h2>Enter the center coordinate of the bounding (x and y respectively, separated by colon).</h2>
                 <Input
-                  placeholder="Coordinate of top-left corner"
-                  onValueChange={topLeftChange}
+                  placeholder="Coordinate of the center"
+                  onValueChange={centerChange}
                   required={true}
-                  defaultValue={topLeft}
+                  defaultValue={center}
                 />
-                <h2>Type in width and height</h2>
+                <h2>Type the length of the bounding (enter number only).</h2>
                 <Input
-                  placeholder="Width and height"
-                  onValueChange={widthAndHeightChange}
-                  defaultValue={widthAndHeight}
+                  placeholder="Length of the bounding box"
+                  onValueChange={boundLengthChange}
+                  defaultValue={boundLength}
                 />
               </ModalBody>
               <ModalFooter>

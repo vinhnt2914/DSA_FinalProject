@@ -36,17 +36,23 @@ export default function App() {
     console.log('Markers: ', markers)
   }
 
-  function calculatePointsOfBound(topLeftArr, width, height) {
-    let topLeft = topLeftArr.split(',').map((item) => parseFloat(item))
+  function calculatePointsOfBound(boundLength, long, lati) {
+    // let topLeft = topLeftArr.split(',').map((item) => parseFloat(item))
 
-    let widthHeightArr = [parseFloat(width), parseFloat(height)]
+    // let widthHeightArr = [parseFloat(width), parseFloat(height)]
     // define the latitudes and longtitudes of the bound
     console.log('This changed')
-    let lat = parseFloat(topLeft[1])
-    let lng = parseFloat(topLeft[0])
-    let topRight = [lng, lat + widthHeightArr[1]]
-    let bottomLeft = [lng - widthHeightArr[0], lat]
-    let bottomRight = [lng - widthHeightArr[0], lat + widthHeightArr[1]]
+    let lng = parseFloat(long)
+    let lat = parseFloat(lati)
+
+    // calculate the bound based on the center and the bound length
+    let topLeft = [lng - (boundLength / 2), lat + (boundLength / 2)]
+    let topRight = [lng + (boundLength / 2), lat + (boundLength / 2)]
+    let bottomLeft = [lng - (boundLength / 2), lat - (boundLength / 2)]
+    let bottomRight = [lng + (boundLength / 2), lat - (boundLength / 2)]
+    // let topRight = [lng, lat + widthHeightArr[1]]
+    // let bottomLeft = [lng - widthHeightArr[0], lat]
+    // let bottomRight = [lng - widthHeightArr[0], lat + widthHeightArr[1]]
     // return [topLeftArr, topRight, bottomLeft, bottomRight]
     setPointsOfBound([topLeft, bottomLeft, bottomRight, topRight])
   }
@@ -54,7 +60,7 @@ export default function App() {
   return (
     <div className="h-dvh">
       {/* Selection */}
-      <div className="flex w-86 z-[14] fixed m-8 gap-4 items-center">
+      <div className="flex w-full z-[14] fixed m-8 gap-4 items-center">
         {/* <Input placeholder="Type something..." /> */}
         <Setting
           onFormSubmit={moveToPosition}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-// import { Autocomplete, AutocompleteItem, Button } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Button } from "@nextui-org/react";
+import { CiSearch } from 'react-icons/ci';
 // import { Combobox } from '@headlessui/react'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
@@ -48,11 +49,9 @@ export default function ServiceList({ data: getData }) {
     //             </AutocompleteItem>
     //         ))}
     //     </Autocomplete>
-    //     <Button isIconOnly={true} onClick={fetchData}><CiSearch /></Button>
     // </div>
-    <div className="w-80 ">
+    <div className="flex gap-2">
       <Select
-        //   defaultValue={}
         isMulti
         components={animatedComponents}
         name="colors"
@@ -62,6 +61,8 @@ export default function ServiceList({ data: getData }) {
         classNamePrefix="select"
         onChange={handleChange}
       />
+      <Button isIconOnly={true} onClick={fetchData}><CiSearch /></Button>
+
     </div>
   )
 }
