@@ -2,7 +2,6 @@ package com.example.testapi.model;
 
 import com.example.testapi.dto.POIJson;
 import com.example.testapi.model.Array.MyArray;
-
 import java.util.Arrays;
 
 public class POI {

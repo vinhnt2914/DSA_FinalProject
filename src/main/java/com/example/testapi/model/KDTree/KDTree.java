@@ -70,17 +70,12 @@ public class KDTree {
             // Break in case bounding rectangle has less than 50 points
             if (i > this.size) break;
             POINode ans = kNearestNeighborsWithMap(root, target, 0);
-//            System.out.println("Found: " + ans);
+
             POIWithDistance poiWithDistance = ans.mapToPOIWithDistance(ans.distance(target));
             res.insert(poiWithDistance);
-//            System.out.printf("%s: (%s, %s); distance = %.2f\n",
-//                    i,
-//                    ans.getX(),
-//                    ans.getY(),
-//                    ans.distance(target));
+
             nodeArray.insert(ans);
 
-//            nodemap.put(ans.mapToMapNode());
         }
 
         long endTime = System.currentTimeMillis();
