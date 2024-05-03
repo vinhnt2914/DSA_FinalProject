@@ -1,5 +1,6 @@
 package com.example.testapi.model;
 
+import com.example.testapi.dto.POIJson;
 import com.example.testapi.model.Array.MyArray;
 
 import java.util.Arrays;
@@ -16,8 +17,8 @@ public class POI {
         }
     }
 
-    public POI(int[] coordinates, MyArray<String> services) {
-        this.coordinates = coordinates;
+    public POI(int x, int y, MyArray<String> services) {
+        this.coordinates = new int[]{x,y};
         this.services = services;
     }
 
@@ -35,6 +36,10 @@ public class POI {
 
     public POIWithDistance mapToPOIWithDistance(double distance) {
         return new POIWithDistance(coordinates[0], coordinates[1], services, distance);
+    }
+
+    public POIJson mapToPOIJson() {
+        return new POIJson(coordinates[0], coordinates[1], services.toArrayList());
     }
 
     public int getX() {

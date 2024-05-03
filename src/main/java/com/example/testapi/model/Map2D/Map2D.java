@@ -1,6 +1,9 @@
 package com.example.testapi.model.Map2D;
 
+import com.example.testapi.model.KDTree.POINode;
 import com.example.testapi.model.POI;
+
+import java.util.List;
 
 /**
  * <p>
@@ -45,6 +48,12 @@ public class Map2D {
     public void put(POI... pois) {
         for (POI p : pois) {
             put(p);
+        }
+    }
+
+    public void populateFromPOINode(List<POINode> nodes) {
+        for (POINode node : nodes) {
+            put(node.mapToPOI());
         }
     }
 

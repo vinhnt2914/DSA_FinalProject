@@ -62,7 +62,7 @@ public class KDTree {
         long startTime = System.currentTimeMillis();
 
         MyArray<POIWithDistance> res = new MyArray<>(50);
-        POINode target = new POINode(new int[]{x,y});
+        POINode target = new POINode(x,y);
         nodeArray = new MyArray<>(50);
 
         // Run K-NN search 50 times

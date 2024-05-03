@@ -12,10 +12,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class APIApplication {
     public static void main(String[] args) {
         SpringApplication.run(APIApplication.class, args);
-        DataManager dataManager = new DataManager();
-        APIDataManager apiDataManager = APIDataManager.getInstance();
-        KDTree kdTree = dataManager.createKDTree(1000000);
-        MyArray<POIWithDistance> nodeArray = kdTree.kNearestNeighborsWithMap(10000,10000,"School");
-        apiDataManager.populatePOIWithDistance(nodeArray);
     }
 }
