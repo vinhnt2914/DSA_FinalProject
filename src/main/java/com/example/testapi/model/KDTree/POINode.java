@@ -5,17 +5,17 @@ import com.example.testapi.model.POI;
 import com.example.testapi.model.POIWithDistance;
 
 import java.util.Arrays;
-public class Node {
+public class POINode {
     int[] coordinates;
     MyArray<String> services;
-    Node left;
-    Node right;
+    POINode left;
+    POINode right;
 
-    public Node(int[] coordinates) {
+    public POINode(int[] coordinates) {
         this.coordinates = coordinates;
     }
 
-    public Node(int[] coordinates, MyArray<String> services) {
+    public POINode(int[] coordinates, MyArray<String> services) {
         this.coordinates = coordinates;
         this.services = services;
     }
@@ -34,7 +34,7 @@ public class Node {
     public int[] getCoordinates() {
         return coordinates;
     }
-    public double distance(Node target) {
+    public double distance(POINode target) {
         double dx = this.coordinates[0] - target.coordinates[0];
         double dy = this.coordinates[1] - target.coordinates[1];
 

@@ -1,33 +1,32 @@
 package com.example.testapi.model.KDTree;
 
 import com.example.testapi.model.Array.MyArray;
-import com.example.testapi.model.POI;
 import com.example.testapi.model.POIWithDistance;
 
 import java.util.List;
 
 public class KDTree {
-    private Node root;
+    private POINode root;
     // 2-d tree
     private final int DIMENSION = 2;
     private int size;
-    private MyArray<Node> nodeArray;
+    private MyArray<POINode> nodeArray;
     public KDTree() {
         size = 0;
     }
 
-    public void populate(List<Node> nodes) {
+    public void populate(List<POINode> nodes) {
         nodes.forEach(this::insert);
     }
 
-    public void insert(Node node) {
+    public void insert(POINode node) {
         if (root == null) {
             root = node;
             size++;
             return;
         }
 
-        Node temp = root;
+        POINode temp = root;
         int depth = 0;
         while (temp != null) {
             // Get the dividing axis (divide by x or divide by y => either 0 or 1)
@@ -63,14 +62,14 @@ public class KDTree {
         long startTime = System.currentTimeMillis();
 
         MyArray<POIWithDistance> res = new MyArray<>(50);
-        Node target = new Node(new int[]{x,y});
+        POINode target = new POINode(new int[]{x,y});
         nodeArray = new MyArray<>(50);
 
         // Run K-NN search 50 times
         for (int i = 1; i <= 50; i++) {
             // Break in case bounding rectangle has less than 50 points
             if (i > this.size) break;
-            Node ans = kNearestNeighborsWithMap(root, target, 0);
+            POINode ans = kNearestNeighborsWithMap(root, target, 0);
 //            System.out.println("Found: " + ans);
             POIWithDistance poiWithDistance = ans.mapToPOIWithDistance(ans.distance(target));
             res.insert(poiWithDistance);
@@ -91,7 +90,7 @@ public class KDTree {
         return res;
     }
 
-    private Node kNearestNeighborsWithMap(Node root, Node target, int depth) {
+    private POINode kNearestNeighborsWithMap(POINode root, POINode target, int depth) {
         // When reach a leaf node, the recursion stop
         // In case of the best node, not being the leaf node
         // The recursion will be terminated early, which is incorrect
@@ -100,7 +99,7 @@ public class KDTree {
         // Get the split axis
         int axis = depth % DIMENSION;
 
-        Node nextBranch, otherBranch;
+        POINode nextBranch, otherBranch;
 
         // Decide good side and bad side
         if (target.coordinates[axis] < root.coordinates[axis]) {
@@ -114,7 +113,7 @@ public class KDTree {
         // Get the best node using recursion
         // It keeps going until reach a leaf node then compare it to find the best node
         // Then traverse backward and compare with parent node to see if the parent is better
-        Node best = closerDistance(root, kNearestNeighborsWithMap(nextBranch, target, depth + 1), target);
+        POINode best = closerDistance(root, kNearestNeighborsWithMap(nextBranch, target, depth + 1), target);
         // Check if the bad side could potentially have a solution
         if (distanceSquared(target, best) > Math.pow(target.coordinates[axis] - root.coordinates[axis], 2)) {
             best = closerDistance(best, kNearestNeighborsWithMap(otherBranch, target, depth + 1), target);
@@ -125,7 +124,7 @@ public class KDTree {
 
     // Compare the distance between n1 to target and n2 to target
     // Return the closer one.
-    private Node closerDistance(Node n1, Node n2, Node target) {
+    private POINode closerDistance(POINode n1, POINode n2, POINode target) {
         if (n1 == null) return n2;
         if (n2 == null) return n1;
 
@@ -137,7 +136,7 @@ public class KDTree {
     }
 
     // Return Euclidean distance, but it's not sqrt
-    private double distanceSquared(Node n1, Node n2) {
+    private double distanceSquared(POINode n1, POINode n2) {
 
         // Return INF if the nearest node is already found
         if (nodeArray.contains(n1)) return Double.MAX_VALUE;

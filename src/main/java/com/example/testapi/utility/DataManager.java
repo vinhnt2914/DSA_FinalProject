@@ -2,7 +2,7 @@ package com.example.testapi.utility;
 
 import com.example.testapi.model.Array.MyArray;
 import com.example.testapi.model.KDTree.KDTree;
-import com.example.testapi.model.KDTree.Node;
+import com.example.testapi.model.KDTree.POINode;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +18,7 @@ public class DataManager {
     private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/places_with_id.txt";
     public KDTree createKDTree(int limit) {
         KDTree kdTree = new KDTree();
-        List<Node> nodes = new ArrayList<>();
+        List<POINode> nodes = new ArrayList<>();
         try {
             long duration = readPlacesFromFile(PLACES_WITH_ID_PATH, limit, nodes);
             System.out.println("Completed processing of places in " + duration + " ms.");
@@ -32,7 +32,7 @@ public class DataManager {
         return kdTree;
     }
 
-    private void populateNodeIntoTree(KDTree kdTree, List<Node> nodes) {
+    private void populateNodeIntoTree(KDTree kdTree, List<POINode> nodes) {
         long startTime = System.currentTimeMillis();
 
         kdTree.populate(nodes);
@@ -43,19 +43,19 @@ public class DataManager {
     }
 
 
-    public static void processPlace(String line, AtomicLong counter, List<Node> nodes) {
+    public static void processPlace(String line, AtomicLong counter, List<POINode> nodes) {
         String[] parts = line.split(",");
         int x = Integer.parseInt(parts[1]);
         int y = Integer.parseInt(parts[2]);
         String[] serviceArr =  parts[3].split(";");
         MyArray<String> services = new MyArray<>(serviceArr);
 
-        Node node = new Node(new int[]{x, y}, services);
+        POINode node = new POINode(new int[]{x, y}, services);
         nodes.add(node);
         counter.incrementAndGet();
     }
 
-    public static long readPlacesFromFile(String filename, int limit, List<Node> nodes) throws IOException {
+    public static long readPlacesFromFile(String filename, int limit, List<POINode> nodes) throws IOException {
         AtomicLong counter = new AtomicLong(0);
         Path path = Path.of(filename);
 
