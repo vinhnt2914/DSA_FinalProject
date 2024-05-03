@@ -20,10 +20,12 @@ import java.util.Map;
 public class POIController {
 
     @GetMapping("/get/{x}/{y}")
-    public POIJson getPOI(@PathVariable int x,
+    public ResponseEntity<POIJson> getPOI(@PathVariable int x,
                           @PathVariable int y){
         POI poi = APIDataManager.getInstance().poiHashMap.find(x,y);
-        return poi.mapToPOIJson();
+
+        if (poi == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.ok(poi.mapToPOIJson());
     }
 
     @GetMapping()
@@ -47,7 +49,7 @@ public class POIController {
     }
 
     @PutMapping("/update/{x}/{y}")
-    public ResponseEntity<POIJson>  updatePOI(@PathVariable int x,
+    public ResponseEntity<POIJson> updatePOI(@PathVariable int x,
                              @PathVariable int y,
                              @RequestBody Map<String, String[]> body) {
         POI poi = APIDataManager.getInstance().poiHashMap.find(x,y);
@@ -56,6 +58,29 @@ public class POIController {
 
         MyArray<String> newServices = new MyArray<>(body.get("services"));
         poi.setServices(newServices);
+        return new ResponseEntity<>(poi.mapToPOIJson(), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/remove/{x}/{y}")
+    public ResponseEntity<POIJson> removePOI(@PathVariable int x,
+                                             @PathVariable int y) {
+        APIDataManager apiDataManager = APIDataManager.getInstance();
+        POI poi = apiDataManager.poiHashMap.find(x, y);
+        if (poi == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        apiDataManager.poiHashMap.remove(poi);
+        return new ResponseEntity<>(poi.mapToPOIJson(), HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<POIJson> addPOI(@RequestBody Map<String, String> body) {
+        int x = Integer.parseInt(body.get("x"));
+        int y = Integer.parseInt(body.get("y"));
+        String[] services = body.get("service").split(",");
+        MyArray<String> newServices = new MyArray<>(services);
+        POI poi = new POI(x, y, newServices);
+        APIDataManager.getInstance().poiHashMap.put(poi);
         return new ResponseEntity<>(poi.mapToPOIJson(), HttpStatus.CREATED);
     }
 
