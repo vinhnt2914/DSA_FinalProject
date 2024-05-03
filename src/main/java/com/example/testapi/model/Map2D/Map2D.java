@@ -18,6 +18,8 @@ public class Map2D {
     // We use an array since we already know the size
     POIArrayList[] hashTable;
 
+
+
     public Map2D(int size) {
         hashTable = new POIArrayList[size];
         N = size;

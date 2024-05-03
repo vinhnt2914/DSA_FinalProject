@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/poi")
+@RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class POIController {
 

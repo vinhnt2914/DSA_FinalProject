@@ -137,7 +137,6 @@ public class KDTree {
 
     // Return Euclidean distance, but it's not sqrt
     private double distanceSquared(POINode n1, POINode n2) {
-
         // Return INF if the nearest node is already found
         if (nodeArray.contains(n1)) return Double.MAX_VALUE;
 
