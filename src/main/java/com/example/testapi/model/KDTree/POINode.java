@@ -29,7 +29,7 @@ public class POINode {
     }
 
     public POIWithDistance mapToPOIWithDistance(double distance) {
-        return new POIWithDistance(coordinates, services, distance);
+        return new POIWithDistance(coordinates[0], coordinates[1], services, distance);
     }
     public int[] getCoordinates() {
         return coordinates;

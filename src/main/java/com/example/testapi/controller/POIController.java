@@ -2,6 +2,9 @@ package com.example.testapi.controller;
 
 import com.example.testapi.model.POI;
 
+import com.example.testapi.model.POIWithDistance;
+import com.example.testapi.model.POIWithDistanceJSON;
+import com.example.testapi.utility.APIDataManager;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,24 +19,24 @@ import java.util.Map;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class POIController {
 
-    private List<POI> poiList;
-
     @GetMapping()
-    public List<POI> getManyPOIs(){
-        return poiList;
+    public List<POIWithDistanceJSON> getManyPOIs(){
+        APIDataManager apiDataManager = APIDataManager.getInstance();
+        List<POIWithDistance> poiList = apiDataManager.poiWithDistanceList;
+        return poiList.stream().map(POIWithDistance::mapToJSON).toList();
     }
 
-    @PostMapping()
-    public List<POI> addPOIBody(@RequestBody Map<String, String> body) {
-        int x = Integer.parseInt(body.get("x"));
-        int y = Integer.parseInt(body.get("y"));
-        String service = body.get("service");
-
-        POI poi = new POI(x, y, service);
-        poiList.add(poi);
-        System.out.println("ADDED POI: " + poi);
-        return poiList;
-    }
+//    @PostMapping()
+//    public List<POI> addPOIBody(@RequestBody Map<String, String> body) {
+//        int x = Integer.parseInt(body.get("x"));
+//        int y = Integer.parseInt(body.get("y"));
+//        String service = body.get("service");
+//
+//        POI poi = new POI(x, y, service);
+//        poiList.add(poi);
+//        System.out.println("ADDED POI: " + poi);
+//        return poiList;
+//    }
 
     private static List<POI> createTestPOI() {
         List<POI> poiList = new ArrayList<>();
