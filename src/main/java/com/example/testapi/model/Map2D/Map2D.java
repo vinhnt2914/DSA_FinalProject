@@ -40,9 +40,12 @@ public class Map2D {
         // If there is nothing at the index
         if (hashTable[hash] == null) {
             // Create a chain at the index
+            // Then there exist POIs with the same X coordinate
+            // This could potentially result in a duplicate insertion
             hashTable[hash] = new POIArrayList();
         }
         // Insert POI at current index
+        // insert() method of POIArrayList will handle the duplicate insertion
         hashTable[hash].insert(poi);
     }
 

@@ -41,7 +41,7 @@ public class POINode extends POI{
     public POIWithDistance mapToPOIWithDistance(double distance) {
         return new POIWithDistance(coordinates[0], coordinates[1], services, distance);
     }
-    public int[] getCoordinates() {
+    public int[] coordinates() {
         return coordinates;
     }
     public double distance(POINode target) {
@@ -49,12 +49,5 @@ public class POINode extends POI{
         double dy = this.coordinates[1] - target.coordinates[1];
 
         return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    @Override
-    public String toString() {
-        return "Node{" +
-                ", coordinates=" + Arrays.toString(coordinates) +
-                '}';
     }
 }

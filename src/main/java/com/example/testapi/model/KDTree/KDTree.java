@@ -33,7 +33,7 @@ public class KDTree {
             int axis = depth % DIMENSION;
             // Compare the value at the appropriate axis
             // If inserted value < current node value, it's on left insertion
-            if (node.getCoordinates()[axis] < temp.coordinates[axis]) {
+            if (node.coordinates[axis] < temp.coordinates[axis]) {
                 // If reached a leaf node
                 // Insert new node there
                 if (temp.left == null) {
@@ -43,7 +43,7 @@ public class KDTree {
                 }
                 temp = temp.left;
                 // Else it's on right insertion
-            } else {
+            } else if (node.coordinates[axis] > temp.coordinates[axis]) {
                 // If reach a leaf node
                 if (temp.right == null) {
                     temp.right = node;
@@ -52,9 +52,64 @@ public class KDTree {
                 }
                 temp = temp.right;
             }
+            // If the coordinate of the current axis is equal,
+            // This could potentially be a duplicate
+            else {
+                // We check if the other axis is also equal as well
+                int otherAxis = (depth + 1) % DIMENSION;
+                // If duplicate
+                if (node.coordinates[otherAxis] == temp.coordinates[otherAxis]) {
+                    // Overwrite the services
+                    temp.setServices(node.services);
+                    // Break here
+                    return;
+                }
+            }
             depth++;
         }
         // This never run
+    }
+
+    public POINode search(int x, int y) {
+        POINode temp = root;
+        POINode target = new POINode(x,y);
+        int depth = 0;
+        while (target != null) {
+            int axis = depth % DIMENSION;
+            if (target.coordinates[axis] < temp.coordinates[axis]) {
+                // If reached a leaf node
+                // Then there is no such node
+                if (temp.left == null) {
+                    temp.left = target;
+                    size++;
+                    return null;
+                }
+                temp = temp.left;
+                // Else it's on right side
+            } else if (target.coordinates[axis] > temp.coordinates[axis]) {
+                // If reach a leaf node
+                // Then there is no such node
+                if (temp.right == null) {
+                    temp.right = target;
+                    size++;
+                    return null;
+                }
+                temp = temp.right;
+            }
+            // If the coordinate of the current axis is equal
+            // This could potentially be what we need to find
+            else {
+                // We check if the other axis is also equal as well
+                int otherAxis = (depth + 1) % DIMENSION;
+                // If equal
+                if (target.coordinates[otherAxis] == temp.coordinates[otherAxis]) {
+                    // Return target
+                    return temp;
+                }
+            }
+            depth++;
+        }
+        return null;
     }
 
     // K-NN search using hash map
@@ -140,7 +195,6 @@ public class KDTree {
         if (distanceSquared(target, best) > Math.pow(target.coordinates[axis] - root.coordinates[axis], 2)) {
             best = closerDistance(best, KNNSearch(otherBranch, target, depth + 1), target);
         }
-
         return best;
     }
 

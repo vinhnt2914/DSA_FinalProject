@@ -2,6 +2,8 @@ package com.example.testapi.model;
 
 import com.example.testapi.dto.POIJson;
 import com.example.testapi.model.Array.MyArray;
+import com.example.testapi.model.KDTree.POINode;
+
 import java.util.Arrays;
 
 public class POI {
@@ -39,6 +41,10 @@ public class POI {
 
     public POIJson mapToPOIJson() {
         return new POIJson(coordinates[0], coordinates[1], services.toArrayList());
+    }
+
+    public POINode mapToPOINode() {
+        return new POINode(coordinates[0], coordinates[1], services);
     }
 
     public int getX() {

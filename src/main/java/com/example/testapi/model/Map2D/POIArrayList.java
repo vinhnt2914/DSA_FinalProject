@@ -37,10 +37,21 @@ public class POIArrayList {
             items[ptr] = poi;
         } else {
             int i = ptr - 1;
+            POI curr = items[i];
             // Find the insertion position using a while loop
-            while (i >= 0 && items[i].getY() > poi.getY()) {
+            while (i >= 0 && curr.getY() > poi.getY()) {
                 i--;
             }
+            // The while loop can break when 2 Y coordinate are equal
+            // If 2 Y coordinates are equal
+            if (curr.getY() == poi.getY()) {
+                // Overwrite the poi's services with new services
+                curr.setServices(poi.services);
+                // Break from here
+                return;
+            }
+
+
             // Shift elements one position to the right starting from the next position
             for (int j = ptr; j > i + 1; j--) {
                 items[j] = items[j - 1];
