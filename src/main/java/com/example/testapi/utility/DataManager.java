@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 
 public class DataManager {
     private static DataManager single_DataManager = null;
-
     public KDTree kdTree;
     public Map2D poiHashMap;
     private DataManager() {

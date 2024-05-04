@@ -1,5 +1,6 @@
 package com.example.testapi.model.Map2D;
 
+import com.example.testapi.model.KDTree.KDTree;
 import com.example.testapi.model.KDTree.POINode;
 import com.example.testapi.model.POI;
 
@@ -17,8 +18,6 @@ public class Map2D {
     // An array of arraylist of poi;
     // We use an array since we already know the size
     POIArrayList[] hashTable;
-
-
 
     public Map2D(int size) {
         hashTable = new POIArrayList[size];
@@ -140,5 +139,24 @@ public class Map2D {
             }
         }
     }
+
+//    public KDTree createKDTreeFromRange(int x, int y, int boundingWidth) {
+//        double halfSide = boundingWidth / 2.0;
+//
+//        double startX = Math.floor(x - halfSide);
+//        double endX = Math.floor(x + halfSide);
+//
+//        double startY = y - halfSide;
+//        double endY = y + halfSide;
+//
+//        for (int i = startX; i <= endX; i++) {
+//
+//        }
+//
+//
+//        KDTree kdTree = new KDTree();
+//
+//        return kdTree;
+//    }
 
 }
