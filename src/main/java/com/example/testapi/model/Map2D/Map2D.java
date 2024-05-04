@@ -4,6 +4,7 @@ import com.example.testapi.model.KDTree.KDTree;
 import com.example.testapi.model.KDTree.POINode;
 import com.example.testapi.model.POI;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -138,6 +139,22 @@ public class Map2D {
                 System.out.println();
             }
         }
+    }
+
+    public List<POI> rangeQuery(int startX, int startY, int endX, int endY) {
+        List<POI> poiList = new ArrayList<>();
+        for (int i = startX; i <= endX; i++) {
+            // If there is a chain
+            if (hashTable[i] != null) {
+                for (int j = 0; j < hashTable[i].size(); j++) {
+                    POI curr = hashTable[i].get(j);
+                    if (curr.getY() >= startY && curr.getY() <= endY) {
+                        poiList.add(curr);
+                    }
+                }
+            }
+        }
+        return poiList;
     }
 
 //    public KDTree createKDTreeFromRange(int x, int y, int boundingWidth) {
