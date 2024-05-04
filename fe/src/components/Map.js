@@ -10,6 +10,7 @@ import {
   Popup,
   ZoomControl,
 } from 'react-leaflet'
+import { Icon } from 'leaflet';
 import '../App.css'
 import DebugMode from './DebugMode'
 import MapCustom from './MapCustom'
@@ -40,10 +41,20 @@ class Map extends Component {
         lng: 0,
         zoom: 0,
       },
+      listOfMarkers: [
+        {
+          x: 10,
+          y: 1000,
+          services: [
+              "HELLO",
+              "HELLO"
+          ],
+          distance: "10203.12"
+        }
+      ]
     }
     // this.moveTo = this.moveTo.bind(this);
     this.setCenter = this.setCenterProps.bind(this)
-    this.listOfMarkers = []
     this.PointsOfBound = []
     // this.debugData = this.initDataForDebug()
     // this.setDebugData = this.setDebugData.bind(this)
@@ -134,6 +145,15 @@ class Map extends Component {
    * @returns {JSX.Element} The rendered Map component.
    */
   render() {
+    const customIcon = new Icon({
+        iconUrl: 'http://leafletjs.com/examples/custom-icons/leaf-green.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41],
+        shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png',
+    });
+
     const bounds = [
       [0, 0],
       [10000000, 10000000],
@@ -159,7 +179,8 @@ class Map extends Component {
           center={[this.state.mapData.lat, this.state.mapData.lng]}
           zoom={this.state.mapData.zoom}
           className="h-dvh z-10"
-          bounds={bounds}
+          // bounds={bounds}
+          maxBounds={bounds}
           zoomControl={false}
           minZoom={-1000}
           maxZoom={0.45}
@@ -187,7 +208,19 @@ class Map extends Component {
               {this.state.mapData.lng}
             </Popup>
           </Marker>
-          {this.listOfMarkers.map((marker) => marker)}
+          {/*<Marker position={[this.state.]}>*/}
+          {/*  <Popup>*/}
+          {/*    This is the center <br /> Position: {this.state.mapData.lat},{' '}*/}
+          {/*    {this.state.mapData.lng}*/}
+          {/*  </Popup>*/}
+          {/*</Marker>*/}
+          {this.state.listOfMarkers.map((marker) => (
+              <Marker position={[marker.x, marker.y]} icon={customIcon}>
+                <Popup>
+                  Position: {marker.x}, {marker.y}
+                </Popup>
+              </Marker>
+          ))}
 
           {/* <Marker position={[11043, this.state.lng]}/> */}
         </MapContainer>
