@@ -42,5 +42,10 @@ public class Main {
 
         System.out.println("KNN SEARCH WITH LINEAR SEARCH");
         linearKNNSearchResult.forEach(System.out::println);
+
+        System.out.println(kdTreeKNNSearchResult.size());
+        System.out.println(linearKNNSearchResult.size());
+
+        System.out.println(KNNLinearSearch.areListsSimilar(kdTreeKNNSearchResult, linearKNNSearchResult));
     }
 }

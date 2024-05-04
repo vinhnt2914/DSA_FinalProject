@@ -46,4 +46,23 @@ public class KNNLinearSearch {
     public static double distance(int x1, int y1, int x2, int y2) {
         return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
+
+    public static boolean areListsSimilar(List<POIWithDistance> list1, List<POIWithDistance> list2) {
+        // Check if lists are of the same size
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+
+        // Check each element for similarity
+        for (int i = 0; i < list1.size(); i++) {
+            POIWithDistance poi1 = list1.get(i);
+            POIWithDistance poi2 = list2.get(i);
+            // If any element's x and y coordinates are different, lists are not similar
+            if (poi1.x() != poi2.x() || poi1.y() != poi2.y()) {
+                return false;
+            }
+        }
+        // If all elements have same x and y coordinates, lists are similar
+        return true;
+    }
 }
