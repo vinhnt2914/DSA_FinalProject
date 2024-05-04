@@ -58,8 +58,27 @@ public class KDTree {
     }
 
     // K-NN search using hash map
-    public MyArray<POIWithDistance> kNearestNeighborsWithMap(int x, int y, String service) {
+    public MyArray<POIWithDistance> KNNSearch(int x, int y, String service, int boundingSize) {
         long startTime = System.currentTimeMillis();
+
+        int halfSize = boundingSize / 2;
+
+        int startX = x - halfSize;
+        int endX = x + halfSize;
+        int startY = y - halfSize;
+        int endY = y + halfSize;
+
+        if (startX < 0) startX = 0;
+        if (startY < 0) startY = 0;
+        if (endX < 0) endX = 0;
+        if (endY < 0) endY = 0;
+
+        System.out.println("PERFORMING KNN SEARCH - STATUS: ");
+        System.out.println("TARGET: (" + x + ", " + y + ")");
+        System.out.println("START X: " + startX);
+        System.out.println("END X: " + endX);
+        System.out.println("START Y: " + startY);
+        System.out.println("END Y: " + endY);
 
         MyArray<POIWithDistance> res = new MyArray<>(50);
         POINode target = new POINode(x,y);
@@ -69,7 +88,15 @@ public class KDTree {
         for (int i = 1; i <= 50; i++) {
             // Break in case bounding rectangle has less than 50 points
             if (i > this.size) break;
-            POINode ans = kNearestNeighborsWithMap(root, target, 0);
+            POINode ans = KNNSearch(root, target, 0);
+
+            // If the poi is out of bound, then all poi returned after this will obviously be out of bound as well
+            // We can break here
+            if (ans.getX() < startX || ans.getX() > endX || ans.getY() < startY || ans.getY() > endY) {
+                System.out.println("FOUND AN OUT OF BOUND POI");
+                System.out.println(ans);
+                return res;
+            }
 
             POIWithDistance poiWithDistance = ans.mapToPOIWithDistance(ans.distance(target));
             res.insert(poiWithDistance);
@@ -85,7 +112,7 @@ public class KDTree {
         return res;
     }
 
-    private POINode kNearestNeighborsWithMap(POINode root, POINode target, int depth) {
+    private POINode KNNSearch(POINode root, POINode target, int depth) {
         // When reach a leaf node, the recursion stop
         // In case of the best node, not being the leaf node
         // The recursion will be terminated early, which is incorrect
@@ -108,10 +135,10 @@ public class KDTree {
         // Get the best node using recursion
         // It keeps going until reach a leaf node then compare it to find the best node
         // Then traverse backward and compare with parent node to see if the parent is better
-        POINode best = closerDistance(root, kNearestNeighborsWithMap(nextBranch, target, depth + 1), target);
+        POINode best = closerDistance(root, KNNSearch(nextBranch, target, depth + 1), target);
         // Check if the bad side could potentially have a solution
         if (distanceSquared(target, best) > Math.pow(target.coordinates[axis] - root.coordinates[axis], 2)) {
-            best = closerDistance(best, kNearestNeighborsWithMap(otherBranch, target, depth + 1), target);
+            best = closerDistance(best, KNNSearch(otherBranch, target, depth + 1), target);
         }
 
         return best;

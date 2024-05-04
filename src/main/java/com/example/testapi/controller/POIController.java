@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +42,8 @@ public class POIController {
         int x = Integer.parseInt(body.get("x"));
         int y = Integer.parseInt(body.get("y"));
         String service = body.get("service");
-        List<POIWithDistance> poiList = apiDataManager.kdTree.kNearestNeighborsWithMap(x, y, service).toArrayList();
+        int boundingSize = Integer.parseInt(body.get("boundingSize"));
+        List<POIWithDistance> poiList = apiDataManager.kdTree.KNNSearch(x, y, service, boundingSize).toArrayList();
         return new ResponseEntity<>(poiList.stream().map(POIWithDistance::mapToJSON).toList(), HttpStatus.CREATED);
     }
 
