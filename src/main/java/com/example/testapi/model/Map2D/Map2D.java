@@ -143,7 +143,7 @@ public class Map2D {
         }
     }
 
-    public List<POI> rangeQuery(int startX, int startY, int endX, int endY) {
+    public List<POI> getPOIsFromRange(int startX, int startY, int endX, int endY) {
         List<POI> poiList = new ArrayList<>();
         for (int i = startX; i <= endX; i++) {
             // If there is a chain

@@ -1,5 +1,6 @@
 package com.example.testapi.utility;
 
+import com.example.testapi.model.Array.MyArray;
 import com.example.testapi.model.POI;
 import com.example.testapi.model.POIWithDistance;
 
@@ -9,9 +10,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class KNNLinearSearch {
-    public static List<POIWithDistance> findKNearestNeighbors(int x, int y, List<POI> pois, int k) {
+    public static MyArray<POIWithDistance> findKNearestNeighbors(int x, int y, List<POI> pois, int k) {
         List<POIWithDistance> nearestNeighbors = new ArrayList<>();
-
+        MyArray<POIWithDistance> res = new MyArray<>(50);
         // Iterate through all points to calculate distances and find nearest neighbors
         for (POI p : pois) {
             double distance = distance(x, y, p.getX(), p.getY());
@@ -40,7 +41,8 @@ public class KNNLinearSearch {
         }
 
         Collections.sort(nearestNeighbors, Comparator.comparingDouble(POIWithDistance::distance));
-        return nearestNeighbors;
+        nearestNeighbors.forEach(res::insert);
+        return res;
     }
 
     public static double distance(int x1, int y1, int x2, int y2) {

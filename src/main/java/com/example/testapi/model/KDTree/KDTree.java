@@ -1,9 +1,12 @@
 package com.example.testapi.model.KDTree;
 
 import com.example.testapi.model.Array.MyArray;
+import com.example.testapi.model.POI;
 import com.example.testapi.model.POIWithDistance;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class KDTree {
     private POINode root;
@@ -128,7 +131,7 @@ public class KDTree {
         if (endX < 0) endX = 0;
         if (endY < 0) endY = 0;
 
-        System.out.println("PERFORMING KNN SEARCH - STATUS: ");
+        System.out.println("PERFORMING KNN SEARCH WITH KDTREE - STATUS: ");
         System.out.println("TARGET: (" + x + ", " + y + ")");
         System.out.println("START X: " + startX);
         System.out.println("END X: " + endX);
@@ -223,6 +226,32 @@ public class KDTree {
     }
 
     public void display() {
+        if (root == null) return;
+        Queue<POINode> queue = new LinkedList<>();
+        queue.add(root);
 
+        while (!queue.isEmpty()) {
+            POINode curr = queue.poll();
+            System.out.println(curr);
+
+            // Enqueue left child
+            if (curr.left != null)
+                queue.add(curr.left);
+
+            // Enqueue right child
+            if (curr.right != null)
+                queue.add(curr.right);
+        }
+    }
+
+    public void containsAllPOI(List<POI> poiList) {
+        boolean clear = true;
+        for (POI poi : poiList) {
+            if (search(poi.getX(), poi.getY()) == null) {
+                System.out.println("Missed poi: " + poi);
+                clear = false;
+            }
+        }
+        if (clear) System.out.println("KD-TREE AND LIST OF POI ARE SIMILAR");
     }
 }
