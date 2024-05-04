@@ -50,7 +50,7 @@ public class Main {
 //        System.out.println(KNNLinearSearch.areListsSimilar(kdTreeKNNSearchResult, linearKNNSearchResult));
 
 
-        // TEST DUPLICATE INSERTION -> OVERWRITE SERVICES ON KDTREE
+        // TEST DUPLICATE INSERTION ON KD-TREE -> OVERWRITE SERVICES ON KD-TREE
 //        KDTree kdTree = apiDataManager.kdTree;
 //        POI poi = new POI(1,1, "PUSSY", "PUSSY", "PUSSY");
 //        kdTree.insert(poi.mapToPOINode());
@@ -62,13 +62,18 @@ public class Main {
 //        kdTree.insert(anotherAnotherPOI.mapToPOINode());
 //        System.out.println("THIRD INSERTION: " + kdTree.search(1,1));
 
-        Map2D poiHashMap = apiDataManager.poiHashMap;
-        poiHashMap.put(new POI(1,1, "PUSSY", "PUSSY", "PUSSY"));
-        System.out.println("FIRST INSERTION: " + poiHashMap.find(1,1));
-        poiHashMap.put(new POI(1,1,"DICK", "DICK", "DICK"));
-        System.out.println("SECOND INSERTION: " + poiHashMap.find(1,1));
-        poiHashMap.put(new POI(1,1,"HELLO", "CAK", "CAK"));
-        System.out.println("THIRD INSERTION: " + poiHashMap.find(1,1));
+        // TEST DUPLICATION INSERTION ON MAP2D
+//        Map2D poiHashMap = apiDataManager.poiHashMap;
+//        poiHashMap.put(new POI(1,1, "PUSSY", "PUSSY", "PUSSY"));
+//        System.out.println("FIRST INSERTION: " + poiHashMap.find(1,1));
+//        poiHashMap.put(new POI(1,1,"DICK", "DICK", "DICK"));
+//        System.out.println("SECOND INSERTION: " + poiHashMap.find(1,1));
+//        poiHashMap.put(new POI(1,1,"HELLO", "CAK", "CAK"));
+//        System.out.println("THIRD INSERTION: " + poiHashMap.find(1,1));
+
+        // TEST MINI KD-TREE
+        Map2D poiHashmap = apiDataManager.poiHashMap;
+        KDTree kdTree = poiHashmap.createKDTreeFromRange(10000, 10000, 100000);
 
     }
 }

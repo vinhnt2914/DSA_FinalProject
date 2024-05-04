@@ -221,4 +221,8 @@ public class KDTree {
 
         return dx * dx + dy * dy;
     }
+
+    public void display() {
+
+    }
 }

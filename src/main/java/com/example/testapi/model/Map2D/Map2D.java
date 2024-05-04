@@ -121,7 +121,6 @@ public class Map2D {
 
     public boolean addServiceToPOI(int x, int y, String service) {
         int hash = hash(x);
-
         // If there is no such POI with input x and y
         if (hashTable[hash] == null) {
             return false;
@@ -160,23 +159,38 @@ public class Map2D {
         return poiList;
     }
 
-//    public KDTree createKDTreeFromRange(int x, int y, int boundingWidth) {
-//        double halfSide = boundingWidth / 2.0;
-//
-//        double startX = Math.floor(x - halfSide);
-//        double endX = Math.floor(x + halfSide);
-//
-//        double startY = y - halfSide;
-//        double endY = y + halfSide;
-//
-//        for (int i = startX; i <= endX; i++) {
-//
-//        }
-//
-//
-//        KDTree kdTree = new KDTree();
-//
-//        return kdTree;
-//    }
+    public KDTree createKDTreeFromRange(int x, int y, int boundingSize) {
+        KDTree kdTree = new KDTree();
+        int halfSide = boundingSize / 2;
+
+        int startX = x - halfSide;
+        int endX = x + halfSide;
+
+        int startY = y - halfSide;
+        int endY = y + halfSide;
+
+        if (startX < 0) startX = 0;
+        if (startY < 0) startY = 0;
+        if (endX < 0) endX = 0;
+        if (endY < 0) endY = 0;
+
+        // Loop over from startX to endX
+        for (int i = startX; i <= endX; i++) {
+            // If there is a chain at the current index
+            if (hashTable[i] != null) {
+                for (int j = 0; j < hashTable[i].size(); j++) {
+                    // Get the current POI for convenient
+                    POI curr = hashTable[i].get(j);
+                    // If the current poi is in range
+                    if (curr.getY() >= startY && curr.getY() <= endY) {
+                        // Add the poi into kd tree
+                        kdTree.insert(curr.mapToPOINode());
+                    }
+                }
+            }
+        }
+
+        return kdTree;
+    }
 
 }
