@@ -40,7 +40,7 @@ export default function PlaceManagement({ ClassProperties }) {
               </ModalHeader>
               <ModalBody>
                 <p className="mt-[-24px] opacity-50">
-                  Search for a specific place.
+                  Search and edit a specific place.
                 </p>
                 <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
                   <Input type="position" label="Position X of the place" />

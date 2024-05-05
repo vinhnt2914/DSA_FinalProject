@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Input} from "@nextui-org/react";
+import {Button, Input, Chip} from "@nextui-org/react";
 
 export default function EditExistingPlace({dataToBeEdited, returnData, cancelAction}) {
     const [bufferedData, setBufferedData] = useState(dataToBeEdited);
@@ -40,6 +40,7 @@ export default function EditExistingPlace({dataToBeEdited, returnData, cancelAct
             <Input type="place" label="new X" defaultValue={dataToBeEdited.x} onValueChange={setX}/>
             <Input type="place" label="new Y" defaultValue={dataToBeEdited.y} onValueChange={setY}/>
             <Input type="place" label="New service" defaultValue={dataToBeEdited.service} onValueChange={setService}/>
+            <Chip color="warning" variant="dot">Hello</Chip>
         </div>
         <Button type={"submit"} color="primary" variant="ghost" onPress={() => composeNewData(inputData)}>
             Submit

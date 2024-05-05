@@ -168,7 +168,7 @@ class Map extends Component {
     return (
       <>
         {/* Locate the debug button at the bottom right */}
-        <div className="absolute bottom-0 right-0 m-8     z-30">
+        <div className="absolute bottom-0 right-0 m-8 z-30">
           <AddPlace ClassProperties={"mr-4"}/>
           <PlaceManagement ClassProperties={"mr-4"}/>
           <DebugMode setOfData={this.state.debugData} />

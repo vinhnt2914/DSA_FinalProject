@@ -25,11 +25,16 @@ export default function App() {
     setCenter({ lng: lng, lat: lat, zoom: DEFAULT_ZOOM })
     console.log('Move to: ', lng, lat)
   }
-  // Initialize services list
-  function fetchServices() {
-    throw new Error('Not implemented')
-  }
+  
+  // function fetchServices() {
+  //   throw new Error('Not implemented')
+  // }
 
+  
+  /* TODO: @Mai: implement the fetchServices function
+   * which is getting the service type and send it
+   * to server
+   */
   function getMarkersList(markers) {
     setData(markers)
     // for now just console log the data
@@ -46,10 +51,10 @@ export default function App() {
     let lat = parseFloat(lati)
 
     // calculate the bound based on the center and the bound length
-    let topLeft = [lng - (boundLength / 2), lat + (boundLength / 2)]
-    let topRight = [lng + (boundLength / 2), lat + (boundLength / 2)]
-    let bottomLeft = [lng - (boundLength / 2), lat - (boundLength / 2)]
-    let bottomRight = [lng + (boundLength / 2), lat - (boundLength / 2)]
+    let topLeft = [lng - boundLength / 2, lat + boundLength / 2]
+    let topRight = [lng + boundLength / 2, lat + boundLength / 2]
+    let bottomLeft = [lng - boundLength / 2, lat - boundLength / 2]
+    let bottomRight = [lng + boundLength / 2, lat - boundLength / 2]
     // let topRight = [lng, lat + widthHeightArr[1]]
     // let bottomLeft = [lng - widthHeightArr[0], lat]
     // let bottomRight = [lng - widthHeightArr[0], lat + widthHeightArr[1]]
@@ -66,7 +71,7 @@ export default function App() {
           onFormSubmit={moveToPosition}
           onBoundSubmit={calculatePointsOfBound}
         />
-        <ServiceList data={getMarkersList} />
+        <ServiceList data={getMarkersList}/>
       </div>
       <Map state={center} PointsOfBound={PointsOfBound} />
     </div>
