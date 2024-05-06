@@ -101,17 +101,17 @@ class Map extends Component {
 
   // TODO: Get a list of nearby places
 
-  setCenterProps(longitude, latitude, zoom) {
+  setCenterProps(latitude, longtitude, zoom) {
     this.setState(
       {
         mapData: {
           lat: latitude,
-          lng: longitude,
+          lng: longtitude,
           zoom: zoom,
         },
         debugData: {
           lat: latitude,
-          lng: longitude,
+          lng: longtitude,
           zoom: zoom,
         },
       },
