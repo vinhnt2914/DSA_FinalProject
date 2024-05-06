@@ -22,6 +22,7 @@ src/main/resources/application.properties
 *.ipr
 fe
 /src/main/java/com/example/testapi/data/places_with_id.txt
+/fe/node_modules
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
