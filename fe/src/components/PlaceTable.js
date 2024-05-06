@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Table,
   TableHeader,
@@ -9,6 +9,7 @@ import {
   Button,
 } from '@nextui-org/react'
 import EditExistingPlace from './EditExistingPlace'
+import axios from 'axios'
 
 export default function PlaceTable({ placeProps }) {
   // !! Fake data that will be replaced with the real data
@@ -29,6 +30,11 @@ export default function PlaceTable({ placeProps }) {
   // Tracking which one is being edited
   const [workingPlace, setWorkingPlace] = useState({})
   const [editPlace, setEditPlace] = useState(false)
+
+  // Run on load
+  // useEffect(() => {
+  //   setPlaceData(placeProps)
+  // }, [placeProps])
 
   /**
    * Function to set the place that is being edited

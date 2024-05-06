@@ -1,14 +1,16 @@
-import React from 'react'
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Input,
   Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   useDisclosure,
 } from '@nextui-org/react'
+import React from 'react'
+import NotificationDiag from './NotificationDiag'
+import axios from 'axios'
 
 export default function AddPlace({ ClassProperties }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -17,29 +19,44 @@ export default function AddPlace({ ClassProperties }) {
     y: '',
     service: '',
   })
-  const [isLoaded, setIsLoaded] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [status, setStatus] = React.useState('')
 
-  /** TODO: @Mai: implement this function
-   * using axios to send the data to the backend
-   * also return the status of the request to set
-   * the status of the button
-   */
+  // Status: success, error
+
+  const successNotification = 'The place has been added successfully'
+  const errorNotification =
+    "There's an error while adding the place. Please try again later.\nIf the problem persists, check the console for more information."
+  const pendingNotification = 'Adding the place...'
+
   function addNewPlace() {
-    // Call the parent function
-    setIsLoaded(true)
-    console.error('[addNewPlace] this function is not defined')
+    setIsLoading(true)
+    setStatus('pending')
+    console.table('Data: ', data)
+    axios.post('http://localhost:8090/api/add', data).then(
+      (response) => {
+        console.log('Response: ', response)
+        setStatus('success')
+        setIsLoading(false)
+      },
+      (error) => {
+        console.error('Error: ', error)
+        setStatus('error')
+        setIsLoading(false)
+      }
+    )
   }
 
   function trackX(data) {
-    setData({ ...data, x: data })
+    setData((prevData) => ({ ...prevData, x: data }))
   }
 
   function trackY(data) {
-    setData({ ...data, y: data })
+    setData((prevData) => ({ ...prevData, y: data }))
   }
 
   function trackService(data) {
-    setData({ ...data, service: data })
+    setData((prevData) => ({ ...prevData, service: data }))
   }
 
   return (
@@ -78,9 +95,9 @@ export default function AddPlace({ ClassProperties }) {
                   color="primary"
                   variant="ghost"
                   onPress={addNewPlace}
-                  isLoading={isLoaded}
+                  isLoading={isLoading}
                 >
-                  Add place
+                  {isLoading ? 'Adding...' : 'Add a place'}
                 </Button>
                 {/* TODO: A display for status */}
               </ModalBody>
@@ -89,10 +106,22 @@ export default function AddPlace({ ClassProperties }) {
                   Close
                 </Button>
               </ModalFooter>
+              {status === 'success' && (
+                <div className="bg-green-400 p-2">{successNotification}</div>
+              )}
+              {status === 'error' && (
+                <div className="bg-red-400 p-2">{errorNotification}</div>
+              )}
+              {/* {isLoading && (
+                <div className="bg-yellow-400 p-2">
+                  <></>{pendingNotification}
+                </div>
+              )} */}
             </>
           )}
         </ModalContent>
       </Modal>
+      {/* <NotificationDiag notifState={'success'} content={'Hello, world!'} /> */}
     </>
   )
 }

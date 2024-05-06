@@ -7,10 +7,12 @@
     <list default="true" id="9f5e3b04-3b1e-469e-9b1f-ac0c28015350" name="Changes" comment="feat: support for creating place (wip)&#10;&#10;* feat: edit form for place table&#10;* chore: removed unused button">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fe/src/components/AddPlace.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/components/AddPlace.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fe/src/components/EditExistingPlace.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/components/EditExistingPlace.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fe/src/components/Map.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/components/Map.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fe/src/components/MapCustom2.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/components/MapCustom2.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fe/src/components/Overlay.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/fe/src/components/PlaceManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/components/PlaceManagement.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fe/src/components/ServiceList.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/components/ServiceList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fe/src/components/PlaceTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/components/PlaceTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fe/src/components/Setting.js" beforeDir="false" afterPath="$PROJECT_DIR$/fe/src/components/Setting.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,6 +143,8 @@
       <workItem from="1714837239237" duration="78000" />
       <workItem from="1714837432535" duration="1356000" />
       <workItem from="1714840588171" duration="5668000" />
+      <workItem from="1714978717057" duration="16000" />
+      <workItem from="1714980105986" duration="6000" />
     </task>
     <task id="LOCAL-00001" summary="feat: support for creating place (wip)">
       <option name="closed" value="true" />

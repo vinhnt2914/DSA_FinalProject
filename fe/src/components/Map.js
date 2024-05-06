@@ -2,7 +2,7 @@
 // including react and react-leaflet
 import React, { Component } from 'react'
 // Individual components
-import { CRS } from 'leaflet'
+import { CRS, Icon } from 'leaflet'
 import {
   ImageOverlay,
   MapContainer,
@@ -10,13 +10,13 @@ import {
   Popup,
   ZoomControl,
 } from 'react-leaflet'
-import { Icon } from 'leaflet';
 import '../App.css'
+import AddPlace from './AddPlace'
 import DebugMode from './DebugMode'
 import MapCustom from './MapCustom'
 import MapCustom2 from './MapCustom2'
+import NotificationDiag from './NotificationDiag'
 import PlaceManagement from './PlaceManagement'
-import AddPlace from "./AddPlace";
 
 /**
  * The Map component.
@@ -31,9 +31,10 @@ class Map extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      isSearched: false,
       mapData: {
         lat: 51.05,
-        lng: +0.09,
+        lng: 0.09,
         zoom: 0.45,
       },
       debugData: {
@@ -42,16 +43,13 @@ class Map extends Component {
         zoom: 0,
       },
       listOfMarkers: [
-        {
-          x: 10,
-          y: 1000,
-          services: [
-              "HELLO",
-              "HELLO"
-          ],
-          distance: "10203.12"
-        }
-      ]
+        // {
+        //   x: 10,
+        //   y: 1000,
+        //   services: ['HELLO', 'HELLO'],
+        //   distance: '10203.12',
+        // },
+      ],
     }
     // this.moveTo = this.moveTo.bind(this);
     this.setCenter = this.setCenterProps.bind(this)
@@ -79,7 +77,7 @@ class Map extends Component {
     console.table('Debug data updated: ', this.debugData)
   }
 
-  onBoundDefined(topLeft, topRight, bottomLeft, bottomRight) { }
+  onBoundDefined(topLeft, topRight, bottomLeft, bottomRight) {}
 
   componentDidMount() {
     // this.initDataForDebug()
@@ -122,7 +120,6 @@ class Map extends Component {
       }
     )
   }
-  setBounds(longtitude, latitude, width, height) { }
 
   /**
    * Fetches markers from JSON data and adds them to the map.
@@ -146,13 +143,13 @@ class Map extends Component {
    */
   render() {
     const customIcon = new Icon({
-        iconUrl: 'http://leafletjs.com/examples/custom-icons/leaf-green.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41],
-        shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png',
-    });
+      iconUrl: 'http://leafletjs.com/examples/custom-icons/leaf-green.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41],
+      shadowUrl: 'http://leafletjs.com/examples/custom-icons/leaf-shadow.png',
+    })
 
     const bounds = [
       [0, 0],
@@ -169,9 +166,9 @@ class Map extends Component {
       <>
         {/* Locate the debug button at the bottom right */}
         <div className="absolute bottom-0 right-0 m-8 z-30">
-          <AddPlace ClassProperties={"mr-4"}/>
-          <PlaceManagement ClassProperties={"mr-4"}/>
-          <DebugMode setOfData={this.state.debugData} />
+          <AddPlace ClassProperties={'mr-4'} />
+          <PlaceManagement ClassProperties={'mr-4'} />
+          {/* <DebugMode setOfData={this.state.debugData} /> */}
           {/* <InfoDiag /> */}
         </div>
         {/* The main map */}
@@ -202,27 +199,22 @@ class Map extends Component {
             className="border box-border border-black"
           />
           <ZoomControl position="bottomleft" />
-          <Marker position={[this.state.mapData.lat, this.state.mapData.lng]}>
-            <Popup>
-              This is the center <br /> Position: {this.state.mapData.lat},{' '}
-              {this.state.mapData.lng}
-            </Popup>
-          </Marker>
-          {/*<Marker position={[this.state.]}>*/}
-          {/*  <Popup>*/}
-          {/*    This is the center <br /> Position: {this.state.mapData.lat},{' '}*/}
-          {/*    {this.state.mapData.lng}*/}
-          {/*  </Popup>*/}
-          {/*</Marker>*/}
-          {this.state.listOfMarkers.map((marker) => (
+          {this.state.isSearched && (
+            <Marker position={[this.state.mapData.lat, this.state.mapData.lng]}>
+              <Popup>
+                This is the center <br /> Position: {this.state.mapData.lat},{' '}
+                {this.state.mapData.lng}
+              </Popup>
+            </Marker>
+          )}
+          {this.state.listOfMarkers &&
+            this.state.listOfMarkers.map((marker) => (
               <Marker position={[marker.x, marker.y]} icon={customIcon}>
                 <Popup>
                   Position: {marker.x}, {marker.y}
                 </Popup>
               </Marker>
-          ))}
-
-          {/* <Marker position={[11043, this.state.lng]}/> */}
+            ))}
         </MapContainer>
       </>
     )

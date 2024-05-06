@@ -38,17 +38,6 @@ export default function Setting({ onFormSubmit, onBoundSubmit }) {
 
   // Function to save the setting
   function onSaveSetting() {
-    // Get the value
-    // let upperLeft = topLeft.split(',');
-    // let widthHeight = widthAndHeight.split(',');
-
-    // Old code - refer to the logic below this chunk
-    // calculate the center
-    // let lng = (parseFloat(upperLeft[0]) + (parseFloat(upperLeft[0]) + parseFloat(widthHeight[0]))) / 2;
-    // let lat = (parseFloat(upperLeft[1]) + (parseFloat(upperLeft[1]) - parseFloat(widthHeight[1]))) / 2;
-    // console.log("Center: ", lng, lat);
-
-    // New code
     let centered = center.split(',');
 
     let lng = parseFloat(centered[0]);

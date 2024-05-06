@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { Rectangle, Polygon, useMap } from 'react-leaflet';
+import React, { useState, useMemo, useEffect } from 'react'
+import { Rectangle, Polygon, useMap } from 'react-leaflet'
 
 const innerBounds = [
   [1200, 1200],
@@ -10,33 +10,31 @@ const outerBounds = [
   [52.505, 29.09],
 ]
 
-
 const purpleOptions = { color: 'purple' }
 
 const redColor = { color: 'red' }
 const whiteColor = { color: 'white' }
 
 export default function MapCustom2({ boundForPolygon }) {
-
   const defaultPolygon = [
     [500, 500],
     [200, 500],
     [200, 200],
-    [500, 200]
-  ];
-  const [bounds, setBounds] = useState(defaultPolygon);
+    [500, 200],
+  ]
+  const [bounds, setBounds] = useState([])
   const map = useMap()
 
   useEffect(() => {
     if (boundForPolygon.length === 0) {
-      return;
+      return
     }
-    console.log("Polygon bound: ", boundForPolygon);
-    setBounds(boundForPolygon);
+    console.log('Polygon bound: ', boundForPolygon)
+    setBounds(boundForPolygon)
     // log
     // map.fitBounds(boundForPolygon)
-    console.log("Polygon bound: ", boundForPolygon);
-  }, [boundForPolygon]);
+    console.log('Polygon bound: ', boundForPolygon)
+  }, [boundForPolygon])
 
   const innerHandlers = useMemo(
     () => ({
@@ -45,7 +43,7 @@ export default function MapCustom2({ boundForPolygon }) {
         map.fitBounds(innerBounds)
       },
     }),
-    [map],
+    [map]
   )
   return (
     <>

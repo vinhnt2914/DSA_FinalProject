@@ -18,8 +18,17 @@ import {
 import PlaceTable from './PlaceTable'
 
 export default function PlaceManagement({ ClassProperties }) {
+  // Predefined notifications
+  const successNotification = 'The place has been added successfully'
+  const errorNotification =
+    "There's an error while adding the place. Please try again later.\nIf the problem persists, check the console for more information."
+  const pendingNotification = 'Adding the place...'
+
+  // Related state for application
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [isAdding, setIsAdding] = React.useState(false)
+  const [isSearching, setIsSearching] = React.useState(false)
+  const [status, setStatus] = React.useState('')
 
   function searchForPlace() {
     // Call the parent function
@@ -50,8 +59,9 @@ export default function PlaceManagement({ ClassProperties }) {
                   color="primary"
                   variant="ghost"
                   onPress={searchForPlace}
+                  isLoading={isSearching}
                 >
-                  Search
+                  {isSearching ? 'Searching...' : 'Search'}
                 </Button>
                 <h1 className="text-lg font-bold">Search result</h1>
                 <PlaceTable />
@@ -65,6 +75,12 @@ export default function PlaceManagement({ ClassProperties }) {
           )}
         </ModalContent>
       </Modal>
+      {status === 'success' && (
+        <div className="bg-green-400 p-2">{successNotification}</div>
+      )}
+      {status === 'error' && (
+        <div className="bg-red-400 p-2">{errorNotification}</div>
+      )}
     </>
   )
 }
