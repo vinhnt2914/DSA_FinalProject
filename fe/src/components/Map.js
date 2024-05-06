@@ -90,6 +90,7 @@ class Map extends Component {
         this.props.state.lat,
         this.props.state.zoom
       )
+      this.state.isSearched = true
       this.PointsOfBound = this.props.PointsOfBound
       if (this.props.markers) {
         this.fetchMarkers(this.props.state.markers)

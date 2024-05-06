@@ -17,6 +17,7 @@ export default function App() {
   const DEFAULT_ZOOM = 0.4
   const [center, setCenter] = useState([0, 0])
   const [data, setData] = useState([])
+  const [searchStatus, setSearchStatus] = useState(false)
   const [PointsOfBound, setPointsOfBound] = useState([])
   // Other params
 
@@ -25,12 +26,11 @@ export default function App() {
     setCenter({ lng: lng, lat: lat, zoom: DEFAULT_ZOOM })
     console.log('Move to: ', lng, lat)
   }
-  
+
   // function fetchServices() {
   //   throw new Error('Not implemented')
   // }
 
-  
   /* TODO: @Mai: implement the fetchServices function
    * which is getting the service type and send it
    * to server
@@ -59,6 +59,7 @@ export default function App() {
     // let bottomLeft = [lng - widthHeightArr[0], lat]
     // let bottomRight = [lng - widthHeightArr[0], lat + widthHeightArr[1]]
     // return [topLeftArr, topRight, bottomLeft, bottomRight]
+    setSearchStatus(true)
     setPointsOfBound([topLeft, bottomLeft, bottomRight, topRight])
   }
 
@@ -71,9 +72,13 @@ export default function App() {
           onFormSubmit={moveToPosition}
           onBoundSubmit={calculatePointsOfBound}
         />
-        <ServiceList data={getMarkersList}/>
+        <ServiceList data={getMarkersList} isEnable={searchStatus} />
       </div>
-      <Map state={center} PointsOfBound={PointsOfBound} />
+      <Map
+        state={center}
+        PointsOfBound={PointsOfBound}
+        isSearched={searchStatus}
+      />
     </div>
   )
 }

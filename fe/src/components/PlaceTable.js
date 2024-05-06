@@ -75,8 +75,20 @@ export default function PlaceTable({ placeProps }) {
     setEditPlace(false)
   }
 
-  function submitPlace(e) {
-    throw new Error('Not implemented')
+  // function submitPlace(e) {
+  //   throw new Error('Not implemented')
+  // }
+
+  function deletePlace(e) {
+    axios
+      .delete(`http://localhost:8090/api/remove/${placeData.x}/${placeData.y}`)
+      .then((response) => {
+        console.info('Response: ', response)
+        setIsEmpty(true)
+      })
+      .catch((error) => {
+        console.error('Error: ', error)
+      })
   }
 
   return (
@@ -102,7 +114,7 @@ export default function PlaceTable({ placeProps }) {
                 >
                   Edit
                 </Button>
-                <Button color="danger" variant="light">
+                <Button color="danger" variant="light" onClick={deletePlace}>
                   Delete
                 </Button>
               </TableCell>

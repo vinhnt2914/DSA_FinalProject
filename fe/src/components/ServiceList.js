@@ -12,7 +12,7 @@ import { serviceData } from '../data/data'
 // Animation
 const animatedComponents = makeAnimated()
 
-export default function ServiceList({ data: getData }) {
+export default function ServiceList({ data: getData, isEnable }) {
   // Initialize the state
   const [services, setServices] = useState('')
 
@@ -30,7 +30,7 @@ export default function ServiceList({ data: getData }) {
      * using axios to send the data to the backend
      * also return the status of the request to set
      * the status of the button
-     * 
+     *
      * PS: console.log the data for now
      */
     const sampleData = [
@@ -50,7 +50,7 @@ export default function ServiceList({ data: getData }) {
           </AutocompleteItem>
         ))}
       </Autocomplete>
-      <Button isIconOnly={true} onClick={fetchData}>
+      <Button isIconOnly={true} onClick={fetchData} isDisabled={!isEnable}>
         <CiSearch />
       </Button>
     </div>
