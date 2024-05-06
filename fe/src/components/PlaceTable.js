@@ -13,43 +13,57 @@ import axios from 'axios'
 
 export default function PlaceTable({ placeProps }) {
   // !! Fake data that will be replaced with the real data
-  const fakeData = [
-    {
-      id: 1,
-      position: '51.505, -0.09',
-      service: 'Service 1',
-    },
-    {
-      id: 2,
-      position: '51.505, -0.19',
-      service: 'Service 2',
-    },
-  ]
-  const [placeData, setPlaceData] = useState([])
+  // const fakeData = [
+  //   {
+  //     id: 1,
+  //     position: '51.505, -0.09',
+  //     service: 'Service 1',
+  //   },
+  //   {
+  //     id: 2,
+  //     position: '51.505, -0.19',
+  //     service: 'Service 2',
+  //   },
+  // ]
+
+  // STATE
+  const [isEmpty, setIsEmpty] = useState(true)
+  const [placeData, setPlaceData] = useState({})
   const [editData, setEditData] = useState({})
   // Tracking which one is being edited
   const [workingPlace, setWorkingPlace] = useState({})
   const [editPlace, setEditPlace] = useState(false)
 
-  // Run on load
-  // useEffect(() => {
-  //   setPlaceData(placeProps)
-  // }, [placeProps])
+  useEffect(() => {
+    if (placeProps !== undefined) {
+      setIsEmpty(false)
+      let service =
+        placeProps.services.slice(0, -1).join(',') +
+        ',' +
+        placeProps.services.slice(-1)
+      console.log('Service: ', service)
+      setPlaceData({
+        x: placeProps.x,
+        y: placeProps.y,
+        service: service,
+      })
+    }
+  }, [placeProps])
 
   /**
    * Function to set the place that is being edited
    * @param {((prevState: string) => string)|string} place: The place to be edited
    * @returns {void}
    */
-  function setPlaceWorking(place) {
-    setWorkingPlace(place)
-  }
+  // function setPlaceWorking(place) {
+  //   setWorkingPlace(place)
+  // }
 
   function enableEditPlace(place) {
     // console.log("Current row: ", e)
     setEditData({
-      x: place.position.split(',')[0],
-      y: place.position.split(',')[1],
+      x: placeData.x,
+      y: placeData.y,
       service: place.service,
     })
     setEditPlace(true)
@@ -61,34 +75,30 @@ export default function PlaceTable({ placeProps }) {
     setEditPlace(false)
   }
 
-  /** TODO: @Mai: implement this function [PlaceTable]
-   * using axios to send the data to the backend
-   * also return the status of the request to set
-   * the status of the button
-   */
   function submitPlace(e) {
     throw new Error('Not implemented')
   }
+
   return (
     <>
-      <Table aria-label="Data table">
-        <TableHeader>
-          <TableColumn>POSITION</TableColumn>
-          <TableColumn>SERVICE</TableColumn>
-          <TableColumn className="flex justify-center items-center">
-            ACTION
-          </TableColumn>
-        </TableHeader>
-        <TableBody items={placeData} emptyContent={'No rows to display.'}>
-          {(place) => (
-            <TableRow key={place.position}>
-              <TableCell>{place.position}</TableCell>
-              <TableCell>{place.service}</TableCell>
+      {isEmpty == false && (
+        <Table aria-label="Data table">
+          <TableHeader>
+            <TableColumn>POSITION</TableColumn>
+            <TableColumn>SERVICE</TableColumn>
+            <TableColumn className="flex justify-center items-center">
+              ACTION
+            </TableColumn>
+          </TableHeader>
+          <TableBody emptyContent={'No rows to display.'}>
+            <TableRow>
+              <TableCell>{placeData.x + ',' + placeData.y}</TableCell>
+              <TableCell>{placeData.service}</TableCell>
               <TableCell>
                 <Button
-                  color="primary"
+                  cr="primary"
                   variant="light"
-                  onClick={() => enableEditPlace(place)}
+                  onClick={() => enableEditPlace(placeData)}
                 >
                   Edit
                 </Button>
@@ -97,9 +107,9 @@ export default function PlaceTable({ placeProps }) {
                 </Button>
               </TableCell>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
+          </TableBody>
+        </Table>
+      )}
       {editPlace && (
         <EditExistingPlace
           dataToBeEdited={editData}
