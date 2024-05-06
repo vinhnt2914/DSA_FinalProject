@@ -72,7 +72,7 @@ public class DataManager {
 //        System.out.println("Services: " + services);
 
         POINode node = new POINode(x,y, services);
-        System.out.println("Created node: " + node);
+//        System.out.println("Created node: " + node);
         nodes.add(node);
         counter.incrementAndGet();
     }
