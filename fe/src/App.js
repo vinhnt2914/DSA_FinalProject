@@ -3,6 +3,7 @@ import './App.css'
 import Map from './components/Map'
 import ServiceList from './components/ServiceList'
 import Setting from './components/Setting'
+import axios from 'axios'
 
 // marker data structure example
 // 	{
@@ -19,6 +20,7 @@ export default function App() {
   const [data, setData] = useState([])
   const [searchStatus, setSearchStatus] = useState(false)
   const [PointsOfBound, setPointsOfBound] = useState([])
+  const [boundingSize, setBoundingSize] = useState(undefined)
   // Other params
 
   // move the map to the given position (center)
@@ -27,26 +29,34 @@ export default function App() {
     console.log('Move to: ', lng, lat)
   }
 
-  // function fetchServices() {
-  //   throw new Error('Not implemented')
-  // }
+  function fetchServices(service) {
+    const dataToSend = {
+      x: center.lat,
+      y: center.lng,
+      service: service,
+      boundLength: boundingSize,
+    }
+    console.log('[debug_fetchService] data sent: ', dataToSend)
+    axios
+      .get('http://localhost:8090/api', dataToSend)
+      .then((response) => {
+        console.log('[fetchService] response: ', response)
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
 
-  /* TODO: @Mai: implement the fetchServices function
-   * which is getting the service type and send it
-   * to server
-   */
   function getMarkersList(markers) {
     setData(markers)
-    // for now just console log the data
-    console.log('Markers: ', markers)
   }
 
   function calculatePointsOfBound(boundLength, long, lati) {
-    // let topLeft = topLeftArr.split(',').map((item) => parseFloat(item))
-
-    // let widthHeightArr = [parseFloat(width), parseFloat(height)]
     // define the latitudes and longtitude of the bound
     console.log('This changed')
+    // This is for getting services list
+    setBoundingSize(boundLength)
     let lng = parseFloat(long)
     let lat = parseFloat(lati)
 
@@ -55,10 +65,6 @@ export default function App() {
     let topRight = [lng + boundLength / 2, lat + boundLength / 2]
     let bottomLeft = [lng - boundLength / 2, lat - boundLength / 2]
     let bottomRight = [lng + boundLength / 2, lat - boundLength / 2]
-    // let topRight = [lng, lat + widthHeightArr[1]]
-    // let bottomLeft = [lng - widthHeightArr[0], lat]
-    // let bottomRight = [lng - widthHeightArr[0], lat + widthHeightArr[1]]
-    // return [topLeftArr, topRight, bottomLeft, bottomRight]
     setSearchStatus(true)
     setPointsOfBound([topLeft, bottomLeft, bottomRight, topRight])
   }
@@ -72,7 +78,11 @@ export default function App() {
           onFormSubmit={moveToPosition}
           onBoundSubmit={calculatePointsOfBound}
         />
-        <ServiceList data={getMarkersList} isEnable={searchStatus} />
+        <ServiceList
+          getData={fetchServices}
+          data={getMarkersList}
+          isEnable={searchStatus}
+        />
       </div>
       <Map
         state={center}

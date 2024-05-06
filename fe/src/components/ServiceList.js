@@ -7,14 +7,13 @@ import makeAnimated from 'react-select/animated'
 
 // DATA
 import { serviceData } from '../data/data'
-// import { divIcon } from "leaflet";
 
 // Animation
 const animatedComponents = makeAnimated()
 
-export default function ServiceList({ data: getData, isEnable }) {
+export default function ServiceList({ getData, isEnable }) {
   // Initialize the state
-  const [services, setServices] = useState('')
+  const [service, setService] = useState('')
 
   function handleChange(selection) {
     // setServices(selectedOption)
@@ -26,24 +25,22 @@ export default function ServiceList({ data: getData, isEnable }) {
    * @throws {Error} - The function is not implemented.
    */
   function fetchData() {
-    /** TODO: @Mai: implement this function
-     * using axios to send the data to the backend
-     * also return the status of the request to set
-     * the status of the button
-     *
-     * PS: console.log the data for now
-     */
-    const sampleData = [
-      [0, 0],
-      [1, 1],
-      [2, 2],
-    ]
-    getData(sampleData)
+    console.log('Fetching data...')
+    getData(service)
+  }
+
+  function handleServiceChange(value) {
+    setService(value)
   }
 
   return (
     <div className="flex w-full flex-wrap md:flex-nowrap gap-4 items-center">
-      <Autocomplete label="Select or type service name" className="max-w-xs">
+      <Autocomplete
+        label="Select or type service name"
+        className="max-w-xs"
+        onInputChange={handleServiceChange}
+        // onSelectionChange={handleServiceChange}
+      >
         {serviceData.map((service) => (
           <AutocompleteItem key={service.value} value={service.value}>
             {service.label}
