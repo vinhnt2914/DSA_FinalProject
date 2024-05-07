@@ -42,14 +42,7 @@ class Map extends Component {
         lng: 0,
         zoom: 0,
       },
-      listOfMarkers: [
-        // {
-        //   x: 10,
-        //   y: 1000,
-        //   services: ['HELLO', 'HELLO'],
-        //   distance: '10203.12',
-        // },
-      ],
+      listOfMarkers: undefined,
     }
     // this.moveTo = this.moveTo.bind(this);
     this.setCenter = this.setCenterProps.bind(this)
@@ -84,17 +77,24 @@ class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.state !== prevProps.state) {
+    if (this.props !== prevProps) {
+      console.log('[map] State updated')
       this.setCenterProps(
         this.props.state.lng,
         this.props.state.lat,
         this.props.state.zoom
       )
-      this.state.isSearched = true
+      // set the data for the bound
       this.PointsOfBound = this.props.PointsOfBound
-      if (this.props.markers) {
-        this.fetchMarkers(this.props.state.markers)
-        // calculate the number of markers
+      console.log('[map] Markers updated: ', this.props.markers)
+      this.setState({
+        isSearched: true,
+      })
+      if (this.props.markers !== undefined || this.props.markers.length > 0) {
+        console.log('[map] Markers updated _ test: ', this.props.markers)
+        this.setState({
+          listOfMarkers: this.props.markers,
+        })
       }
     }
   }
@@ -124,19 +124,19 @@ class Map extends Component {
 
   /**
    * Fetches markers from JSON data and adds them to the map.
-   * @param {Array} JSONData - The JSON data containing marker information.
+   * @param {Array} markers - The JSON data containing marker information.
    */
-  fetchMarkers(JSONData) {
-    JSONData.forEach((marker) => {
-      // Add a marker to the map for each JSON entry
-      // using React-Leaflet's Marker component
-      this.listOfMarkers.push(
-        <Marker position={[marker.lat, marker.lng]}>
-          <Popup>{marker.name}</Popup>
-        </Marker>
-      )
-    })
-  }
+  // fetchMarkers(markers) {
+  //   markers.forEach((marker) => {
+  //     // Add a marker to the map for each JSON entry
+  //     // using React-Leaflet's Marker component
+  //     this.listOfMarkers.push(
+  //       <Marker position={[marker.lat, marker.lng]}>
+  //         <Popup>{marker.name}</Popup>
+  //       </Marker>
+  //     )
+  //   })
+  // }
 
   /**
    * Renders the Map component.
@@ -213,6 +213,10 @@ class Map extends Component {
               <Marker position={[marker.x, marker.y]} icon={customIcon}>
                 <Popup>
                   Position: {marker.x}, {marker.y}
+                  <br />
+                  Services: {marker.service}
+                  <br />
+                  Distance to middle: {marker.distanceToMiddle}
                 </Popup>
               </Marker>
             ))}
