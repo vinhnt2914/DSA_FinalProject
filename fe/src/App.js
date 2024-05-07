@@ -31,10 +31,10 @@ export default function App() {
 
   function fetchServices(service) {
     const dataToSend = {
-      x: center.lat,
-      y: center.lng,
+      x: `${center.lat}`,
+      y: `${center.lng}`,
       service: service,
-      boundLength: boundingSize,
+      boundingSize: boundingSize,
     }
     console.log('[debug_fetchService] data sent: ', dataToSend)
     axios
