@@ -31,14 +31,14 @@ export default function App() {
 
   function fetchServices(service) {
     const dataToSend = {
-      x: center.lat,
-      y: center.lng,
+      x: `${center.lat}`,
+      y: `${center.lng}`,
       service: service,
-      boundLength: boundingSize,
+      boundingSize: boundingSize,
     }
     console.log('[debug_fetchService] data sent: ', dataToSend)
     axios
-      .get('http://localhost:8090/api', dataToSend)
+      .post('http://localhost:8090/api', dataToSend)
       .then((response) => {
         console.log('[fetchService] response: ', response)
         console.log(response.data)
