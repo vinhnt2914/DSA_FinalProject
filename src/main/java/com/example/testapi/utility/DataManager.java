@@ -5,6 +5,7 @@ import com.example.testapi.model.KDTree.KDTree;
 import com.example.testapi.model.KDTree.POINode;
 import com.example.testapi.model.Map2D.Map2D;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -14,6 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
+import java.util.concurrent.*;
+import java.util.*;
+
 
 public class DataManager {
     private static DataManager single_DataManager = null;
@@ -33,7 +37,7 @@ public class DataManager {
     }
 
     // Could replace with const later
-    private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/places_with_id.txt";
+    private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/places.txt";
     public KDTree createKDTreeAndMap(int limit) {
         List<POINode> nodes = new ArrayList<>();
         try {
@@ -60,34 +64,49 @@ public class DataManager {
         System.out.println("Completed create and populate kd-tree, hashmap in " + duration + " ms.");
     }
 
-
     public static void processPlace(String line, AtomicLong counter, List<POINode> nodes) {
-        String[] parts = line.split(",");
-        int x = Integer.parseInt(parts[1]);
-        int y = Integer.parseInt(parts[2]);
-        String[] serviceArr =  parts[3].split(";");
-        MyArray<String> services = new MyArray<>(serviceArr);
-//        System.out.println("X: " + x);
-//        System.out.println("Y: " + x);
-//        System.out.println("Services: " + services);
-
-        POINode node = new POINode(x,y, services);
-//        System.out.println("Created node: " + node);
-        nodes.add(node);
-        counter.incrementAndGet();
+        try {
+            String[] parts = line.split(",");
+            if (parts.length < 3) {
+                return; 
+            }
+            int x = Integer.parseInt(parts[0].trim());
+            int y = Integer.parseInt(parts[1].trim());
+            String[] serviceArr = Arrays.copyOfRange(parts, 2, parts.length);
+            MyArray<String> services = new MyArray<>(serviceArr.length); 
+    
+            for (String service : serviceArr) {
+                services.insert(service.trim());
+            }
+    
+            POINode node = new POINode(x, y, services);
+            nodes.add(node);
+            counter.incrementAndGet();
+        } catch (Exception e) {
+        }
     }
+    
+    
+    
+    
 
     public static long readPlacesFromFile(String filename, int limit, List<POINode> nodes) throws IOException {
         AtomicLong counter = new AtomicLong(0);
         Path path = Path.of(filename);
-
         long startTime = System.currentTimeMillis();
-        try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
-            lines.limit(limit).forEach(line -> processPlace(line, counter, nodes));
-        }
-        long endTime = System.currentTimeMillis();
 
-        System.out.println("Loaded " + counter.get() + " places");
+        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = reader.readLine()) != null && counter.get() < limit) {
+                processPlace(line, counter, nodes);
+                if (counter.get() % 1000 == 0) {  
+                    System.out.println("Processed " + counter.get() + " lines");
+                }
+            }
+        }
+
+        long endTime = System.currentTimeMillis();
+        System.out.println("Loaded " + counter.get() + " places in " + (endTime - startTime) + " ms");
         return endTime - startTime;
     }
 

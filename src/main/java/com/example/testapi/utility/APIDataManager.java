@@ -19,7 +19,7 @@ public class APIDataManager {
     private APIDataManager() {
         this.poiList = new ArrayList<>();
         this.poiWithDistanceList = new ArrayList<>();
-        DataManager.getInstance().createKDTreeAndMap(1000000);
+        DataManager.getInstance().createKDTreeAndMap(100000000);
         kdTree = DataManager.getInstance().kdTree;
         poiHashMap = DataManager.getInstance().poiHashMap;
     }

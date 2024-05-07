@@ -15,7 +15,7 @@ public class MyArray<T> {
     private int ptr; // Hold the value for insertion index
     private final int size;
 
-    public MyArray() {
+    public MyArray(Class<T> type) {
         this.size = DEFAULT_SIZE;
         items = (T[])new Object[DEFAULT_SIZE];
     }
