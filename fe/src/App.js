@@ -31,8 +31,8 @@ export default function App() {
 
   function fetchServices(service) {
     const dataToSend = {
-      x: `${center.lat}`,
-      y: `${center.lng}`,
+      x: `${center.lng}`,
+      y: `${center.lat}`,
       service: service,
       boundingSize: boundingSize,
     }
@@ -41,14 +41,31 @@ export default function App() {
       .post('http://localhost:8090/api', dataToSend)
       .then((response) => {
         console.log('[fetchService] response: ', response)
-        console.log(response.data)
+        processData(response.data)
       })
       .catch((error) => {
         console.log(error)
       })
   }
 
-  function getMarkersList(markers) {
+  function processData(data) {
+    let markers = []
+    // Loop through the data and create markers
+    for (let i = 0; i < data.length; i++) {
+      let services =
+        data[i].services.length == 1
+          ? data[i].services
+          : data[i].services.slice(0, -1).join(',') +
+            ',' +
+            data[i].services.slice(-1)
+      markers.push({
+        x: data[i].x,
+        y: data[i].y,
+        service: services,
+        distanceToMiddle: data[i].distance,
+      })
+    }
+    console.log('[debug_processData] Markers length: ', markers.length)
     setData(markers)
   }
 
@@ -78,16 +95,13 @@ export default function App() {
           onFormSubmit={moveToPosition}
           onBoundSubmit={calculatePointsOfBound}
         />
-        <ServiceList
-          getData={fetchServices}
-          data={getMarkersList}
-          isEnable={searchStatus}
-        />
+        <ServiceList getData={fetchServices} isEnable={searchStatus} />
       </div>
       <Map
         state={center}
         PointsOfBound={PointsOfBound}
         isSearched={searchStatus}
+        markers={data}
       />
     </div>
   )

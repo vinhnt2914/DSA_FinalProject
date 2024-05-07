@@ -49,31 +49,41 @@ public class POIController {
 
     @PutMapping("/update/{x}/{y}")
     public ResponseEntity<POIJson> updatePOI(@PathVariable int x, @PathVariable int y, @RequestBody Map<String, String[]> body) {
-        POI poi = apiDataManager.poiHashMap.find(x, y);
-        if (poi == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        POI kdTreePOI = apiDataManager.kdTree.search(x,y);
+        POI mapPOI = apiDataManager.poiHashMap.find(x, y);
+        if (mapPOI == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         MyArray<String> newServices = new MyArray<>(body.get("services"));
-        poi.setServices(newServices);
-        return new ResponseEntity<>(poi.mapToPOIJson(), HttpStatus.CREATED);
+        mapPOI.setServices(newServices);
+        kdTreePOI.setServices(newServices);
+        return new ResponseEntity<>(mapPOI.mapToPOIJson(), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/remove/{x}/{y}")
     public ResponseEntity<POIJson> removePOI(@PathVariable int x, @PathVariable int y) {
+        // Find the poi from hashmap
         POI poi = apiDataManager.poiHashMap.find(x, y);
         if (poi == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        // Remove the poi from hashmap
         apiDataManager.poiHashMap.remove(poi);
+        // Remove the poi from kd tree (await)
+
         return new ResponseEntity<>(poi.mapToPOIJson(), HttpStatus.OK);
     }
 
     @PostMapping("/add")
     public ResponseEntity<POIJson> addPOI(@RequestBody Map<String, String> body) {
+        // Get the data from request body
         int x = Integer.parseInt(body.get("x"));
         int y = Integer.parseInt(body.get("y"));
         String[] services = body.get("service").split(",");
         MyArray<String> newServices = new MyArray<>(services);
+        // Create poi based on data
         POI poi = new POI(x, y, newServices);
+        // Add poi to both hashmap and kd-tree
         apiDataManager.poiHashMap.put(poi);
+        apiDataManager.kdTree.insert(poi.mapToPOINode());
         return new ResponseEntity<>(poi.mapToPOIJson(), HttpStatus.CREATED);
     }
 }

@@ -38,9 +38,11 @@ export default function PlaceTable({ placeProps }) {
     if (placeProps !== undefined) {
       setIsEmpty(false)
       let service =
-        placeProps.services.slice(0, -1).join(',') +
-        ',' +
-        placeProps.services.slice(-1)
+        placeProps.services.length == 1
+          ? placeProps.services
+          : placeProps.services.slice(0, -1).join(',') +
+            ',' +
+            placeProps.services.slice(-1)
       console.log('Service: ', service)
       setPlaceData({
         x: placeProps.x,
