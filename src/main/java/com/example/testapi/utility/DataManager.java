@@ -53,21 +53,31 @@ public class DataManager {
         System.out.println("Completed create and populate kd-tree, hashmap in " + duration + " ms.");
     }
 
-
     public static void processPlace(String line, AtomicLong counter) {
-        String[] parts = line.split(",");
-        int x = Integer.parseInt(parts[1]);
-        int y = Integer.parseInt(parts[2]);
-        String[] serviceArr =  parts[3].split(";");
-        MyArray<String> services = new MyArray<>(serviceArr);
-//        System.out.println("X: " + x);
-//        System.out.println("Y: " + x);
-//        System.out.println("Services: " + services);
+        try {
+            String[] parts = line.split(",");
+            if (parts.length < 3) {
+                return;
+            }
+            int x = Integer.parseInt(parts[0].trim());
+            int y = Integer.parseInt(parts[1].trim());
+            String[] serviceArr = new String[parts.length - 2];
+            for (int i = 2; i < parts.length; i++) {
+                serviceArr[i] = parts[i];
+            }
 
-        POINode node = new POINode(x,y, services);
-        kdTree.insert(node);
-        poiHashMap.put(node.mapToPOI());
-        counter.incrementAndGet();
+            MyArray<String> services = new MyArray<>(serviceArr.length);
+
+            for (String service : serviceArr) {
+                services.insert(service.trim());
+            }
+
+            POINode node = new POINode(x, y, services);
+            kdTree.insert(node);
+            poiHashMap.put(node);
+            counter.incrementAndGet();
+        } catch (Exception e) {
+        }
     }
 
     public static long readPlacesFromFile(String filename, int limit) throws IOException {
