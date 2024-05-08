@@ -1,7 +1,6 @@
 package com.example.testapi.model;
 
 import com.example.testapi.dto.POIJson;
-import com.example.testapi.model.Array.MyArray;
 import com.example.testapi.model.KDTree.POINode;
 import com.example.testapi.services.ServiceMapper;
 

@@ -33,7 +33,7 @@ public class Map2DGenerator {
     }
 
     // Could replace with const later
-    private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/places.txt";
+    private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/NewPlaces.txt";
     public Map2D createMap2D(int limit) {
         try {
             long duration = readPlacesFromFile(PLACES_WITH_ID_PATH, limit);
@@ -57,7 +57,7 @@ public class Map2DGenerator {
             String[] serviceArr = Arrays.copyOfRange(parts, 2, parts.length);
             Byte[] serviceIndexes = new Byte[serviceArr.length];
             for (int i = 0; i < serviceArr.length; i++) {
-                serviceIndexes[i] = ServiceMapper.getInstance().getIndex(serviceArr[i]);
+                serviceIndexes[i] = Byte.parseByte(serviceArr[i]);
             }
 //            MyArray<Byte> serviceIndexes = new MyArray<>();
 //
