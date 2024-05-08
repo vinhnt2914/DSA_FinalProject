@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,20 +30,18 @@ public class POIController {
         return ResponseEntity.ok(poi.mapToPOIJson());
     }
 
-    @GetMapping()
-    public List<POIWithDistanceJson> getManyPOIs() {
-        List<POIWithDistance> poiList = apiDataManager.poiWithDistanceList;
-        return poiList.stream().map(POIWithDistance::mapToJSON).toList();
-    }
-
     @PostMapping()
-    public ResponseEntity<List<POIWithDistanceJson>> searchPOIs(@RequestBody Map<String, String> body) {
+    public ResponseEntity<POIWithDistanceJson[]> searchPOIs(@RequestBody Map<String, String> body) {
         int x = Integer.parseInt(body.get("x"));
         int y = Integer.parseInt(body.get("y"));
         String service = body.get("service");
         int boundingSize = Integer.parseInt(body.get("boundingSize"));
-        List<POIWithDistance> poiList = apiDataManager.kdTree.KNNSearch(x, y, service, boundingSize).toArrayList();
-        return new ResponseEntity<>(poiList.stream().map(POIWithDistance::mapToJSON).toList(), HttpStatus.CREATED);
+        POIWithDistance[] poiList = apiDataManager.kdTree.KNNSearch(x, y, service, boundingSize).toArray();
+        POIWithDistanceJson[] data = new POIWithDistanceJson[poiList.length];
+        for (int i = 0; i < poiList.length; i++) {
+            data[i] = poiList[i].mapToJSON();
+        }
+        return new ResponseEntity<>(data, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{x}/{y}")

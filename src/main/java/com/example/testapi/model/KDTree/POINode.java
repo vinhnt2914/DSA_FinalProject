@@ -4,7 +4,6 @@ import com.example.testapi.model.Array.MyArray;
 import com.example.testapi.model.POI;
 import com.example.testapi.model.POIWithDistance;
 
-import java.util.Arrays;
 public class POINode extends POI{
     POINode left;
     POINode right;

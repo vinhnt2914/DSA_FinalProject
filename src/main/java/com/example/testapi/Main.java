@@ -3,11 +3,10 @@ package com.example.testapi;
 import com.example.testapi.model.Array.MyArray;
 import com.example.testapi.model.KDTree.KDTree;
 import com.example.testapi.model.Map2D.Map2D;
-import com.example.testapi.model.POI;
+
 import com.example.testapi.model.POIWithDistance;
 import com.example.testapi.utility.APIDataManager;
-import com.example.testapi.utility.DataManager;
-import com.example.testapi.utility.KNNLinearSearch;
+
 
 import java.util.List;
 
@@ -92,8 +91,8 @@ public class Main {
         MyArray<POIWithDistance> res1 = kdTree1.KNNSearch(centerX,centerY,"hello",boundingSize);
 
 //        MyArray<POIWithDistance> res2 = apiDataManager.kdTree.KNNSearch(100000,100000,"hello",100000);
-        List<POI> poiList = apiDataManager.poiHashMap.getPOIsFromRange(startX, startY, endX, endY);
-        MyArray<POIWithDistance> res3 = KNNLinearSearch.findKNearestNeighbors(centerX, centerY, poiList, boundingSize);
+//        List<POI> poiList = apiDataManager.poiHashMap.getPOIsFromRange(startX, startY, endX, endY);
+//        MyArray<POIWithDistance> res3 = KNNLinearSearch.findKNearestNeighbors(centerX, centerY, poiList, boundingSize);
 //        res1.display();
 //
 //        System.out.println("LINEAR KNN SEARCH - STATUS");
@@ -104,7 +103,7 @@ public class Main {
 //        res3.display();
 //        findDifferences(res1, res3);
 
-        kdTree1.containsAllPOI(poiList);
+//        kdTree1.containsAllPOI(poiList);
     }
 
     public static void findDifferences(MyArray<POIWithDistance> dataset1, MyArray<POIWithDistance> dataset2) {

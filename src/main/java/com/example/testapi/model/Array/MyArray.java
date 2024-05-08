@@ -1,9 +1,5 @@
 package com.example.testapi.model.Array;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * <p>
  *     Custom array class that return the actually nums of occupied index cell
@@ -87,9 +83,11 @@ public class MyArray<T> {
         }
     }
 
-    public List<T> toArrayList() {
-        List<T> res = new ArrayList<>();
-        res.addAll(Arrays.asList(items).subList(0, ptr));
+    public T[] toArray() {
+       T[] res = (T[])new Object[items.length];
+        for (int i = 0; i < items.length; i++) {
+            res[i] = items[i];
+        }
         return res;
     }
 

@@ -4,9 +4,6 @@ import com.example.testapi.model.Array.MyArray;
 import com.example.testapi.model.POI;
 import com.example.testapi.model.POIWithDistance;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 public class KDTree {
     private POINode root;
@@ -16,10 +13,6 @@ public class KDTree {
     private MyArray<POINode> nodeArray;
     public KDTree() {
         size = 0;
-    }
-
-    public void populate(List<POINode> nodes) {
-        nodes.forEach(this::insert);
     }
 
     public void insert(POINode node) {
@@ -223,35 +216,5 @@ public class KDTree {
         double dy = n1.coordinates[1] - n2.coordinates[1];
 
         return dx * dx + dy * dy;
-    }
-
-    public void display() {
-        if (root == null) return;
-        Queue<POINode> queue = new LinkedList<>();
-        queue.add(root);
-
-        while (!queue.isEmpty()) {
-            POINode curr = queue.poll();
-            System.out.println(curr);
-
-            // Enqueue left child
-            if (curr.left != null)
-                queue.add(curr.left);
-
-            // Enqueue right child
-            if (curr.right != null)
-                queue.add(curr.right);
-        }
-    }
-
-    public void containsAllPOI(List<POI> poiList) {
-        boolean clear = true;
-        for (POI poi : poiList) {
-            if (search(poi.getX(), poi.getY()) == null) {
-                System.out.println("Missed poi: " + poi);
-                clear = false;
-            }
-        }
-        if (clear) System.out.println("KD-TREE AND LIST OF POI ARE SIMILAR");
     }
 }
