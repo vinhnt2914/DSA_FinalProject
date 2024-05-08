@@ -9,11 +9,11 @@ public class POINode extends POI{
     POINode left;
     POINode right;
 
-    public POINode(int x, int y, String... services) {
+    public POINode(int x, int y, Byte... services) {
         super(x, y, services);
     }
 
-    public POINode(int x, int y, MyArray<String> services) {
+    public POINode(int x, int y, MyArray<Byte> services) {
         super(x, y, services);
     }
 

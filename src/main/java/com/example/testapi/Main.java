@@ -2,7 +2,7 @@ package com.example.testapi;
 
 import com.example.testapi.model.Array.MyArray;
 import com.example.testapi.model.KDTree.KDTree;
-import com.example.testapi.model.Map2D.Map2D;
+
 import com.example.testapi.model.POI;
 import com.example.testapi.model.POIWithDistance;
 import com.example.testapi.utility.APIDataManager;
@@ -71,10 +71,8 @@ public class Main {
 //        poiHashMap.put(new POI(1,1,"HELLO", "CAK", "CAK"));
 //        System.out.println("THIRD INSERTION: " + poiHashMap.find(1,1));
 
-        // TEST MINI KD-TREE
-        Map2D poiHashmap = apiDataManager.poiHashMap;
-        KDTree kdTree = poiHashmap.createKDTreeFromRange(10000, 10000, 100000);
 
 
+        Short x = 10;
     }
 }

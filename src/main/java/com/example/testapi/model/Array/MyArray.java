@@ -9,7 +9,7 @@ import java.util.List;
  *     Custom array class that return the actually nums of occupied index cell
  * </p>
  * */
-public class MyArray<T> {
+public class MyArray<T>{
     private static final int DEFAULT_SIZE = 10;
     private T[] items;
     private int ptr; // Hold the value for insertion index

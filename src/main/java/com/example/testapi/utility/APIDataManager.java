@@ -2,7 +2,6 @@ package com.example.testapi.utility;
 
 import com.example.testapi.model.Array.MyArray;
 import com.example.testapi.model.KDTree.KDTree;
-import com.example.testapi.model.Map2D.Map2D;
 import com.example.testapi.model.POI;
 import com.example.testapi.model.POIWithDistance;
 
@@ -14,14 +13,12 @@ public class APIDataManager {
     public List<POI> poiList;
     public List<POIWithDistance> poiWithDistanceList;
     public KDTree kdTree;
-    public Map2D poiHashMap;
 
     private APIDataManager() {
         this.poiList = new ArrayList<>();
         this.poiWithDistanceList = new ArrayList<>();
-        DataManager.getInstance().createKDTreeAndMap(10000000);
+        DataManager.getInstance().createKDTree(30000000);
         kdTree = DataManager.getInstance().kdTree;
-        poiHashMap = DataManager.getInstance().poiHashMap;
     }
 
 
@@ -40,7 +37,4 @@ public class APIDataManager {
 
         return single_APIDataManager;
     }
-
-
-
 }

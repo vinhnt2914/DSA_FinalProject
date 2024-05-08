@@ -3,22 +3,23 @@ package com.example.testapi.model;
 import com.example.testapi.dto.POIJson;
 import com.example.testapi.model.Array.MyArray;
 import com.example.testapi.model.KDTree.POINode;
+import com.example.testapi.services.ServiceMapper;
 
 import java.util.Arrays;
 
 public class POI {
     public final int[] coordinates;
-    public MyArray<String> services;
+    public MyArray<Byte> services;
 
-    public POI( int x, int y, String... services) {
+    public POI( int x, int y, Byte... services) {
         this.coordinates = new int[]{x,y};
         this.services = new MyArray<>(10);
-        for (String s : services) {
+        for (Byte s : services) {
             this.services.insert(s);
         }
     }
 
-    public POI(int x, int y, MyArray<String> services) {
+    public POI(int x, int y, MyArray<Byte> services) {
         this.coordinates = new int[]{x,y};
         this.services = services;
     }
@@ -28,9 +29,9 @@ public class POI {
         services = new MyArray<>(10);
     }
 
-    public boolean containsService(String service) {
+    public boolean containsService(Byte serviceIndex) {
         for (int i = 0; i < services.size(); i++) {
-            if (services.get(i).equalsIgnoreCase(service)) return true;
+            if (services.contains(serviceIndex)) return true;
         }
         return false;
     }
@@ -62,13 +63,13 @@ public class POI {
                 '}';
     }
 
-    public String removeService(String service) {
+    public Byte removeService(Byte serviceIndex) {
         // If service list is empty
         if (services.size() == 0) return null;
         // Loop over the POI's list of services
         for (int i = 0; i < services.size(); i++) {
             // If found
-            if (services.get(i).equalsIgnoreCase(service)) {
+            if (services.get(i) == serviceIndex) {
                 return services.remove(i);
             }
         }
@@ -76,11 +77,11 @@ public class POI {
         return null;
     }
 
-    public boolean addService(String service) {
-        return services.insert(service);
+    public boolean addService(Byte serviceIndex) {
+        return services.insert(serviceIndex);
     }
 
-    public void setServices(MyArray<String> services) {
+    public void setServices(MyArray<Byte> services) {
         this.services = services;
     }
 }
