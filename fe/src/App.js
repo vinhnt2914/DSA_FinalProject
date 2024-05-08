@@ -20,11 +20,17 @@ export default function App() {
   const [data, setData] = useState([])
   const [searchStatus, setSearchStatus] = useState(false)
   const [PointsOfBound, setPointsOfBound] = useState([])
+  const [isFoundPlaces, setIsFoundPlaces] = useState(false)
   const [boundingSize, setBoundingSize] = useState(undefined)
   // Other params
 
   // move the map to the given position (center)
   function moveToPosition(lng, lat) {
+    if (isFoundPlaces == true) {
+      // empty the data
+      setData([])
+      setIsFoundPlaces(false)
+    }
     setCenter({ lng: lng, lat: lat, zoom: DEFAULT_ZOOM })
     console.log('Move to: ', lng, lat)
   }
@@ -42,6 +48,7 @@ export default function App() {
       .then((response) => {
         console.log('[fetchService] response: ', response)
         processData(response.data)
+        setIsFoundPlaces(true)
       })
       .catch((error) => {
         console.log(error)
