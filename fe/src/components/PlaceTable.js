@@ -11,7 +11,7 @@ import {
 import EditExistingPlace from './EditExistingPlace'
 import axios from 'axios'
 
-export default function PlaceTable({ placeProps }) {
+export default function PlaceTable({ placeProps, isHiding }) {
   // !! Fake data that will be replaced with the real data
   // const fakeData = [
   //   {
@@ -35,7 +35,7 @@ export default function PlaceTable({ placeProps }) {
   const [editPlace, setEditPlace] = useState(false)
 
   useEffect(() => {
-    if (placeProps !== undefined) {
+    if (placeProps !== undefined && isHiding == false) {
       setIsEmpty(false)
       let service =
         placeProps.services.length == 1
@@ -109,16 +109,18 @@ export default function PlaceTable({ placeProps }) {
               <TableCell>{placeData.x + ',' + placeData.y}</TableCell>
               <TableCell>{placeData.service}</TableCell>
               <TableCell>
-                <Button
-                  cr="primary"
-                  variant="light"
-                  onClick={() => enableEditPlace(placeData)}
-                >
-                  Edit
-                </Button>
-                <Button color="danger" variant="light" onClick={deletePlace}>
-                  Delete
-                </Button>
+                <div className='flex items-center justify-center'>
+                  <Button
+                    cr="primary"
+                    variant="light"
+                    onClick={() => enableEditPlace(placeData)}
+                  >
+                    Edit
+                  </Button>
+                  <Button color="danger" variant="light" onClick={deletePlace}>
+                    Delete
+                  </Button>
+                </div>
               </TableCell>
             </TableRow>
           </TableBody>

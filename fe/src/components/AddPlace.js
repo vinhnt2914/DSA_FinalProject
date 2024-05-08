@@ -9,15 +9,16 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import React from 'react'
-import NotificationDiag from './NotificationDiag'
 import axios from 'axios'
+import Select from 'react-select'
+import { serviceData } from '../data/data'
 
 export default function AddPlace({ ClassProperties }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [data, setData] = React.useState({
     x: '',
     y: '',
-    service: '',
+    service: [],
   })
   const [isLoading, setIsLoading] = React.useState(false)
   const [status, setStatus] = React.useState('')
@@ -32,17 +33,26 @@ export default function AddPlace({ ClassProperties }) {
   function addNewPlace() {
     setIsLoading(true)
     setStatus('pending')
-    console.table('Data: ', data)
-    axios.post('http://localhost:8090/api/add', data).then(
+    // convert array in service to string
+    let serviceString = data.service.join(',')
+    console.log('Service string: ', serviceString)
+    let finalData = { x: data.x, y: data.y, service: serviceString }
+    axios.post('http://localhost:8090/api/add', finalData).then(
       (response) => {
         console.log('Response: ', response)
         setStatus('success')
         setIsLoading(false)
+        setTimeout(() => {
+          setStatus('')
+        }, 3000)
       },
       (error) => {
         console.error('Error: ', error)
         setStatus('error')
         setIsLoading(false)
+        setTimeout(() => {
+          setStatus('')
+        }, 3000)
       }
     )
   }
@@ -64,7 +74,13 @@ export default function AddPlace({ ClassProperties }) {
       <Button onPress={onOpen} className={ClassProperties}>
         Add a place
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        onClose={() => {
+          setStatus('')
+        }}
+      >
         <ModalContent>
           {(onClose) => (
             <>
@@ -85,10 +101,21 @@ export default function AddPlace({ ClassProperties }) {
                   />
                 </div>
                 <div>
-                  <Input
-                    type="position"
-                    label="Type the name of the services"
-                    onValueChange={trackService}
+                  <Select
+                    // defaultValue={}
+                    placeholder="Select services..."
+                    isMulti
+                    name="colors"
+                    options={serviceData}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    onChange={(value) => {
+                      console.log('Selected: ', value)
+                      // get only the values
+                      let selectedValues = value.map((item) => item.value)
+                      console.log('Selected values: ', selectedValues)
+                      trackService(selectedValues)
+                    }}
                   />
                 </div>
                 <Button

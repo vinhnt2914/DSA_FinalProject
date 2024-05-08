@@ -90,7 +90,7 @@ export default function EditExistingPlace({
         onChange={(value) => {
           console.log('Selected: ', value)
           // get only the values
-          let selectedValues = value.map((item) => item.value)
+          let selectedValues = value.map((item) => item.label)
           console.log('Selected values: ', selectedValues)
           setService(selectedValues)
         }}
