@@ -40,7 +40,7 @@ public class POI {
     }
 
     public POIJson mapToPOIJson() {
-        return new POIJson(coordinates[0], coordinates[1], services.toArrayList());
+        return new POIJson(coordinates[0], coordinates[1], services.toArray());
     }
 
     public POINode mapToPOINode() {

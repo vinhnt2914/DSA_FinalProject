@@ -1,9 +1,9 @@
 package com.example.testapi.model.KDTree;
 
 import com.example.testapi.model.Array.MyArray;
+import com.example.testapi.model.POI;
 import com.example.testapi.model.POIWithDistance;
 
-import java.util.List;
 
 public class KDTree {
     private POINode root;
@@ -15,101 +15,51 @@ public class KDTree {
         size = 0;
     }
 
-    public void populate(List<POINode> nodes) {
-        nodes.forEach(this::insert);
+    public void insert(POINode node) {
+        root = insertRec(root, node, 0);
     }
 
-    public void insert(POINode node) {
-        if (root == null) {
-            root = node;
+    private POINode insertRec(POINode current, POINode node, int depth) {
+        if (current == null) {
             size++;
-            return;
+            return node;
         }
 
-        POINode temp = root;
-        int depth = 0;
-        while (temp != null) {
-            // Get the dividing axis (divide by x or divide by y => either 0 or 1)
-            int axis = depth % DIMENSION;
-            // Compare the value at the appropriate axis
-            // If inserted value < current node value, it's on left insertion
-            if (node.coordinates[axis] < temp.coordinates[axis]) {
-                // If reached a leaf node
-                // Insert new node there
-                if (temp.left == null) {
-                    temp.left = node;
-                    size++;
-                    return;
-                }
-                temp = temp.left;
-                // Else it's on right insertion
-            } else if (node.coordinates[axis] > temp.coordinates[axis]) {
-                // If reach a leaf node
-                if (temp.right == null) {
-                    temp.right = node;
-                    size++;
-                    return;
-                }
-                temp = temp.right;
+        int axis = depth % DIMENSION;
+        if (node.coordinates[axis] < current.coordinates[axis]) {
+            current.left = insertRec(current.left, node, depth + 1);
+        } else if (node.coordinates[axis] > current.coordinates[axis]) {
+            current.right = insertRec(current.right, node, depth + 1);
+        } else {
+            if (node.coordinates[(axis + 1) % DIMENSION] != current.coordinates[(axis + 1) % DIMENSION]) {
+                current.right = insertRec(current.right, node, depth + 1);
+            } else {
+                current.setServices(node.services);
             }
-            // If the coordinate of the current axis is equal,
-            // This could potentially be a duplicate
-            else {
-                // We check if the other axis is also equal as well
-                int otherAxis = (depth + 1) % DIMENSION;
-                // If duplicate
-                if (node.coordinates[otherAxis] == temp.coordinates[otherAxis]) {
-                    // Overwrite the services
-                    temp.setServices(node.services);
-                    // Break here
-                    return;
-                }
-            }
-            depth++;
         }
-        // This never run
+        return current;
     }
 
     public POINode search(int x, int y) {
-        POINode temp = root;
-        POINode target = new POINode(x,y);
-        int depth = 0;
-        while (target != null) {
-            int axis = depth % DIMENSION;
-            if (target.coordinates[axis] < temp.coordinates[axis]) {
-                // If reached a leaf node
-                // Then there is no such node
-                if (temp.left == null) {
-                    temp.left = target;
-                    size++;
-                    return null;
-                }
-                temp = temp.left;
-                // Else it's on right side
-            } else if (target.coordinates[axis] > temp.coordinates[axis]) {
-                // If reach a leaf node
-                // Then there is no such node
-                if (temp.right == null) {
-                    temp.right = target;
-                    size++;
-                    return null;
-                }
-                temp = temp.right;
-            }
-            // If the coordinate of the current axis is equal
-            // This could potentially be what we need to find
-            else {
-                // We check if the other axis is also equal as well
-                int otherAxis = (depth + 1) % DIMENSION;
-                // If equal
-                if (target.coordinates[otherAxis] == temp.coordinates[otherAxis]) {
-                    // Return target
-                    return temp;
-                }
-            }
-            depth++;
+        return searchRec(root, new int[]{x, y}, 0);
+    }
+
+    private POINode searchRec(POINode current, int[] coords, int depth) {
+        if (current == null) {
+            return null;
         }
-        return null;
+
+        int axis = depth % DIMENSION;
+        if (coords[axis] < current.coordinates[axis]) {
+            return searchRec(current.left, coords, depth + 1);
+        } else if (coords[axis] > current.coordinates[axis]) {
+            return searchRec(current.right, coords, depth + 1);
+        } else {
+            if (coords[(axis + 1) % DIMENSION] == current.coordinates[(axis + 1) % DIMENSION]) {
+                return current;
+            }
+            return searchRec(current.right, coords, depth + 1);
+        }
     }
 
     // K-NN search using hash map
@@ -128,7 +78,7 @@ public class KDTree {
         if (endX < 0) endX = 0;
         if (endY < 0) endY = 0;
 
-        System.out.println("PERFORMING KNN SEARCH - STATUS: ");
+        System.out.println("PERFORMING KNN SEARCH WITH KDTREE - STATUS: ");
         System.out.println("TARGET: (" + x + ", " + y + ")");
         System.out.println("START X: " + startX);
         System.out.println("END X: " + endX);
@@ -222,4 +172,64 @@ public class KDTree {
         return dx * dx + dy * dy;
     }
 
+    public void update(POINode node) {
+        updateRec(root, node, 0);
+    }
+
+    private void updateRec(POINode current, POINode node, int depth) {
+        if (current == null) {
+            return;
+        }
+        int axis = depth % DIMENSION;
+        if (node.coordinates[0] == current.coordinates[0] && node.coordinates[1] == current.coordinates[1]) {
+            current.setServices(node.services);
+            return;
+        }
+        if (node.coordinates[axis] < current.coordinates[axis]) {
+            updateRec(current.left, node, depth + 1);
+        } else {
+            updateRec(current.right, node, depth + 1);
+        }
+    }
+
+    public boolean remove(POINode node) {
+        if (root == null) {
+            return false;
+        }
+        root = removeRec(root, node, 0);
+        return root != null;
+    }
+
+    private POINode removeRec(POINode current, POINode node, int depth) {
+        if (current == null) {
+            return null;
+        }
+
+        int axis = depth % DIMENSION;
+        if (node.coordinates[0] == current.coordinates[0] && node.coordinates[1] == current.coordinates[1]) {
+            if (current.right != null) {
+                POINode min = findMin(current.right, depth);
+                POINode newNode = new POINode(min.getX(), min.getY(), min.services);
+                newNode.left = current.left;
+                newNode.right = removeRec(current.right, min, depth);
+                return newNode;
+            } else if (current.left != null) {
+                return current.left;
+            } else {
+                return null;
+            }
+        } else if (node.coordinates[axis] < current.coordinates[axis]) {
+            current.left = removeRec(current.left, node, depth);
+        } else {
+            current.right = removeRec(current.right, node, depth);
+        }
+        return current;
+    }
+
+    private POINode findMin(POINode current, int depth) {
+        while (current.left != null) {
+            current = current.left;
+        }
+        return current;
+    }
 }
