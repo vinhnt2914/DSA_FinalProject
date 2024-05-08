@@ -9,16 +9,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 public class DataManager {
     private static DataManager single_DataManager = null;
-    public KDTree kdTree;
-    public Map2D poiHashMap;
+    public static KDTree kdTree;
+    public static Map2D poiHashMap;
     private DataManager() {
         kdTree = new KDTree();
         poiHashMap = new Map2D();
@@ -35,25 +32,21 @@ public class DataManager {
     // Could replace with const later
     private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/places_with_id.txt";
     public KDTree createKDTreeAndMap(int limit) {
-        List<POINode> nodes = new ArrayList<>();
+
         try {
-            long duration = readPlacesFromFile(PLACES_WITH_ID_PATH, limit, nodes);
+            long duration = readPlacesFromFile(PLACES_WITH_ID_PATH, limit);
             System.out.println("Completed processing of places in " + duration + " ms.");
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
             e.printStackTrace();
         }
 
-        populateNodeIntoTree(nodes);
-
         return kdTree;
     }
 
-    private void populateNodeIntoTree(List<POINode> nodes) {
+    private void populateNodeIntoTree() {
         long startTime = System.currentTimeMillis();
 
-        kdTree.populate(nodes);
-        poiHashMap.populateFromPOINode(nodes);
 
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
@@ -61,7 +54,7 @@ public class DataManager {
     }
 
 
-    public static void processPlace(String line, AtomicLong counter, List<POINode> nodes) {
+    public static void processPlace(String line, AtomicLong counter) {
         String[] parts = line.split(",");
         int x = Integer.parseInt(parts[1]);
         int y = Integer.parseInt(parts[2]);
@@ -72,18 +65,18 @@ public class DataManager {
 //        System.out.println("Services: " + services);
 
         POINode node = new POINode(x,y, services);
-        System.out.println("Created node: " + node);
-        nodes.add(node);
+        kdTree.insert(node);
+        poiHashMap.put(node.mapToPOI());
         counter.incrementAndGet();
     }
 
-    public static long readPlacesFromFile(String filename, int limit, List<POINode> nodes) throws IOException {
+    public static long readPlacesFromFile(String filename, int limit) throws IOException {
         AtomicLong counter = new AtomicLong(0);
         Path path = Path.of(filename);
 
         long startTime = System.currentTimeMillis();
         try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
-            lines.limit(limit).forEach(line -> processPlace(line, counter, nodes));
+            lines.limit(limit).forEach(line -> processPlace(line, counter));
         }
         long endTime = System.currentTimeMillis();
 
