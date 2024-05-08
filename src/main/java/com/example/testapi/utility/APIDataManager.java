@@ -9,7 +9,7 @@ public class APIDataManager {
     public Map2D poiHashMap;
 
     private APIDataManager() {
-        DataManager.getInstance().createKDTreeAndMap(1000000);
+        DataManager.getInstance().createKDTreeAndMap(100000000);
         kdTree = DataManager.getInstance().kdTree;
     }
 

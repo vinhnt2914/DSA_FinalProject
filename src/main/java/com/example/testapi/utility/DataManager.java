@@ -83,14 +83,19 @@ public class DataManager {
     public static long readPlacesFromFile(String filename, int limit) throws IOException {
         AtomicLong counter = new AtomicLong(0);
         Path path = Path.of(filename);
-
+    
         long startTime = System.currentTimeMillis();
         try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
-            lines.limit(limit).forEach(line -> processPlace(line, counter));
+            lines.limit(limit).forEach(line -> {
+                processPlace(line, counter);
+                if (counter.get() % 100000 == 0) {
+                    System.out.println("Loaded " + counter.get() + " places");
+                }
+            });
         }
         long endTime = System.currentTimeMillis();
-
-        System.out.println("Loaded " + counter.get() + " places");
+    
+        System.out.println("Finished loading. Total places loaded: " + counter.get());
         return endTime - startTime;
     }
 
