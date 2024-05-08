@@ -9,48 +9,37 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
+
 
 public class DataManager {
     private static DataManager single_DataManager = null;
     public static KDTree kdTree;
     public static Map2D poiHashMap;
+    private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/places.txt";
+
     private DataManager() {
         kdTree = new KDTree();
         poiHashMap = new Map2D();
     }
 
-    public static synchronized DataManager getInstance()
-    {
-        if (single_DataManager == null)
+    public static synchronized DataManager getInstance() {
+        if (single_DataManager == null) {
             single_DataManager = new DataManager();
-
+        }
         return single_DataManager;
     }
 
-    // Could replace with const later
-    private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/places.txt";
     public KDTree createKDTreeAndMap(int limit) {
-
         try {
             long duration = readPlacesFromFile(PLACES_WITH_ID_PATH, limit);
             System.out.println("Completed processing of places in " + duration + " ms.");
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
-            e.printStackTrace();
         }
-
         return kdTree;
-    }
-
-    private void populateNodeIntoTree() {
-        long startTime = System.currentTimeMillis();
-
-
-        long endTime = System.currentTimeMillis();
-        long duration = endTime - startTime;
-        System.out.println("Completed create and populate kd-tree, hashmap in " + duration + " ms.");
     }
 
     public static void processPlace(String line, AtomicLong counter) {
@@ -61,22 +50,21 @@ public class DataManager {
             }
             int x = Integer.parseInt(parts[0].trim());
             int y = Integer.parseInt(parts[1].trim());
-            String[] serviceArr = new String[parts.length - 2];
+            MyArray<String> services = new MyArray<>(parts.length - 2);
             for (int i = 2; i < parts.length; i++) {
-                serviceArr[i-2] = parts[i];
+                services.insert(parts[i].trim());
             }
 
-            MyArray<String> services = new MyArray<>(serviceArr.length);
-
-            // for (String service : serviceArr) {
-            //     services.insert(service.trim());
-            // }
-
             POINode node = new POINode(x, y, services);
-            kdTree.insert(node);
-            poiHashMap.put(node);
+            synchronized (kdTree) {
+                kdTree.insert(node);
+            }
+            synchronized (poiHashMap) {
+                poiHashMap.put(node);
+            }
             counter.incrementAndGet();
         } catch (Exception e) {
+            System.err.println("Error processing place: " + e.getMessage());
         }
     }
 
@@ -85,13 +73,25 @@ public class DataManager {
         Path path = Path.of(filename);
     
         long startTime = System.currentTimeMillis();
-        try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
-            lines.limit(limit).forEach(line -> {
-                processPlace(line, counter);
-                if (counter.get() % 100000 == 0) {
-                    System.out.println("Loaded " + counter.get() + " places");
+        ForkJoinPool customThreadPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
+        try {
+            customThreadPool.submit(() -> {
+                try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
+                    lines.limit(limit).parallel().forEach(line -> {
+                        processPlace(line, counter);
+                        long count = counter.incrementAndGet();
+                        if (count % 100000 == 0) {
+                            System.out.println("Loaded " + count + " places");
+                        }
+                    });
+                } catch (IOException e) {
+                    throw new RuntimeException("Error reading lines: " + e.getMessage());
                 }
-            });
+            }).get();  
+        } catch (Exception e) {
+            System.err.println("Error during parallel processing: " + e.getMessage());
+        } finally {
+            customThreadPool.shutdown();
         }
         long endTime = System.currentTimeMillis();
     
