@@ -28,6 +28,7 @@ export default function PlaceManagement({ ClassProperties }) {
   // Related state for application
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [isAdding, setIsAdding] = React.useState(false)
+  const [isHiding, setIsHiding] = React.useState(true)
   const [isSearching, setIsSearching] = React.useState(false)
   const [status, setStatus] = React.useState('')
   const [data, setData] = React.useState({})
@@ -42,6 +43,7 @@ export default function PlaceManagement({ ClassProperties }) {
         console.log('Response: ', response)
         setResult(response.data)
         setIsSearching(false)
+        setIsHiding(false)
         setStatus('success')
       })
       .catch((error) => {
@@ -56,7 +58,15 @@ export default function PlaceManagement({ ClassProperties }) {
       <Button onPress={onOpen} className={ClassProperties}>
         Edit/Manage a place
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        onClose={() => {
+          if (data.length > 0) data = {}
+          setIsHiding(true)
+          setStatus('')
+        }}
+      >
         <ModalContent>
           {(onClose) => (
             <>
@@ -88,7 +98,7 @@ export default function PlaceManagement({ ClassProperties }) {
                   {isSearching ? 'Searching...' : 'Search'}
                 </Button>
                 <h1 className="text-lg font-bold">Search result</h1>
-                <PlaceTable placeProps={result} />
+                <PlaceTable placeProps={result} isHiding={isHiding} />
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
