@@ -72,23 +72,23 @@ public class Main {
 
         // TEST MINI KD-TREE KNN CORRECTNESS WITH LINEAR KNN SEARCH
         // TEST BIG KD-TREE KNN CORRECTNESS WITH LINEAR KNN SEARCH
-        int centerX = 4000;
-        int centerY = 4000;
-        int boundingSize = 100000;
-        int halfSize = boundingSize / 2;
-        int startX = centerX - halfSize;
-        int endX = centerX + halfSize;
-        int startY = centerY - halfSize;
-        int endY = centerY + halfSize;
+        // int centerX = 4000;
+        // int centerY = 4000;
+        // int boundingSize = 100000;
+        // int halfSize = boundingSize / 2;
+        // int startX = centerX - halfSize;
+        // int endX = centerX + halfSize;
+        // int startY = centerY - halfSize;
+        // int endY = centerY + halfSize;
 
-        if (startX < 0) startX = 0;
-        if (startY < 0) startY = 0;
-        if (endX < 0) endX = 0;
-        if (endY < 0) endY = 0;
+        // if (startX < 0) startX = 0;
+        // if (startY < 0) startY = 0;
+        // if (endX < 0) endX = 0;
+        // if (endY < 0) endY = 0;
 
-        Map2D poiHashmap = apiDataManager.poiHashMap;
-        KDTree kdTree1 = poiHashmap.createKDTreeFromRange(centerX, centerY, boundingSize);
-        MyArray<POIWithDistance> res1 = kdTree1.KNNSearch(centerX,centerY,"hello",boundingSize);
+        // Map2D poiHashmap = apiDataManager.poiHashMap;
+        // KDTree kdTree1 = poiHashmap.createKDTreeFromRange(centerX, centerY, boundingSize);
+        // MyArray<POIWithDistance> res1 = kdTree1.KNNSearch(centerX,centerY,"hello",boundingSize);
 
 //        MyArray<POIWithDistance> res2 = apiDataManager.kdTree.KNNSearch(100000,100000,"hello",100000);
 //        List<POI> poiList = apiDataManager.poiHashMap.getPOIsFromRange(startX, startY, endX, endY);

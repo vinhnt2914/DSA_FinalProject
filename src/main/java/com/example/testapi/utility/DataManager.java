@@ -30,7 +30,7 @@ public class DataManager {
     }
 
     // Could replace with const later
-    private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/places_with_id.txt";
+    private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/places.txt";
     public KDTree createKDTreeAndMap(int limit) {
 
         try {
@@ -63,14 +63,14 @@ public class DataManager {
             int y = Integer.parseInt(parts[1].trim());
             String[] serviceArr = new String[parts.length - 2];
             for (int i = 2; i < parts.length; i++) {
-                serviceArr[i] = parts[i];
+                serviceArr[i-2] = parts[i];
             }
 
             MyArray<String> services = new MyArray<>(serviceArr.length);
 
-            for (String service : serviceArr) {
-                services.insert(service.trim());
-            }
+            // for (String service : serviceArr) {
+            //     services.insert(service.trim());
+            // }
 
             POINode node = new POINode(x, y, services);
             kdTree.insert(node);
