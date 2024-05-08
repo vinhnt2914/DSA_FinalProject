@@ -3,6 +3,8 @@ package com.example.testapi.utility;
 import com.example.testapi.model.Array.MyArray;
 import com.example.testapi.model.KDTree.KDTree;
 import com.example.testapi.model.KDTree.POINode;
+import com.example.testapi.model.Map2D.Map2D;
+import com.example.testapi.model.POI;
 import com.example.testapi.services.ServiceMapper;
 
 import java.io.BufferedReader;
@@ -15,24 +17,24 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 
-public class DataManager {
-    private static DataManager single_DataManager = null;
-    public static KDTree kdTree;
-    private DataManager() {
-        kdTree = new KDTree();
+public class Map2DGenerator {
+    private static Map2DGenerator single_Map2DGenerator = null;
+    public static Map2D poiHashMap;
+    private Map2DGenerator() {
+        poiHashMap = new Map2D();
     }
 
-    public static synchronized DataManager getInstance()
+    public static synchronized Map2DGenerator getInstance()
     {
-        if (single_DataManager == null)
-            single_DataManager = new DataManager();
+        if (single_Map2DGenerator == null)
+            single_Map2DGenerator = new Map2DGenerator();
 
-        return single_DataManager;
+        return single_Map2DGenerator;
     }
 
     // Could replace with const later
     private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/places.txt";
-    public KDTree createKDTree(int limit) {
+    public Map2D createMap2D(int limit) {
         try {
             long duration = readPlacesFromFile(PLACES_WITH_ID_PATH, limit);
             System.out.println("Completed processing of places in " + duration + " ms.");
@@ -41,24 +43,14 @@ public class DataManager {
             e.printStackTrace();
         }
 
-        return kdTree;
-    }
-
-    private void populateNodeIntoTree(List<POINode> nodes) {
-        long startTime = System.currentTimeMillis();
-
-        kdTree.populate(nodes);
-
-        long endTime = System.currentTimeMillis();
-        long duration = endTime - startTime;
-        System.out.println("Completed create and populate kd-tree, hashmap in " + duration + " ms.");
+        return poiHashMap;
     }
 
     public static void processPlace(String line, AtomicLong counter) {
         try {
             String[] parts = line.split(",");
             if (parts.length < 3) {
-                return; 
+                return;
             }
             int x = Integer.parseInt(parts[0].trim());
             int y = Integer.parseInt(parts[1].trim());
@@ -73,7 +65,7 @@ public class DataManager {
 //                serviceIndexes.insert(ServiceMapper.getInstance().getIndex(serviceArr[i]));
 //            }
 
-            kdTree.insert(new POINode(x,y,serviceIndexes));
+            poiHashMap.put(new POI(x,y,serviceIndexes));
 
             counter.incrementAndGet();
 
@@ -91,7 +83,7 @@ public class DataManager {
             String line;
             while ((line = reader.readLine()) != null && counter.get() < limit) {
                 processPlace(line, counter);
-                if (counter.get() % 1000 == 0) {  
+                if (counter.get() % 1000 == 0) {
                     System.out.println("Processed " + counter.get() + " lines");
                 }
             }

@@ -135,9 +135,9 @@ public class KDTree {
         System.out.println("START Y: " + startY);
         System.out.println("END Y: " + endY);
 
-        MyArray<POIWithDistance> res = new MyArray<>(50);
+        MyArray<POIWithDistance> res = new MyArray<>();
         POINode target = new POINode(x,y);
-        nodeArray = new MyArray<>(50);
+        nodeArray = new MyArray<>();
 
         // Run K-NN search 50 times
         for (int i = 1; i <= 50; i++) {

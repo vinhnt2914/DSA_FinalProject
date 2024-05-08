@@ -3,17 +3,19 @@ package com.example.testapi;
 import com.example.testapi.model.Array.MyArray;
 import com.example.testapi.model.KDTree.KDTree;
 
+import com.example.testapi.model.Map2D.Map2D;
 import com.example.testapi.model.POI;
 import com.example.testapi.model.POIWithDistance;
 import com.example.testapi.utility.APIDataManager;
 import com.example.testapi.utility.DataManager;
 import com.example.testapi.utility.KNNLinearSearch;
+import com.example.testapi.utility.Map2DGenerator;
 
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        APIDataManager apiDataManager = APIDataManager.getInstance();
+//        APIDataManager apiDataManager = APIDataManager.getInstance();
 
         // TEST KD TREE KNN SEARCH CORRECTNESS
 //        int targetX = 1000;
@@ -72,7 +74,6 @@ public class Main {
 //        System.out.println("THIRD INSERTION: " + poiHashMap.find(1,1));
 
 
-
-        Short x = 10;
+        Map2D map2D = Map2DGenerator.getInstance().createMap2D(30000000);
     }
 }

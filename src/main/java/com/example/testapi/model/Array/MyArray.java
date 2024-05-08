@@ -10,27 +10,22 @@ import java.util.List;
  * </p>
  * */
 public class MyArray<T>{
-    private static final int DEFAULT_SIZE = 10;
+    private int size;
     private T[] items;
     private int ptr; // Hold the value for insertion index
-    private final int size;
 
     public MyArray(Class<T> type) {
-        this.size = DEFAULT_SIZE;
-        items = (T[])new Object[DEFAULT_SIZE];
+        items = (T[]) new Object[10];
+        size = 10;
+    }
+
+    public MyArray() {
+        items = (T[]) new Object[10];
+        size = 10;
     }
 
     public MyArray(int size) {
-        this.size = size;
         items = (T[])new Object[size];
-    }
-
-    public MyArray(T[] arr) {
-        this.size = DEFAULT_SIZE;
-        items = (T[])new Object[DEFAULT_SIZE];
-        for (int i = 0; i < arr.length; i++) {
-            this.insert(arr[i]);
-        }
     }
 
     public boolean insert(T item) {
