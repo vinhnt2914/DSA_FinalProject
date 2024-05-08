@@ -42,11 +42,17 @@ export default function AddPlace({ ClassProperties }) {
         console.log('Response: ', response)
         setStatus('success')
         setIsLoading(false)
+        setTimeout(() => {
+          setStatus('')
+        }, 3000)
       },
       (error) => {
         console.error('Error: ', error)
         setStatus('error')
         setIsLoading(false)
+        setTimeout(() => {
+          setStatus('')
+        }, 3000)
       }
     )
   }
@@ -68,9 +74,13 @@ export default function AddPlace({ ClassProperties }) {
       <Button onPress={onOpen} className={ClassProperties}>
         Add a place
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} onClose={() => {
-        setStatus('')
-      }}>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        onClose={() => {
+          setStatus('')
+        }}
+      >
         <ModalContent>
           {(onClose) => (
             <>
