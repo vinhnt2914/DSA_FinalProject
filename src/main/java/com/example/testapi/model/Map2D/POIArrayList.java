@@ -3,12 +3,12 @@ package com.example.testapi.model.Map2D;
 import com.example.testapi.model.POI;
 
 public class POIArrayList {
-    private final int SIZE = 2;
+    private int size = 1;
     public POI[] items;
     private int ptr; // Hold the value for insertion index
 
     public POIArrayList() {
-        items = new POI[SIZE];
+        items = new POI[size];
         ptr = 0;
     }
 
@@ -18,9 +18,9 @@ public class POIArrayList {
     // Imagine a straight line for each x coordinate
     public void insert(POI poi) {
         // If the array if full
-        if (ptr == SIZE) {
+        if (ptr == size) {
             // double the size
-            int size = (ptr-1) * 2;
+            size = (ptr-1) * 2;
 
             resize(size);
         }
