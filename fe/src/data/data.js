@@ -1,27 +1,25 @@
 export const serviceData = [
-    { label: "Cat", value: "cat", description: "The second most popular pet in the world" },
-    { label: "Dog", value: "dog", description: "The most popular pet in the world" },
-    { label: "Elephant", value: "elephant", description: "The largest land animal" },
-    { label: "Lion", value: "lion", description: "The king of the jungle" },
-    { label: "Tiger", value: "tiger", description: "The largest cat species" },
-    { label: "Giraffe", value: "giraffe", description: "The tallest land animal" },
-    {
-        label: "Dolphin",
-        value: "dolphin",
-        description: "A widely distributed and diverse group of aquatic mammals",
-    },
-    { label: "Penguin", value: "penguin", description: "A group of aquatic flightless birds" },
-    { label: "Zebra", value: "zebra", description: "A several species of African equids" },
-    {
-        label: "Shark",
-        value: "shark",
-        description: "A group of elasmobranch fish characterized by a cartilaginous skeleton",
-    },
-    {
-        label: "Whale",
-        value: "whale",
-        description: "Diverse group of fully aquatic placental marine mammals",
-    },
-    { label: "Otter", value: "otter", description: "A carnivorous mammal in the subfamily Lutrinae" },
-    { label: "Crocodile", value: "crocodile", description: "A large semiaquatic reptile" },
-];
+  { label: 'Cafe', value: 'cafe', description: 'Cafe shop' },
+  { label: 'Hospital', value: 'hospital', description: 'hospital' },
+  { label: 'School', value: 'school', description: 'school' },
+  { label: 'Lion', value: 'lion', description: 'The king of the jungle' },
+  { label: 'Library', value: 'library', description: 'The library' },
+  { label: 'Market', value: 'market', description: 'The market' },
+  {
+    label: 'Restaurant',
+    value: 'restaurant',
+    description: 'restaurant',
+  },
+  { label: 'Park', value: 'park', description: 'Park' },
+  { label: 'Museum', value: 'museum', description: 'A museum' },
+  {
+    label: 'Gym',
+    value: 'gym',
+    description: 'gym',
+  },
+  {
+    label: 'Cinema',
+    value: 'cinema',
+    description: 'Watch movies',
+  },
+]
