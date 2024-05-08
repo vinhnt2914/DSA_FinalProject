@@ -98,6 +98,4 @@ public class DataManager {
         System.out.println("Finished loading. Total places loaded: " + counter.get());
         return endTime - startTime;
     }
-
-
 }
