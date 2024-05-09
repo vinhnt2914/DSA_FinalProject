@@ -27,17 +27,18 @@ public class POIController {
    }
 
    @GetMapping("/get/{x}/{y}")
-   public ResponseEntity<POI> getPOI(@PathVariable int x, @PathVariable int y) {
-       POI poi = apiDataManager.kdTree.search(x, y);
+   public ResponseEntity<POIJson> getPOI(@PathVariable int x, @PathVariable int y) {
+       System.out.println("Got: " + x);
+       System.out.println("Got: " + y);
+       POINode poi = apiDataManager.kdTree.search(x, y);
+       System.out.println("Found: " + poi);
        if (poi == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-       return ResponseEntity.ok(poi);
+       POIJson poiJson = poi.mapToPOIJson();
+       System.out.println("Can parse into poiJSON");
+       System.out.println("Found: " + poiJson);
+       return new ResponseEntity<>(poiJson, HttpStatus.CREATED);
    }
 
-   @GetMapping()
-   public List<POIWithDistanceJson> getManyPOIs() {
-       List<POIWithDistance> poiList = apiDataManager.poiWithDistanceList;
-       return poiList.stream().map(POIWithDistance::mapToJSON).toList();
-   }
 
    @PostMapping()
    public ResponseEntity<List<POIWithDistanceJson>> searchPOIs(@RequestBody Map<String, String> body) {

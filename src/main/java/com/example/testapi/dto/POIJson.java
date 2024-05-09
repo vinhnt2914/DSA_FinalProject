@@ -3,6 +3,8 @@ package com.example.testapi.dto;
 
 import com.example.testapi.services.ServiceMapper;
 
+import java.util.Arrays;
+
 public class POIJson {
     private int x;
     private int y;
@@ -14,5 +16,14 @@ public class POIJson {
         for (int i = 0; i < services.length; i++) {
             this.services[i] = ServiceMapper.getInstance().getService(i);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "POIJson{" +
+                "x=" + x +
+                ", y=" + y +
+                ", services=" + Arrays.toString(services) +
+                '}';
     }
 }

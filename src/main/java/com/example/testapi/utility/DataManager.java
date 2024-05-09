@@ -38,7 +38,7 @@ public class DataManager {
     }
 
     // Could replace with const later
-    private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/places.txt";
+    private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/NewPlaces.txt";
     public KDTree createKDTree(int limit) {
         try {
             long duration = readPlacesFromFile(PLACES_WITH_ID_PATH, limit);

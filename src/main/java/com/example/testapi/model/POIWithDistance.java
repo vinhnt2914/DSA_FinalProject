@@ -9,7 +9,7 @@ import java.util.Arrays;
 // Record for attaching the distance to target into POI
 public record POIWithDistance(int x, int y, byte[] services, double distance) {
     public POIWithDistanceJson mapToJSON() {
-        return new POIWithDistanceJson(x, y, getServiceString(), distance);
+        return new POIWithDistanceJson(x, y, services, distance);
     }
 
     private String[] getServiceString() {
