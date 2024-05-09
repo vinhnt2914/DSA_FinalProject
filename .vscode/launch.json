@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "com.example.testapi.Main",
+            "projectName": "DSA_FinalProject",
+            "vmArgs": "-Xmx12G -Xms4G"
+        },
+        {
+            "type": "java",
+            "name": "APIApplication",
+            "request": "launch",
+            "mainClass": "com.example.testapi.APIApplication",
+            "projectName": "DSA_FinalProject",
+            "vmArgs": "-Xmx12G -Xms4G"
+        },
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "vmArgs": "-Xmx12G -Xms4G",
+            "projectName": "DSA_FINALPROJECT"
+        }
+    ]
+}
