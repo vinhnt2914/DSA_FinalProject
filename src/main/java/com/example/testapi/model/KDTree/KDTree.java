@@ -116,86 +116,32 @@ public class KDTree {
     public MyArray<POIWithDistance> KNNSearch(int x, int y, String service, int boundingSize) {
         long startTime = System.currentTimeMillis();
 
-        int halfSize = boundingSize / 2;
+        POINode target = new POINode(x, y);
+        MyArray<POIWithDistance> results = new MyArray<>(50);
 
-        int startX = x - halfSize;
-        int endX = x + halfSize;
-        int startY = y - halfSize;
-        int endY = y + halfSize;
-
-        if (startX < 0) startX = 0;
-        if (startY < 0) startY = 0;
-        if (endX < 0) endX = 0;
-        if (endY < 0) endY = 0;
-
-        System.out.println("PERFORMING KNN SEARCH - STATUS: ");
-        System.out.println("TARGET: (" + x + ", " + y + ")");
-        System.out.println("START X: " + startX);
-        System.out.println("END X: " + endX);
-        System.out.println("START Y: " + startY);
-        System.out.println("END Y: " + endY);
-
-        MyArray<POIWithDistance> res = new MyArray<>(50);
-        POINode target = new POINode(x,y);
-        nodeArray = new MyArray<>(50);
-
-        // Run K-NN search 50 times
-        for (int i = 1; i <= 50; i++) {
-            // Break in case bounding rectangle has less than 50 points
-            if (i > this.size) break;
-            POINode ans = KNNSearch(root, target, 0);
-
-            // If the poi is out of bound, then all poi returned after this will obviously be out of bound as well
-            // We can break here
-            if (ans.getX() < startX || ans.getX() > endX || ans.getY() < startY || ans.getY() > endY) {
-                System.out.println("FOUND AN OUT OF BOUND POI");
-                System.out.println(ans);
-                return res;
-            }
-
-            POIWithDistance poiWithDistance = ans.mapToPOIWithDistance(ans.distance(target));
-            res.insert(poiWithDistance);
-
-            nodeArray.insert(ans);
-
-        }
+        findKNN(root, target, 0, boundingSize, service, results);
 
         long endTime = System.currentTimeMillis();
-        System.out.println("KD TREE K-NN SEARCH WITH MAP - START AT: " + startTime);
-        System.out.println("KD TREE K-NN SEARCH WITH MAP - END AT: " + endTime);
-        System.out.println("KD TREE K-NN SEARCH WITH MAP RUN FOR: " + (endTime - startTime) + "ms");
-        return res;
+        System.out.println("KNN Search completed in " + (endTime - startTime) + " ms with " + results.size() + " results found.");
+        return results;
     }
 
-    private POINode KNNSearch(POINode root, POINode target, int depth) {
-        // When reach a leaf node, the recursion stop
-        // In case of the best node, not being the leaf node
-        // The recursion will be terminated early, which is incorrect
-        if (root == null) return null;
+    private void findKNN(POINode current, POINode target, int depth, int boundingSize, String service, MyArray<POIWithDistance> results) {
+        if (current == null || results.size() >= 50) return;
 
-        // Get the split axis
         int axis = depth % DIMENSION;
+        POINode nearerSubtree = (target.coordinates[axis] < current.coordinates[axis]) ? current.left : current.right;
+        POINode fartherSubtree = (target.coordinates[axis] < current.coordinates[axis]) ? current.right : current.left;
 
-        POINode nextBranch, otherBranch;
+        findKNN(nearerSubtree, target, depth + 1, boundingSize, service, results);
 
-        // Decide good side and bad side
-        if (target.coordinates[axis] < root.coordinates[axis]) {
-            nextBranch = root.left;
-            otherBranch = root.right;
-        } else {
-            nextBranch = root.right;
-            otherBranch = root.left;
+        if (current.containsService(service) && distanceSquared(current, target) <= boundingSize) {
+            results.insert(new POIWithDistance(current.getX(), current.getY(), current.services, current.distance(target)));
         }
 
-        // Get the best node using recursion
-        // It keeps going until reach a leaf node then compare it to find the best node
-        // Then traverse backward and compare with parent node to see if the parent is better
-        POINode best = closerDistance(root, KNNSearch(nextBranch, target, depth + 1), target);
-        // Check if the bad side could potentially have a solution
-        if (distanceSquared(target, best) > Math.pow(target.coordinates[axis] - root.coordinates[axis], 2)) {
-            best = closerDistance(best, KNNSearch(otherBranch, target, depth + 1), target);
+        if ((target.coordinates[axis] - current.coordinates[axis]) * (target.coordinates[axis] - current.coordinates[axis]) <= boundingSize) {
+            findKNN(fartherSubtree, target, depth + 1, boundingSize, service, results);
         }
-        return best;
     }
 
     // Compare the distance between n1 to target and n2 to target
