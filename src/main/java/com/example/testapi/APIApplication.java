@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class APIApplication {
     public static void main(String[] args) {
 //        APIDataManager apiDataManager = APIDataManager.getInstance();
-        KDTree kdTree = DataManagerUsingScanner.getInstance().createKDTree(100000000);
+        // KDTree kdTree = DataManager.getInstance().createKDTree(1000000);
         SpringApplication.run(APIApplication.class, args);
 
     }
