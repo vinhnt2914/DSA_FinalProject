@@ -1,5 +1,5 @@
 package com.example.testapi.dto;
 
 
-public record POIJson(int x, int y, Byte[] services) {
+public record POIJson(int x, int y, byte[] services) {
 }

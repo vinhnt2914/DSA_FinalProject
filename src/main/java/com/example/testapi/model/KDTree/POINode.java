@@ -9,7 +9,7 @@ public class POINode extends POI{
     POINode left;
     POINode right;
 
-    public POINode(int x, int y, Byte[] services) {
+    public POINode(int x, int y, byte[] services) {
         super(x, y, services);
     }
 

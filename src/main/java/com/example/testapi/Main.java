@@ -74,6 +74,6 @@ public class Main {
 //        System.out.println("THIRD INSERTION: " + poiHashMap.find(1,1));
 
 
-        Map2D map2D = Map2DGenerator.getInstance().createMap2D(30000000);
+        Map2D map2D = Map2DGenerator.getInstance().createMap2D(100000000);
     }
 }

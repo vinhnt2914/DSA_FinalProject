@@ -3,12 +3,14 @@ package com.example.testapi.model.Map2D;
 import com.example.testapi.model.POI;
 
 public class POIArrayList {
-    private final int SIZE = 2;
+    private final int DEFAULT_SIZE = 2;
     public POI[] items;
     private int ptr; // Hold the value for insertion index
+    private int size;
 
     public POIArrayList() {
-        items = new POI[SIZE];
+        items = new POI[DEFAULT_SIZE];
+        size = 0;
         ptr = 0;
     }
 
@@ -18,7 +20,7 @@ public class POIArrayList {
     // Imagine a straight line for each x coordinate
     public void insert(POI poi) {
         // If the array if full
-        if (ptr == SIZE) {
+        if (ptr == size) {
             // double the size
             int size = (ptr-1) * 2;
 
@@ -52,6 +54,7 @@ public class POIArrayList {
             // Insert the POI at the correct position (i + 1)
             items[i + 1] = poi;
         }
+        size++;
         ptr++;
     }
 
@@ -123,6 +126,7 @@ public class POIArrayList {
         // One item will be removed
         // As a shift left cannot start from index 0;
         ptr--;
+        size--;
     }
 
     public int display() {

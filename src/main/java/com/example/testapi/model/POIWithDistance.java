@@ -7,7 +7,7 @@ import com.example.testapi.services.ServiceMapper;
 import java.util.Arrays;
 
 // Record for attaching the distance to target into POI
-public record POIWithDistance(int x, int y, Byte[] services, double distance) {
+public record POIWithDistance(int x, int y, byte[] services, double distance) {
     public POIWithDistanceJson mapToJSON() {
         return new POIWithDistanceJson(x, y, getServiceString(), distance);
     }

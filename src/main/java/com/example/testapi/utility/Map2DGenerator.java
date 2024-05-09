@@ -1,8 +1,5 @@
 package com.example.testapi.utility;
 
-import com.example.testapi.model.Array.MyArray;
-import com.example.testapi.model.KDTree.KDTree;
-import com.example.testapi.model.KDTree.POINode;
 import com.example.testapi.model.Map2D.Map2D;
 import com.example.testapi.model.POI;
 import com.example.testapi.services.ServiceMapper;
@@ -12,8 +9,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
+import java.util.BitSet;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -46,7 +42,7 @@ public class Map2DGenerator {
         return poiHashMap;
     }
 
-    public static void processPlace(String line, AtomicLong counter) {
+    public static void processPlace(String line) {
         try {
             String[] parts = line.split(",");
             if (parts.length < 3) {
@@ -54,20 +50,14 @@ public class Map2DGenerator {
             }
             int x = Integer.parseInt(parts[0].trim());
             int y = Integer.parseInt(parts[1].trim());
-            String[] serviceArr = Arrays.copyOfRange(parts, 2, parts.length);
-            Byte[] serviceIndexes = new Byte[serviceArr.length];
-            for (int i = 0; i < serviceArr.length; i++) {
-                serviceIndexes[i] = Byte.parseByte(serviceArr[i]);
+            byte[] serviceIndexes = new byte[parts.length - 2];
+            for (int i = 2; i < parts.length; i++) {
+                serviceIndexes[i-2] = ServiceMapper.getInstance().getIndex(parts[i]);
             }
-//            MyArray<Byte> serviceIndexes = new MyArray<>();
-//
-//            for (int i = 0; i < serviceArr.length; i++) {
-//                serviceIndexes.insert(ServiceMapper.getInstance().getIndex(serviceArr[i]));
-//            }
 
             poiHashMap.put(new POI(x,y,serviceIndexes));
 
-            counter.incrementAndGet();
+
 
 
         } catch (Exception e) {
@@ -82,10 +72,11 @@ public class Map2DGenerator {
         try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
             String line;
             while ((line = reader.readLine()) != null && counter.get() < limit) {
-                processPlace(line, counter);
+                processPlace(line);
                 if (counter.get() % 1000 == 0) {
                     System.out.println("Processed " + counter.get() + " lines");
                 }
+                counter.incrementAndGet();
             }
         }
 

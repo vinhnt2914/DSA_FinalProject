@@ -41,7 +41,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <jvmArguments>-Xmx8192m -Xms8192m</jvmArguments>
+                    <jvmArguments>-Xms2048m -Xmx6144m</jvmArguments>
                 </configuration>
             </plugin>
         </plugins>
