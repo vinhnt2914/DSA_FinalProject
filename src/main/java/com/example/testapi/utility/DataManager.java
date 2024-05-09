@@ -44,15 +44,15 @@ public class DataManager {
         return kdTree;
     }
 
-    private void populateNodeIntoTree(List<POINode> nodes) {
-        long startTime = System.currentTimeMillis();
+    // private void populateNodeIntoTree(List<POINode> nodes) {
+    //     long startTime = System.currentTimeMillis();
 
-        kdTree.populate(nodes);
+    //     kdTree.populate(nodes);
 
-        long endTime = System.currentTimeMillis();
-        long duration = endTime - startTime;
-        System.out.println("Completed create and populate kd-tree, hashmap in " + duration + " ms.");
-    }
+    //     long endTime = System.currentTimeMillis();
+    //     long duration = endTime - startTime;
+    //     System.out.println("Completed create and populate kd-tree, hashmap in " + duration + " ms.");
+    // }
 
     public static void processPlace(String line, AtomicLong counter) {
         try {
