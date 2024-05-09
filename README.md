@@ -1,6 +1,6 @@
 How to run our system:
 
-Step 1: Download the places.txt file, this is the data file
+Step 1: Download the places.txt file, this is the data file. Link to places.txt: https://drive.google.com/file/d/1F9yBKsMETCFkdHHBZ21uTZe9hfp54vp5/view?usp=sharing
 
 Step 2: Copy places.txt into data folder
 
