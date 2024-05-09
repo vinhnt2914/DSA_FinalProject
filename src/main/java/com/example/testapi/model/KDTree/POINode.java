@@ -50,4 +50,5 @@ public class POINode extends POI{
 
         return Math.sqrt(dx * dx + dy * dy);
     }
+
 }

@@ -2,6 +2,7 @@ package com.example.testapi.controller;
 
 import com.example.testapi.dto.POIJson;
 import com.example.testapi.model.Array.MyArray;
+import com.example.testapi.model.KDTree.POINode;
 import com.example.testapi.model.POI;
 import com.example.testapi.model.POIWithDistance;
 import com.example.testapi.dto.POIWithDistanceJson;
@@ -26,15 +27,9 @@ public class POIController {
 
     @GetMapping("/get/{x}/{y}")
     public ResponseEntity<POIJson> getPOI(@PathVariable int x, @PathVariable int y) {
-        POI poi = apiDataManager.poiHashMap.find(x, y);
+        POI poi = apiDataManager.kdTree.search(x, y);
         if (poi == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return ResponseEntity.ok(poi.mapToPOIJson());
-    }
-
-    @GetMapping()
-    public List<POIWithDistanceJson> getManyPOIs() {
-        List<POIWithDistance> poiList = apiDataManager.poiWithDistanceList;
-        return poiList.stream().map(POIWithDistance::mapToJSON).toList();
     }
 
     @PostMapping()
@@ -43,30 +38,29 @@ public class POIController {
         int y = Integer.parseInt(body.get("y"));
         String service = body.get("service");
         int boundingSize = Integer.parseInt(body.get("boundingSize"));
-        List<POIWithDistance> poiList = apiDataManager.kdTree.KNNSearch(x, y, service, boundingSize).toArrayList();
+        MyArray<POIWithDistance> res = apiDataManager.kdTree.KNNSearch(x, y, service, boundingSize);
+        List<POIWithDistance> poiList = res.toArrayList();
         return new ResponseEntity<>(poiList.stream().map(POIWithDistance::mapToJSON).toList(), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{x}/{y}")
     public ResponseEntity<POIJson> updatePOI(@PathVariable int x, @PathVariable int y, @RequestBody Map<String, String[]> body) {
         POI kdTreePOI = apiDataManager.kdTree.search(x,y);
-        POI mapPOI = apiDataManager.poiHashMap.find(x, y);
-        if (mapPOI == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (kdTreePOI == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         MyArray<String> newServices = new MyArray<>(body.get("services"));
-        mapPOI.setServices(newServices);
         kdTreePOI.setServices(newServices);
-        return new ResponseEntity<>(mapPOI.mapToPOIJson(), HttpStatus.CREATED);
+        return new ResponseEntity<>(kdTreePOI.mapToPOIJson(), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/remove/{x}/{y}")
     public ResponseEntity<POIJson> removePOI(@PathVariable int x, @PathVariable int y) {
         // Find the poi from hashmap
-        POI poi = apiDataManager.poiHashMap.find(x, y);
+        POINode poi = apiDataManager.kdTree.search(x, y);
         if (poi == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // Remove the poi from hashmap
-        apiDataManager.poiHashMap.remove(poi);
+        apiDataManager.kdTree.remove(poi);
         // Remove the poi from kd tree (await)
 
         return new ResponseEntity<>(poi.mapToPOIJson(), HttpStatus.OK);
@@ -82,7 +76,6 @@ public class POIController {
         // Create poi based on data
         POI poi = new POI(x, y, newServices);
         // Add poi to both hashmap and kd-tree
-        apiDataManager.poiHashMap.put(poi);
         apiDataManager.kdTree.insert(poi.mapToPOINode());
         return new ResponseEntity<>(poi.mapToPOIJson(), HttpStatus.CREATED);
     }

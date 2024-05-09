@@ -3,7 +3,6 @@ package com.example.testapi.utility;
 import com.example.testapi.model.Array.MyArray;
 import com.example.testapi.model.KDTree.KDTree;
 import com.example.testapi.model.KDTree.POINode;
-import com.example.testapi.model.Map2D.Map2D;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,18 +13,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Stream;
-import java.util.concurrent.*;
-import java.util.*;
 
 
 public class DataManager {
     private static DataManager single_DataManager = null;
     public KDTree kdTree;
-    public Map2D poiHashMap;
     private DataManager() {
         kdTree = new KDTree();
-        poiHashMap = new Map2D();
     }
 
     public static synchronized DataManager getInstance()
@@ -57,7 +51,6 @@ public class DataManager {
         long startTime = System.currentTimeMillis();
 
         kdTree.populate(nodes);
-        poiHashMap.populateFromPOINode(nodes);
 
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;

@@ -44,7 +44,7 @@ public class MyArray<T> {
     }
 
     public T remove(int index) {
-        // The chain is empty or we remove from an index that has nothing
+        // The chain is empty, or we remove from an index that has nothing
         if (ptr == 0 || index > ptr) return null;
 
         T removedItem = items[index];
