@@ -7,7 +7,6 @@ import com.example.testapi.model.POIWithDistance;
 
 public class KDTree {
     private POINode root;
-    // 2-d tree
     private final int DIMENSION = 2;
     private int size;
     private MyArray<POINode> nodeArray;
