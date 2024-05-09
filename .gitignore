@@ -35,7 +35,8 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+
 
 
 fe/node_modules
+be-fe-connect-test/node_modules
