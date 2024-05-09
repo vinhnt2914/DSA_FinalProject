@@ -62,37 +62,62 @@ public class KDTree {
             if (coords[(axis + 1) % DIMENSION] == current.coordinates[(axis + 1) % DIMENSION]) {
                 return current;
             }
-            return searchRec(current.right, coords, depth + 1);
+            POINode found = searchRec(current.left, coords, depth + 1);
+            if (found == null) {
+                found = searchRec(current.right, coords, depth + 1);
+            }
+            return found;
         }
     }
 
-    // K-NN search using hash map
     public MyArray<POIWithDistance> KNNSearch(int x, int y, String service, int boundingSize) {
+        long startTime = System.currentTimeMillis();
+    
+        int halfSize = boundingSize / 2;
+        int startX = x - halfSize;
+        int endX = x + halfSize;
+        int startY = y - halfSize;
+        int endY = y + halfSize;
+    
         MyArray<POIWithDistance> results = new MyArray<>(50);
         POINode target = new POINode(x, y);
-        searchWithService(root, target, 0, service, results, boundingSize);
+        MyArray<POINode> visitedNodes = new MyArray<>(50);
+    
+        searchAndFilter(root, target, 0, startX, endX, startY, endY, service, results, visitedNodes);
+    
+        long endTime = System.currentTimeMillis();
+        System.out.println("Search completed in " + (endTime - startTime) + " ms with " + results.size() + " results found.");
         return results;
     }
-
-    private void searchWithService(POINode current, POINode target, int depth, String service, MyArray<POIWithDistance> results, int boundingSize) {
-        if (current == null || results.size() >= 50) {
-            return;
-        }
-
+    
+    private void searchAndFilter(POINode current, POINode target, int depth, int startX, int endX, int startY, int endY, String service, MyArray<POIWithDistance> results, MyArray<POINode> visitedNodes) {
+        if (current == null || results.size() >= 50) return;
+    
         int axis = depth % DIMENSION;
-        double dist = current.distance(target);
-        if (dist <= boundingSize && current.containsService(service)) {
-            results.insert(new POIWithDistance(current.getX(), current.getY(), current.services, dist));
+        boolean inRange = current.getX() >= startX && current.getX() <= endX && current.getY() >= startY && current.getY() <= endY;
+        boolean hasService = current.containsService(service);
+    
+        if (inRange && hasService) {
+            double distance = current.distance(target);
+            results.insert(new POIWithDistance(current.getX(), current.getY(), current.services, distance));
         }
-
-        POINode next = (target.coordinates[axis] < current.coordinates[axis]) ? current.left : current.right;
-        POINode opposite = (target.coordinates[axis] < current.coordinates[axis]) ? current.right : current.left;
-
-        searchWithService(next, target, depth + 1, service, results, boundingSize);
-
-        if (Math.pow((target.coordinates[axis] - current.coordinates[axis]), 2) < boundingSize) {
-            searchWithService(opposite, target, depth + 1, service, results, boundingSize);
+    
+        if (target.coordinates[axis] < current.coordinates[axis]) {
+            searchAndFilter(current.left, target, depth + 1, startX, endX, startY, endY, service, results, visitedNodes);
+            if (crossBoundaryCheck(target, current, axis, endX, endY)) {
+                searchAndFilter(current.right, target, depth + 1, startX, endX, startY, endY, service, results, visitedNodes);
+            }
+        } else {
+            searchAndFilter(current.right, target, depth + 1, startX, endX, startY, endY, service, results, visitedNodes);
+            if (crossBoundaryCheck(target, current, axis, startX, startY)) {
+                searchAndFilter(current.left, target, depth + 1, startX, endX, startY, endY, service, results, visitedNodes);
+            }
         }
+    }
+    
+    private boolean crossBoundaryCheck(POINode target, POINode current, int axis, int boundaryX, int boundaryY) {
+        return (axis == 0 && Math.abs(target.getX() - current.getX()) <= boundaryX) ||
+               (axis == 1 && Math.abs(target.getY() - current.getY()) <= boundaryY);
     }
 
     // Compare the distance between n1 to target and n2 to target
