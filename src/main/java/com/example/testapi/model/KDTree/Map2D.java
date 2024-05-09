@@ -5,13 +5,13 @@ import com.example.testapi.model.POIWithDistance;
 
 import java.util.List;
 
-public class KDTree {
+public class Map2D {
     private POINode root;
     // 2-d tree
     private final int DIMENSION = 2;
     private int size;
     private MyArray<POINode> nodeArray;
-    public KDTree() {
+    public Map2D() {
         size = 0;
     }
 

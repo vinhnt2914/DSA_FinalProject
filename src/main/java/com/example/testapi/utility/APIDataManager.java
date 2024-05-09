@@ -1,7 +1,7 @@
 package com.example.testapi.utility;
 
 import com.example.testapi.model.Array.MyArray;
-import com.example.testapi.model.KDTree.KDTree;
+import com.example.testapi.model.KDTree.Map2D;
 import com.example.testapi.model.POI;
 import com.example.testapi.model.POIWithDistance;
 
@@ -12,7 +12,7 @@ public class APIDataManager {
     private static APIDataManager single_APIDataManager = null;
     public List<POI> poiList;
     public List<POIWithDistance> poiWithDistanceList;
-    public KDTree kdTree;
+    public Map2D kdTree;
 
     private APIDataManager() {
         this.poiList = new ArrayList<>();

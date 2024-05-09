@@ -1,7 +1,7 @@
 package com.example.testapi.utility;
 
 import com.example.testapi.model.Array.MyArray;
-import com.example.testapi.model.KDTree.KDTree;
+import com.example.testapi.model.KDTree.Map2D;
 import com.example.testapi.model.KDTree.POINode;
 
 import java.io.BufferedReader;
@@ -17,9 +17,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class DataManager {
     private static DataManager single_DataManager = null;
-    public KDTree kdTree;
+    public Map2D kdTree;
     private DataManager() {
-        kdTree = new KDTree();
+        kdTree = new Map2D();
     }
 
     public static synchronized DataManager getInstance()
@@ -32,7 +32,7 @@ public class DataManager {
 
     // Could replace with const later
     private final String PLACES_WITH_ID_PATH = "src/main/java/com/example/testapi/data/places.txt";
-    public KDTree createKDTreeAndMap(int limit) {
+    public Map2D createKDTreeAndMap(int limit) {
         List<POINode> nodes = new ArrayList<>();
         try {
             long duration = readPlacesFromFile(PLACES_WITH_ID_PATH, limit, nodes);

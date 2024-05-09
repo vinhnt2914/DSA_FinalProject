@@ -1,14 +1,6 @@
 package com.example.testapi;
 
-import com.example.testapi.model.Array.MyArray;
-import com.example.testapi.model.KDTree.KDTree;
-import com.example.testapi.model.POI;
-import com.example.testapi.model.POIWithDistance;
 import com.example.testapi.utility.APIDataManager;
-import com.example.testapi.utility.DataManager;
-import com.example.testapi.utility.KNNLinearSearch;
-
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
