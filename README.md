@@ -66,8 +66,44 @@ Once the application starts up in your browser, the setup is complete.
 
 Now that the application is running, you can start using it. Enjoy exploring the functionalities integrated into our Data Structures and Algorithms project.
 
-### hi
-#### hello
+### Searching for nearest POIs 
+#### Step 1: Set up the target and bounding rectangle
+In the top left corner of the React app, you will see a gear icon, clicking on it will pop up a form. Inside the form, please enter the coordinates, separated by commas, like this:
+```bash
+10000,10000
+```
+Then enter your preferred bounding size. You will be automatically repositioned to the target's location that you've just entered. You can zoom out to see the bounding rectangle better.
+
+#### Step 2: Pick a service type
+In the combo box to the right of the gear icon, select any type of service you want. Then click on the search icon to begin your searching
+
+#### Step 3: Enjoy the result
+The display is zoomed in by default so please zoom out to see all of the POIs together with the bounding rectangle
+
+### Add a POI
+#### Step 1: Enter the POI coordinates and services
+In the bottom right corner of the React app, there are 2 buttons. Click on the "Add a place" option. You will see a pop-up form. Enter the POI's x-axis, y-axis, and list of services in the appropriate input field.
+
+#### Step 2: Submit the form
+Once you've entered information for the POI, click on the "Add a place" button inside the form. If done correctly, you will see a green text line on the bottom of the input form, informing that you have add the place successfully
+
+### Searching for a specific POI
+#### Step 1: Enter the POI coordinates
+To the right of the "Add a place" button is the "Edit/Manage a place" option. Clicking it will pop up a form, you can enter the X and Y coordinates of any POI and search for it. If found, it will display the search result. Otherwise, you will see red text information that the POI you want to search for does not exist
+
+### Edit a POI's services
+#### Step 1: Select new services
+This is the follow-up of the "searching for a specific POI" feature. Once you have seen your POI under the "Search Result", select the "Edit" option, this will extend the form with a combo box for you to select your new list of services. Note that, this will overwrite the current POI's list of services, not adding or removing from it.
+
+#### Step 2: Check your result
+After you have entered the new services and submit. Search for the POI again, you should be able to see the POI's list of services has changed.
+
+### Remove a POI
+#### Step 1: Delete the POI
+This is the follow-up of the "searching for a specific POI" feature. Once you have seen your POI under the "Search Result", select the "Delete" option.
+
+#### Step 2: Check your result
+Search for the POI again, you should be able to see a red text informing you that the POI you entered does not exists
 
 ## Authors 👥
 
