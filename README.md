@@ -68,7 +68,10 @@ Now that the application is running, you can start using it. Enjoy exploring the
 
 ### Searching for nearest POIs 
 #### Step 1: Set up the target and bounding rectangle
-In the top left corner of the React app, you will see a gear icon, clicking on it will pop up a form. Inside the form, please enter the coordinates, separated by commas, like this:
+In the top left corner of the React app, you will see a gear icon
+![image](https://github.com/vinhnt2914/DSA_FinalProject/assets/113036284/e30173f2-db9f-4986-8eea-bbb5144d5e20)
+
+clicking on it will pop up a form. Inside the form, please enter the coordinates, separated by commas, like this:
 ```bash
 10000,10000
 ```
